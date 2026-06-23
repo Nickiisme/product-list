@@ -1,0 +1,1441 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TCL | SUNPOWER Products</title>
+  <style>
+    :root {
+      --blue: #001fa7;
+      --blue-2: #0a43ff;
+      --ink: #2f3033;
+      --muted: #6c7280;
+      --line: #e7e9ef;
+      --panel: #ffffff;
+      --page: #f3f3f4;
+      --success: #14883e;
+      --warning: #767b86;
+      --soft-blue: #eef3ff;
+      --purple: #762783;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--page);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      height: 66px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      box-shadow: 0 1px 0 rgba(16, 24, 40, 0.06);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 230px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #111;
+    }
+
+    .brand .tcl {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .brand .divider {
+      height: 28px;
+      width: 1px;
+      background: #222;
+    }
+
+    .brand .sunpower {
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 16px;
+      height: 100%;
+      white-space: nowrap;
+    }
+
+    .nav a {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      position: relative;
+      color: #26282d;
+    }
+
+    .nav a.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 3px;
+      border-radius: 8px 8px 0 0;
+      background: var(--blue);
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: #2c2f36;
+      font-size: 15px;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      color: #222;
+    }
+
+    .badge {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--blue);
+      font-size: 12px;
+      line-height: 22px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .avatar {
+      width: 27px;
+      height: 27px;
+      border-radius: 50%;
+      background: #c7ccd5;
+      display: inline-block;
+      position: relative;
+    }
+
+    .avatar::before {
+      content: "";
+      position: absolute;
+      top: 6px;
+      left: 9px;
+      width: 9px;
+      height: 9px;
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    .avatar::after {
+      content: "";
+      position: absolute;
+      left: 6px;
+      bottom: 4px;
+      width: 15px;
+      height: 9px;
+      background: #fff;
+      border-radius: 10px 10px 6px 6px;
+    }
+
+    .page {
+      max-width: 1460px;
+      margin: 0 auto;
+      padding: 18px 24px 46px;
+    }
+
+    .hero {
+      min-height: 230px;
+      border-radius: 0;
+      color: #fff;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 86% 20%, rgba(255,255,255,0.22), transparent 30%),
+        linear-gradient(106deg, var(--purple) 0%, var(--purple) 55%, #2637aa 55%, #0032a0 100%);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: stretch;
+      position: relative;
+    }
+
+    .hero-copy {
+      padding: 42px 50px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      opacity: 0.82;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 60px;
+      line-height: 0.95;
+      letter-spacing: 0.1em;
+      font-weight: 300;
+      margin: 0 0 18px;
+    }
+
+    .hero h2 {
+      font-size: 34px;
+      line-height: 1.12;
+      margin: 0 0 14px;
+      max-width: 740px;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.35;
+      max-width: 720px;
+      opacity: 0.95;
+    }
+
+    .hero-art {
+      position: relative;
+      min-height: 230px;
+    }
+
+    .floating-card {
+      position: absolute;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+      color: #1f2530;
+      overflow: hidden;
+    }
+
+    .doc-card {
+      width: 255px;
+      height: 160px;
+      top: 30px;
+      left: 54px;
+      transform: rotate(-18deg);
+      padding: 18px;
+    }
+
+    .doc-card strong {
+      color: var(--blue);
+      font-size: 19px;
+      line-height: 1.05;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .doc-line {
+      height: 8px;
+      border-radius: 999px;
+      background: #e7ebf5;
+      margin: 8px 0;
+    }
+
+    .module-card {
+      width: 270px;
+      height: 155px;
+      right: 40px;
+      top: 34px;
+      transform: rotate(13deg);
+      padding: 14px;
+    }
+
+    .mini-panel {
+      width: 138px;
+      height: 88px;
+      background: #111827;
+      border-radius: 5px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      padding: 8px;
+      margin: 4px auto 10px;
+    }
+
+    .mini-panel span {
+      border-radius: 2px;
+      background: linear-gradient(145deg, #172554, #263d88);
+      border: 1px solid #4667c8;
+    }
+
+    .kit-card {
+      width: 300px;
+      height: 126px;
+      right: 164px;
+      bottom: 20px;
+      transform: rotate(-3deg);
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .battery-icon {
+      width: 74px;
+      height: 86px;
+      border-radius: 12px;
+      background: #f1f5ff;
+      border: 2px solid #d7e1fa;
+      display: grid;
+      gap: 7px;
+      padding: 12px;
+    }
+
+    .battery-icon span {
+      background: #0c2ba8;
+      border-radius: 5px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 348px;
+      gap: 16px;
+      margin-top: 10px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: 8px;
+      box-shadow: 0 1px 0 rgba(16, 24, 40, 0.03);
+      border: 1px solid rgba(231, 233, 239, 0.55);
+    }
+
+    .filters {
+      padding: 18px;
+      margin: 10px 0 16px;
+    }
+
+    .filters-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      align-items: center;
+    }
+
+    .search {
+      grid-column: span 2;
+    }
+
+    .search,
+    .select {
+      min-height: 46px;
+      border: 1px solid #dfe3ea;
+      border-radius: 7px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #596171;
+      padding: 0 14px;
+      font-size: 14px;
+    }
+
+    .search input,
+    .select select {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+    }
+
+    .search input::placeholder {
+      color: #7a8191;
+    }
+
+    .select {
+      color: #252a33;
+      font-weight: 700;
+      white-space: nowrap;
+      background: #fbfcff;
+    }
+
+    .filters small {
+      display: block;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .media-frame {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(223,228,239,0.95);
+      color: #222a36;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: 0 8px 20px rgba(17, 24, 39, 0.08);
+    }
+
+    .brand-badge.tcl {
+      color: #4a505f;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin: 0 0 12px;
+    }
+
+    .section-title h2 {
+      font-size: 34px;
+      margin: 0;
+      line-height: 1;
+    }
+
+    .section-title a {
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .product {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 610px;
+    }
+
+    .product img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1.52;
+      object-fit: cover;
+      background: #eef2f8;
+    }
+
+    .product-media-link {
+      display: block;
+      background: #f5f7fb;
+    }
+
+    .product-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .product-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .product h3 {
+      margin: 0 0 6px;
+      font-size: 21px;
+      line-height: 1.15;
+      color: #262a31;
+    }
+
+    .product-title-link {
+      display: inline-block;
+    }
+
+    .product-title-link:hover h3 {
+      color: var(--blue);
+    }
+
+    .product .sub {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.3;
+    }
+
+    .detail-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .status {
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+      color: var(--success);
+      background: #e9f7ee;
+    }
+
+    .status.out {
+      color: var(--warning);
+      background: #f1f2f4;
+    }
+
+    .specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .spec {
+      background: #f8faff;
+      border: 1px solid #edf1fa;
+      border-radius: 7px;
+      padding: 10px;
+      min-height: 66px;
+    }
+
+    .spec b {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .spec span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .qty {
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      margin-top: auto;
+    }
+
+    .qty-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .stepper {
+      height: 44px;
+      border: 1px solid #dfe3ea;
+      border-radius: 8px;
+      display: grid;
+      grid-template-columns: 42px 1fr 42px;
+      align-items: center;
+      text-align: center;
+      font-weight: 800;
+      color: #252a33;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .stepper button {
+      height: 100%;
+      border: 0;
+      background: #f7f8fb;
+      color: var(--blue);
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .cta {
+      height: 46px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      margin-top: 12px;
+      cursor: pointer;
+    }
+
+    .cta.secondary {
+      color: var(--blue);
+      background: #eef3ff;
+    }
+
+    .cta.ghost {
+      background: #fff;
+      color: var(--blue);
+      border: 1px solid #d9e2ff;
+    }
+
+    .cta.requested {
+      background: #e9f7ee;
+      color: var(--success);
+    }
+
+    .stepper button:disabled,
+    .cta:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .request-feedback {
+      margin-top: 10px;
+      min-height: 18px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .summary {
+      position: sticky;
+      top: 82px;
+      padding: 24px;
+    }
+
+    .summary h2 {
+      margin: 0 0 18px;
+      font-size: 33px;
+      line-height: 1;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .summary-row b {
+      color: #252a33;
+      font-size: 15px;
+      text-align: right;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+      margin: 16px 0 2px;
+    }
+
+    .summary-item {
+      border: 1px solid #e6ebf5;
+      border-radius: 9px;
+      padding: 12px;
+      background: #fbfcff;
+    }
+
+    .summary-item-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 8px;
+    }
+
+    .summary-item-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #1f2530;
+      line-height: 1.3;
+    }
+
+    .summary-item-meta {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .summary-remove {
+      border: 0;
+      background: transparent;
+      color: #7a8191;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .summary-empty {
+      padding: 14px 0 2px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .summary .cta {
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .summary p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      margin: 12px 0 0;
+    }
+
+    .summary-note {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: #f8faff;
+      color: #40506b;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .tier {
+      margin-top: 16px;
+      border-radius: 8px;
+      padding: 15px;
+      background: linear-gradient(135deg, #eef4ff, #ffffff);
+      border: 1px solid #e3eaff;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .tier-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .tier strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .tier span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer {
+      background: #1e1e1f;
+      color: #fff;
+      text-align: center;
+      padding: 34px 20px 28px;
+      margin-top: 22px;
+    }
+
+    .footer .brand {
+      color: #fff;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .footer .divider {
+      background: #fff;
+    }
+
+    .social {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .social span {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #f60;
+      display: inline-block;
+    }
+
+    .social span:nth-child(2) {
+      background: #0077b5;
+    }
+
+    .footer small {
+      color: #c7c7c7;
+      font-size: 12px;
+    }
+
+    svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    @media (max-width: 1180px) {
+      .topbar {
+        overflow-x: auto;
+        gap: 28px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .summary {
+        position: static;
+      }
+
+      .products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 820px) {
+      .page {
+        padding: 12px;
+      }
+
+      .brand {
+        min-width: auto;
+      }
+
+      .brand .tcl {
+        font-size: 22px;
+      }
+
+      .brand .sunpower {
+        font-size: 16px;
+      }
+
+      .nav {
+        gap: 18px;
+      }
+
+      .actions .email {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy {
+        padding: 30px 24px;
+      }
+
+      h1 {
+        font-size: 44px;
+      }
+
+      .hero h2 {
+        font-size: 28px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      .hero-art {
+        min-height: 190px;
+      }
+
+      .doc-card {
+        left: 16px;
+      }
+
+      .module-card {
+        right: 10px;
+      }
+
+      .kit-card {
+        right: 56px;
+      }
+
+      .filters-row,
+      .products {
+        grid-template-columns: 1fr;
+      }
+
+      .product {
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#">
+      <span class="tcl">TCL</span>
+      <span class="divider"></span>
+      <span class="sunpower">SUNPOWER</span>
+    </a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="#">Home</a>
+      <a href="#">Lead</a>
+      <a href="#">Warranty</a>
+      <a href="#">Marketing</a>
+      <a href="#">Academy</a>
+      <a href="#">Live training</a>
+      <a href="#">Monitoring</a>
+      <a class="active" href="#">Products</a>
+    </nav>
+    <div class="actions">
+      <span class="icon" aria-label="Language">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"></path></svg>
+      </span>
+      <span class="icon" aria-label="Messages">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"></path><path d="m4 7 8 6 8-6"></path></svg>
+        <span class="badge">3</span>
+      </span>
+      <span class="avatar" aria-hidden="true"></span>
+      <span class="email">sunpowerdemotest2@2925.com</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero" aria-labelledby="products-title">
+      <div class="hero-copy">
+        <div class="eyebrow">TCL | SUNPOWER</div>
+        <h1 id="products-title">PRODUCTS</h1>
+        <h2>View available SunPower products for your market</h2>
+        <p>Check eligible PV modules and energy storage kits, review MOQ requirements, and request pricing from your sales team.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="floating-card doc-card">
+          <strong>Performance product guide</strong>
+          <div class="doc-line" style="width: 88%"></div>
+          <div class="doc-line" style="width: 72%"></div>
+          <div class="doc-line" style="width: 94%"></div>
+          <div class="doc-line" style="width: 58%"></div>
+        </div>
+        <div class="floating-card module-card">
+          <div class="mini-panel">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <b>500 W module</b>
+        </div>
+        <div class="floating-card kit-card">
+          <div class="battery-icon"><span></span><span></span><span></span></div>
+          <div>
+            <b>Reserve Kit</b><br>
+            <span style="color:#687083;font-size:13px">Sold as 1 kit</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card filters" aria-label="Product filters">
+      <div class="filters-row">
+        <div class="search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 4 4"></path></svg>
+          <input id="search-filter" type="text" placeholder="Search SKU or product model">
+        </div>
+        <label class="select">
+          <select id="country-filter">
+            <option value="Spain" selected>Country: Spain</option>
+            <option value="Portugal">Country: Portugal</option>
+            <option value="France">Country: France</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="brand-filter">
+            <option value="SunPower" selected>Brand: SunPower</option>
+            <option value="TCL Solar">Brand: TCL Solar</option>
+            <option value="all">Brand: All</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="category-filter">
+            <option value="all" selected>Category(EN): All</option>
+            <option value="Solar Modules">Category(EN): Solar Modules</option>
+            <option value="Energy Storage">Category(EN): Energy Storage</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="subcategory-filter">
+            <option value="all" selected>Sub-Category(EN): All</option>
+            <option value="Residential Modules">Sub-Category(EN): Residential Modules</option>
+            <option value="Battery System">Sub-Category(EN): Battery System</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="type-filter">
+            <option value="all" selected>Product Type: All</option>
+            <option value="PV">Product Type: PV</option>
+            <option value="ESS">Product Type: ESS</option>
+            <option value="HP">Product Type: HP</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="backsheet-filter">
+            <option value="all" selected>Backsheet: All</option>
+            <option value="White">Backsheet: White</option>
+            <option value="Transparent">Backsheet: Transparent</option>
+            <option value="N/A">Backsheet: N/A</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="cell-color-filter">
+            <option value="all" selected>Cell Color: All</option>
+            <option value="Black">Cell Color: Black</option>
+            <option value="Dark Blue">Cell Color: Dark Blue</option>
+            <option value="N/A">Cell Color: N/A</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="cell-tech-filter">
+            <option value="all" selected>Cell Technology: All</option>
+            <option value="BC">Cell Technology: BC</option>
+            <option value="TOPCon">Cell Technology: TOPCon</option>
+            <option value="LFP">Cell Technology: LFP</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="module-tech-filter">
+            <option value="all" selected>Module Technology: All</option>
+            <option value="Half-Cuts">Module Technology: Half-Cuts</option>
+            <option value="Shingle">Module Technology: Shingle</option>
+            <option value="Integrated Cabinet">Module Technology: Integrated Cabinet</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="display-filter">
+            <option value="all" selected>Display: kW + Kit</option>
+            <option value="kw">Display: kW only</option>
+            <option value="kit">Display: Kit only</option>
+          </select>
+        </label>
+      </div>
+      <small>Products are filtered by your account permissions when the page loads. Restricted brands and country-ineligible SKUs are not shown.</small>
+    </section>
+
+    <div class="grid">
+      <section aria-labelledby="available-products">
+        <div class="section-title">
+          <h2 id="available-products">Available products</h2>
+          <a href="#">Download SKU list ›</a>
+        </div>
+
+        <div class="products">
+          <article class="card product" data-sku="SPR-BE54-HD500" data-country="Spain" data-brand="SunPower" data-category="Solar Modules" data-subcategory="Residential Modules" data-type="PV" data-backsheet="White" data-cell-color="Black" data-cell-tech="BC" data-module-tech="Half-Cuts" data-unit="pcs" data-min="37" data-step="37" data-capacity="18.5" data-status="in-stock">
+            <a class="product-media-link media-frame" href="sunpower-product-detail.html">
+              <span class="brand-badge">SunPower</span>
+              <img src="product-tab-assets/module-500.png" alt="SPR-BE54-HD500 solar module">
+            </a>
+            <div class="product-body">
+              <div class="product-head">
+                <div>
+                  <a class="product-title-link" href="sunpower-product-detail.html"><h3>SPR-BE54-HD500</h3></a>
+                  <div class="sub">Maxeon 5 AC residential module for rooftop applications</div>
+                  <a class="detail-link" href="sunpower-product-detail.html">View details ›</a>
+                </div>
+                <span class="status">In Stock</span>
+              </div>
+              <div class="specs">
+                <div class="spec"><b>Power</b><span>500 W</span></div>
+                <div class="spec"><b>Size</b><span>1722 × 1134 × 30 mm</span></div>
+              </div>
+              <div class="qty">
+                <div class="qty-label"><span>Unit of measure: PC</span><b>Step: 37 pcs · 18.5 kW</b></div>
+                <div class="stepper">
+                  <button type="button" class="qty-minus" aria-label="Decrease quantity">-</button>
+                  <span class="qty-value">37 pcs</span>
+                  <button type="button" class="qty-plus" aria-label="Increase quantity">+</button>
+                </div>
+                <button type="button" class="cta request-btn" data-request-type="price">Get the price</button>
+                <div class="request-feedback"></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card product" data-sku="SPR-P7-515-BLK-P" data-country="Spain" data-brand="SunPower" data-category="Solar Modules" data-subcategory="Residential Modules" data-type="PV" data-backsheet="Transparent" data-cell-color="Dark Blue" data-cell-tech="TOPCon" data-module-tech="Shingle" data-unit="pcs" data-min="36" data-step="36" data-capacity="18.54" data-status="out-of-stock">
+            <a class="product-media-link media-frame" href="sunpower-product-detail.html">
+              <span class="brand-badge">SunPower</span>
+              <img src="product-tab-assets/module-515.png" alt="SPR-P7-515-BLK-P solar module">
+            </a>
+            <div class="product-body">
+              <div class="product-head">
+                <div>
+                  <a class="product-title-link" href="sunpower-product-detail.html"><h3>SPR-P7-515-BLK-P</h3></a>
+                  <div class="sub">Performance 7 black module for residential and light commercial rooftops</div>
+                  <a class="detail-link" href="sunpower-product-detail.html">View details ›</a>
+                </div>
+                <span class="status out">Out of Stock</span>
+              </div>
+              <div class="specs">
+                <div class="spec"><b>Power</b><span>515 W</span></div>
+                <div class="spec"><b>Size</b><span>1909 × 1134 × 30 mm</span></div>
+              </div>
+              <div class="qty">
+                <div class="qty-label"><span>Unit of measure: PC</span><b>Step: 36 pcs · 18.54 kW</b></div>
+                <div class="stepper">
+                  <button type="button" class="qty-minus" aria-label="Decrease quantity">-</button>
+                  <span class="qty-value">36 pcs</span>
+                  <button type="button" class="qty-plus" aria-label="Increase quantity">+</button>
+                </div>
+                <button type="button" class="cta secondary request-btn" data-request-type="replenishment">Ask to replenishment</button>
+                <div class="request-feedback"></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card product" data-sku="SPR-RESERVE-1-DC-4-INT" data-country="Portugal" data-brand="TCL Solar" data-category="Energy Storage" data-subcategory="Battery System" data-type="ESS" data-backsheet="N/A" data-cell-color="N/A" data-cell-tech="LFP" data-module-tech="Integrated Cabinet" data-unit="kit" data-min="1" data-step="1" data-capacity="0" data-status="in-stock">
+            <a class="product-media-link media-frame" href="sunpower-product-detail.html">
+              <span class="brand-badge tcl">TCL Solar</span>
+              <img src="product-tab-assets/reserve-kit.png" alt="SPR-RESERVE energy storage kit">
+            </a>
+            <div class="product-body">
+              <div class="product-head">
+                <div>
+                  <a class="product-title-link" href="sunpower-product-detail.html"><h3>SPR-RESERVE-1-DC-4-INT</h3></a>
+                  <div class="sub">All-in-one residential storage cabinet with control and battery modules</div>
+                  <a class="detail-link" href="sunpower-product-detail.html">View details ›</a>
+                </div>
+                <span class="status">In Stock</span>
+              </div>
+              <div class="specs">
+                <div class="spec"><b>Power</b><span>N/A</span></div>
+                <div class="spec"><b>Size</b><span>1200 × 600 × 250 mm</span></div>
+              </div>
+              <div class="qty">
+                <div class="qty-label"><span>Unit of measure: KIT</span><b>Step: 1 kit</b></div>
+                <div class="stepper">
+                  <button type="button" class="qty-minus" aria-label="Decrease quantity">-</button>
+                  <span class="qty-value">1 kit</span>
+                  <button type="button" class="qty-plus" aria-label="Increase quantity">+</button>
+                </div>
+                <button type="button" class="cta request-btn" data-request-type="price">Get the price</button>
+                <div class="request-feedback"></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <aside class="card summary" aria-labelledby="summary-title">
+        <h2 id="summary-title">Request summary</h2>
+        <div class="summary-row"><span>Selected products</span><b id="summary-selected">0</b></div>
+        <div class="summary-row"><span>Total PV capacity</span><b id="summary-capacity">0 kW</b></div>
+        <div class="summary-row"><span>Kit quantity</span><b id="summary-kit">0 kit</b></div>
+        <div class="summary-row"><span>Pending requests</span><b id="summary-requests">0</b></div>
+        <div class="summary-row"><span>Country</span><b id="summary-country">Spain</b></div>
+        <div class="summary-list" id="summary-list"></div>
+        <div class="tier">
+          <div class="tier-mark">A</div>
+          <div>
+            <strong>Authorized installer</strong>
+            <span>Tier discount may apply after sales review.</span>
+          </div>
+        </div>
+        <button type="button" class="cta ghost" id="summary-send-btn">Send price request</button>
+        <p>Your request will be sent to the relevant sales team. Exact pricing and special discounts follow the current approval flow.</p>
+        <div class="summary-note" id="summary-note">No inquiry has been added yet.</div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="brand">
+      <span class="tcl">TCL</span>
+      <span class="divider"></span>
+      <span class="sunpower">SUNPOWER</span>
+    </div>
+    <div class="social"><span></span><span></span></div>
+    <small>© 2026 TCL SunPower Global. All rights reserved</small>
+  </footer>
+  <script>
+    const products = Array.from(document.querySelectorAll('.product'));
+    const searchFilter = document.getElementById('search-filter');
+    const countryFilter = document.getElementById('country-filter');
+    const brandFilter = document.getElementById('brand-filter');
+    const categoryFilter = document.getElementById('category-filter');
+    const subcategoryFilter = document.getElementById('subcategory-filter');
+    const typeFilter = document.getElementById('type-filter');
+    const backsheetFilter = document.getElementById('backsheet-filter');
+    const cellColorFilter = document.getElementById('cell-color-filter');
+    const cellTechFilter = document.getElementById('cell-tech-filter');
+    const moduleTechFilter = document.getElementById('module-tech-filter');
+    const displayFilter = document.getElementById('display-filter');
+    const summarySelected = document.getElementById('summary-selected');
+    const summaryCapacity = document.getElementById('summary-capacity');
+    const summaryKit = document.getElementById('summary-kit');
+    const summaryRequests = document.getElementById('summary-requests');
+    const summaryCountry = document.getElementById('summary-country');
+    const summaryNote = document.getElementById('summary-note');
+    const summaryList = document.getElementById('summary-list');
+    const summarySendBtn = document.getElementById('summary-send-btn');
+
+    const productState = products.map((card) => ({
+      card,
+      sku: card.dataset.sku,
+      country: card.dataset.country,
+      brand: card.dataset.brand,
+      category: card.dataset.category,
+      subcategory: card.dataset.subcategory,
+      type: card.dataset.type,
+      backsheet: card.dataset.backsheet,
+      cellColor: card.dataset.cellColor,
+      cellTech: card.dataset.cellTech,
+      moduleTech: card.dataset.moduleTech,
+      unit: card.dataset.unit,
+      min: Number(card.dataset.min),
+      step: Number(card.dataset.step),
+      capacity: Number(card.dataset.capacity),
+      status: card.dataset.status,
+      quantity: Number(card.dataset.min),
+      requestType: null,
+      requestSent: false
+    }));
+
+    function formatQty(item) {
+      return item.unit === 'kit' ? item.quantity + ' kit' : item.quantity + ' pcs';
+    }
+
+    function updateCard(item) {
+      item.card.querySelector('.qty-value').textContent = formatQty(item);
+      item.card.querySelector('.qty-minus').disabled = item.quantity <= item.min;
+      const button = item.card.querySelector('.request-btn');
+      const feedback = item.card.querySelector('.request-feedback');
+
+      if (!item.requestType) {
+        button.classList.remove('requested');
+        button.textContent = item.status === 'out-of-stock' ? 'Ask to replenishment' : 'Get the price';
+        feedback.textContent = '';
+        return;
+      }
+
+      button.classList.add('requested');
+      if (item.requestSent) {
+        button.textContent = item.requestType === 'replenishment' ? 'Replenishment sent' : 'Inquiry sent';
+        feedback.textContent = 'Submitted to Rep_sales under the company account.';
+      } else {
+        button.textContent = item.requestType === 'replenishment' ? 'Replenishment added' : 'Added to inquiry';
+        feedback.textContent = item.requestType === 'replenishment'
+          ? 'Replenishment request added for sales follow-up.'
+          : 'Price inquiry added to the request summary.';
+      }
+    }
+
+    function renderSummaryList(requestedItems) {
+      if (!requestedItems.length) {
+        summaryList.innerHTML = '<div class="summary-empty">No product has been added to the inquiry list.</div>';
+        return;
+      }
+
+      summaryList.innerHTML = requestedItems.map((item) => `
+        <div class="summary-item">
+          <div class="summary-item-head">
+            <div>
+              <div class="summary-item-title">${item.sku}</div>
+              <div class="summary-item-meta">${item.brand} · ${formatQty(item)}${item.requestType === 'replenishment' ? ' · replenishment request' : ' · pricing request'}</div>
+            </div>
+            <button type="button" class="summary-remove" data-remove-sku="${item.sku}" aria-label="Remove request">×</button>
+          </div>
+          <div class="summary-item-meta">${item.requestSent ? 'Sent to Rep_sales. You can submit again after changing quantity or keeping this line.' : 'Ready to send.'}</div>
+        </div>
+      `).join('');
+    }
+
+    function resetCardButton(item) {
+      updateCard(item);
+    }
+
+    function applyFilters() {
+      const keyword = searchFilter.value.trim().toLowerCase();
+      const countryValue = countryFilter.value;
+      const brandValue = brandFilter.value;
+      const categoryValue = categoryFilter.value;
+      const subcategoryValue = subcategoryFilter.value;
+      const typeValue = typeFilter.value;
+      const backsheetValue = backsheetFilter.value;
+      const cellColorValue = cellColorFilter.value;
+      const cellTechValue = cellTechFilter.value;
+      const moduleTechValue = moduleTechFilter.value;
+      const displayValue = displayFilter.value;
+      summaryCountry.textContent = countryValue;
+
+      productState.forEach((item) => {
+        const matchesKeyword = !keyword
+          || item.sku.toLowerCase().includes(keyword)
+          || item.card.querySelector('.sub').textContent.toLowerCase().includes(keyword)
+          || item.category.toLowerCase().includes(keyword)
+          || item.subcategory.toLowerCase().includes(keyword);
+        const matchesCountry = item.country === countryValue;
+        const matchesBrand = brandValue === 'all' || item.brand === brandValue;
+        const matchesCategory = categoryValue === 'all' || item.category === categoryValue;
+        const matchesSubcategory = subcategoryValue === 'all' || item.subcategory === subcategoryValue;
+        const matchesType = typeValue === 'all' || item.type === typeValue;
+        const matchesBacksheet = backsheetValue === 'all' || item.backsheet === backsheetValue;
+        const matchesCellColor = cellColorValue === 'all' || item.cellColor === cellColorValue;
+        const matchesCellTech = cellTechValue === 'all' || item.cellTech === cellTechValue;
+        const matchesModuleTech = moduleTechValue === 'all' || item.moduleTech === moduleTechValue;
+        const matchesDisplay = displayValue === 'all'
+          || (displayValue === 'kw' && item.unit === 'pcs')
+          || (displayValue === 'kit' && item.unit === 'kit');
+
+        item.card.style.display = matchesKeyword
+          && matchesCountry
+          && matchesBrand
+          && matchesCategory
+          && matchesSubcategory
+          && matchesType
+          && matchesBacksheet
+          && matchesCellColor
+          && matchesCellTech
+          && matchesModuleTech
+          && matchesDisplay ? '' : 'none';
+      });
+    }
+
+    function updateSummary() {
+      const requestedItems = productState.filter((item) => item.requestType);
+      const totalSelected = requestedItems.length;
+      const totalCapacity = requestedItems
+        .filter((item) => item.unit === 'pcs')
+        .reduce((sum, item) => sum + (item.quantity / item.step) * item.capacity, 0);
+      const totalKit = requestedItems
+        .filter((item) => item.unit === 'kit')
+        .reduce((sum, item) => sum + item.quantity, 0);
+
+      summarySelected.textContent = String(totalSelected);
+      summaryCapacity.textContent = totalCapacity.toFixed(2).replace(/\.00$/, '') + ' kW';
+      summaryKit.textContent = totalKit + ' kit';
+      summaryRequests.textContent = String(requestedItems.length);
+      renderSummaryList(requestedItems);
+
+      if (!requestedItems.length) {
+        summaryNote.textContent = 'No inquiry has been added yet.';
+        summarySendBtn.textContent = 'Send price request';
+        summarySendBtn.classList.remove('requested');
+        summarySendBtn.classList.add('ghost');
+        return;
+      }
+
+      const labels = requestedItems.map((item) => {
+        return item.requestType === 'replenishment'
+          ? item.sku + ' x ' + formatQty(item) + ' (replenishment)'
+          : item.sku + ' x ' + formatQty(item);
+      });
+
+      summaryNote.textContent = 'Current inquiry: ' + labels.join('; ');
+      summarySendBtn.textContent = 'Send ' + requestedItems.length + ' request' + (requestedItems.length > 1 ? 's' : '');
+      summarySendBtn.classList.remove('ghost');
+    }
+
+    productState.forEach((item) => {
+      updateCard(item);
+
+      item.card.querySelector('.qty-plus').addEventListener('click', () => {
+        item.quantity += item.step;
+        if (item.requestType) item.requestSent = false;
+        updateCard(item);
+        updateSummary();
+      });
+
+      item.card.querySelector('.qty-minus').addEventListener('click', () => {
+        if (item.quantity <= item.min) return;
+        item.quantity -= item.step;
+        if (item.requestType) item.requestSent = false;
+        updateCard(item);
+        updateSummary();
+      });
+
+      item.card.querySelector('.request-btn').addEventListener('click', (event) => {
+        const type = event.currentTarget.dataset.requestType;
+        item.requestType = type;
+        item.requestSent = false;
+
+        const feedback = item.card.querySelector('.request-feedback');
+        feedback.textContent = '';
+        event.currentTarget.classList.add('requested');
+        updateCard(item);
+        updateSummary();
+      });
+    });
+
+    [searchFilter, countryFilter, brandFilter, categoryFilter, subcategoryFilter, typeFilter, backsheetFilter, cellColorFilter, cellTechFilter, moduleTechFilter, displayFilter].forEach((control) => {
+      control.addEventListener('input', applyFilters);
+      control.addEventListener('change', applyFilters);
+    });
+
+    summaryList.addEventListener('click', (event) => {
+      const removeButton = event.target.closest('[data-remove-sku]');
+      if (!removeButton) return;
+      const item = productState.find((entry) => entry.sku === removeButton.dataset.removeSku);
+      if (!item) return;
+      item.requestType = null;
+      item.requestSent = false;
+      resetCardButton(item);
+      updateSummary();
+    });
+
+    summarySendBtn.addEventListener('click', () => {
+      const requestedItems = productState.filter((item) => item.requestType);
+      if (!requestedItems.length) {
+        summaryNote.textContent = 'Select at least one product inquiry before sending.';
+        return;
+      }
+
+      productState.forEach((item) => {
+        if (!item.requestType) return;
+        item.requestSent = true;
+        const button = item.card.querySelector('.request-btn');
+        const feedback = item.card.querySelector('.request-feedback');
+        button.textContent = item.requestType === 'replenishment' ? 'Replenishment sent' : 'Inquiry sent';
+        feedback.textContent = 'Submitted to Rep_sales under the company account.';
+      });
+
+      summarySendBtn.textContent = 'Submit again';
+      summarySendBtn.classList.add('requested');
+      summaryNote.textContent = 'Inquiry email has been sent to Rep_sales. Sales can continue follow-up in the inquiry management page.';
+      updateSummary();
+    });
+
+    applyFilters();
+    updateSummary();
+  </script>
+</body>
+</html>
