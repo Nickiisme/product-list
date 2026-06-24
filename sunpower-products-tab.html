@@ -1,0 +1,1602 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TCL | SUNPOWER Products</title>
+  <style>
+    :root {
+      --blue: #001fa7;
+      --blue-2: #0a43ff;
+      --ink: #2f3033;
+      --muted: #6c7280;
+      --line: #e7e9ef;
+      --panel: #ffffff;
+      --page: #f3f3f4;
+      --success: #14883e;
+      --warning: #767b86;
+      --soft-blue: #eef3ff;
+      --purple: #762783;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--page);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      height: 66px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      box-shadow: 0 1px 0 rgba(16, 24, 40, 0.06);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 230px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #111;
+    }
+
+    .brand .tcl {
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .brand .divider {
+      height: 28px;
+      width: 1px;
+      background: #222;
+    }
+
+    .brand .sunpower {
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 16px;
+      height: 100%;
+      white-space: nowrap;
+    }
+
+    .nav a {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      position: relative;
+      color: #26282d;
+    }
+
+    .nav a.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 3px;
+      border-radius: 8px 8px 0 0;
+      background: var(--blue);
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: #2c2f36;
+      font-size: 15px;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      color: #222;
+    }
+
+    .badge {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--blue);
+      font-size: 12px;
+      line-height: 22px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .avatar {
+      width: 27px;
+      height: 27px;
+      border-radius: 50%;
+      background: #c7ccd5;
+      display: inline-block;
+      position: relative;
+    }
+
+    .avatar::before {
+      content: "";
+      position: absolute;
+      top: 6px;
+      left: 9px;
+      width: 9px;
+      height: 9px;
+      background: #fff;
+      border-radius: 50%;
+    }
+
+    .avatar::after {
+      content: "";
+      position: absolute;
+      left: 6px;
+      bottom: 4px;
+      width: 15px;
+      height: 9px;
+      background: #fff;
+      border-radius: 10px 10px 6px 6px;
+    }
+
+    .page {
+      max-width: 1460px;
+      margin: 0 auto;
+      padding: 18px 24px 46px;
+    }
+
+    .hero {
+      min-height: 230px;
+      border-radius: 0;
+      color: #fff;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 86% 20%, rgba(255,255,255,0.22), transparent 30%),
+        linear-gradient(106deg, var(--purple) 0%, var(--purple) 55%, #2637aa 55%, #0032a0 100%);
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: stretch;
+      position: relative;
+    }
+
+    .hero-copy {
+      padding: 42px 50px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      opacity: 0.82;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 60px;
+      line-height: 0.95;
+      letter-spacing: 0.1em;
+      font-weight: 300;
+      margin: 0 0 18px;
+    }
+
+    .hero h2 {
+      font-size: 34px;
+      line-height: 1.12;
+      margin: 0 0 14px;
+      max-width: 740px;
+    }
+
+    .hero p {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.35;
+      max-width: 720px;
+      opacity: 0.95;
+    }
+
+    .hero-art {
+      position: relative;
+      min-height: 230px;
+    }
+
+    .floating-card {
+      position: absolute;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+      color: #1f2530;
+      overflow: hidden;
+    }
+
+    .doc-card {
+      width: 255px;
+      height: 160px;
+      top: 30px;
+      left: 54px;
+      transform: rotate(-18deg);
+      padding: 18px;
+    }
+
+    .doc-card strong {
+      color: var(--blue);
+      font-size: 19px;
+      line-height: 1.05;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .doc-line {
+      height: 8px;
+      border-radius: 999px;
+      background: #e7ebf5;
+      margin: 8px 0;
+    }
+
+    .module-card {
+      width: 270px;
+      height: 155px;
+      right: 40px;
+      top: 34px;
+      transform: rotate(13deg);
+      padding: 14px;
+    }
+
+    .mini-panel {
+      width: 138px;
+      height: 88px;
+      background: #111827;
+      border-radius: 5px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      padding: 8px;
+      margin: 4px auto 10px;
+    }
+
+    .mini-panel span {
+      border-radius: 2px;
+      background: linear-gradient(145deg, #172554, #263d88);
+      border: 1px solid #4667c8;
+    }
+
+    .kit-card {
+      width: 300px;
+      height: 126px;
+      right: 164px;
+      bottom: 20px;
+      transform: rotate(-3deg);
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .battery-icon {
+      width: 74px;
+      height: 86px;
+      border-radius: 12px;
+      background: #f1f5ff;
+      border: 2px solid #d7e1fa;
+      display: grid;
+      gap: 7px;
+      padding: 12px;
+    }
+
+    .battery-icon span {
+      background: #0c2ba8;
+      border-radius: 5px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 348px;
+      gap: 16px;
+      margin-top: 10px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: 8px;
+      box-shadow: 0 1px 0 rgba(16, 24, 40, 0.03);
+      border: 1px solid rgba(231, 233, 239, 0.55);
+    }
+
+    .filters {
+      padding: 18px;
+      margin: 10px 0 16px;
+    }
+
+    .filters-row {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      align-items: center;
+    }
+
+    .search {
+      grid-column: span 2;
+    }
+
+    .search,
+    .select {
+      min-height: 46px;
+      border: 1px solid #dfe3ea;
+      border-radius: 7px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #596171;
+      padding: 0 14px;
+      font-size: 14px;
+    }
+
+    .search input,
+    .select select {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+    }
+
+    .search input::placeholder {
+      color: #7a8191;
+    }
+
+    .select {
+      color: #252a33;
+      font-weight: 700;
+      white-space: nowrap;
+      background: #fbfcff;
+    }
+
+    .filters small {
+      display: block;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .media-frame {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand-badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(223,228,239,0.95);
+      color: #222a36;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      box-shadow: 0 8px 20px rgba(17, 24, 39, 0.08);
+    }
+
+    .brand-badge.tcl {
+      color: #4a505f;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin: 0 0 12px;
+    }
+
+    .section-title h2 {
+      font-size: 34px;
+      margin: 0;
+      line-height: 1;
+    }
+
+    .section-title a {
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      align-content: start;
+    }
+
+    .product {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 590px;
+    }
+
+    .product img {
+      display: none;
+    }
+
+    .product-media-link {
+      display: block;
+      background: #edf2fb;
+      min-height: 202px;
+    }
+
+    .product-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .product-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .product h3 {
+      margin: 0 0 6px;
+      font-size: 21px;
+      line-height: 1.15;
+      color: #262a31;
+    }
+
+    .product-title-link {
+      display: inline-block;
+    }
+
+    .product-title-link:hover h3 {
+      color: var(--blue);
+    }
+
+    .product .sub {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.3;
+    }
+
+    .detail-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .status {
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+      color: var(--success);
+      background: #e9f7ee;
+    }
+
+    .status.out {
+      color: var(--warning);
+      background: #f1f2f4;
+    }
+
+    .specs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .spec {
+      background: #f8faff;
+      border: 1px solid #edf1fa;
+      border-radius: 7px;
+      padding: 10px;
+      min-height: 66px;
+    }
+
+    .spec b {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .spec span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .qty {
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      margin-top: auto;
+    }
+
+    .qty-total {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .qty-label {
+      display: block;
+      margin-bottom: 8px;
+      text-align: center;
+      font-size: 14px;
+      color: #252a33;
+      font-weight: 800;
+    }
+
+    .stepper {
+      height: 44px;
+      border: 1px solid #dfe3ea;
+      border-radius: 8px;
+      display: grid;
+      grid-template-columns: 42px 1fr 42px;
+      align-items: center;
+      text-align: center;
+      font-weight: 800;
+      color: #252a33;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .stepper button {
+      height: 100%;
+      border: 0;
+      background: #f7f8fb;
+      color: var(--blue);
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .cta {
+      height: 46px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      margin-top: 12px;
+      cursor: pointer;
+    }
+
+    .cta.ghost {
+      background: #fff;
+      color: var(--blue);
+      border: 1px solid #d9e2ff;
+    }
+
+    .cta.requested {
+      background: #e9f7ee;
+      color: var(--success);
+    }
+
+    .stepper button:disabled,
+    .cta:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .request-feedback {
+      margin-top: 10px;
+      min-height: 18px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .summary {
+      position: sticky;
+      top: 82px;
+      padding: 24px;
+    }
+
+    .summary h2 {
+      margin: 0 0 18px;
+      font-size: 33px;
+      line-height: 1;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .summary-row b {
+      color: #252a33;
+      font-size: 15px;
+      text-align: right;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+      margin: 16px 0 2px;
+    }
+
+    .summary-item {
+      border: 1px solid #e6ebf5;
+      border-radius: 9px;
+      padding: 12px;
+      background: #fbfcff;
+    }
+
+    .summary-item-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 8px;
+    }
+
+    .summary-item-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #1f2530;
+      line-height: 1.3;
+    }
+
+    .summary-item-meta {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .summary-remove {
+      border: 0;
+      background: transparent;
+      color: #7a8191;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .summary-empty {
+      padding: 14px 0 2px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .summary .cta {
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .summary p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      margin: 12px 0 0;
+    }
+
+    .summary-note {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: #f8faff;
+      color: #40506b;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .text-link {
+      display: inline-flex;
+      margin-top: 12px;
+      border: 0;
+      background: transparent;
+      color: var(--blue);
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      place-items: center;
+      padding: 24px;
+      background: rgba(20, 25, 36, 0.52);
+    }
+
+    .modal-backdrop.open { display: grid; }
+
+    .request-modal {
+      width: min(620px, 100%);
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 28px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+    }
+
+    .modal-head { display: flex; justify-content: space-between; gap: 20px; align-items: start; }
+    .modal-head h2 { margin: 0; font-size: 26px; }
+    .modal-close { border: 0; background: transparent; font-size: 26px; cursor: pointer; color: #697181; }
+    .modal-copy { color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+    .form-field { display: grid; gap: 7px; }
+    .form-field.full { grid-column: 1 / -1; }
+    .form-field label { font-size: 13px; font-weight: 800; color: #303744; }
+    .form-field select, .form-field input, .form-field textarea {
+      width: 100%; border: 1px solid #d8deea; border-radius: 7px; padding: 11px 12px; font: inherit; background: #fff;
+    }
+    .form-field textarea { min-height: 92px; resize: vertical; }
+    .consent-box { margin-top: 18px; padding: 14px; border: 1px solid #dfe5f2; border-radius: 8px; background: #f8faff; font-size: 13px; line-height: 1.5; }
+    .consent-box label { display: flex; gap: 10px; align-items: start; }
+    .modal-error { min-height: 18px; margin-top: 10px; color: #d43a3a; font-size: 13px; }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+    .modal-actions .cta { width: auto; margin: 0; padding-inline: 22px; }
+    .success-panel { display: none; text-align: center; padding: 18px 8px 4px; }
+    .success-panel.show { display: block; }
+    .success-mark { width: 54px; height: 54px; margin: 0 auto 14px; border-radius: 50%; display: grid; place-items: center; background: #e9f7ee; color: var(--success); font-size: 28px; font-weight: 900; }
+    .history-record { margin-top: 18px; text-align: left; border: 1px solid #e1e6f0; border-radius: 8px; padding: 14px; background: #fbfcff; }
+
+    @media (max-width: 640px) { .form-grid { grid-template-columns: 1fr; } }
+
+    .tier {
+      margin-top: 16px;
+      border-radius: 8px;
+      padding: 15px;
+      background: linear-gradient(135deg, #eef4ff, #ffffff);
+      border: 1px solid #e3eaff;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .tier-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .tier strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .tier span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer {
+      background: #1e1e1f;
+      color: #fff;
+      text-align: center;
+      padding: 34px 20px 28px;
+      margin-top: 22px;
+    }
+
+    .footer .brand {
+      color: #fff;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    .footer .divider {
+      background: #fff;
+    }
+
+    .social {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .social span {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #f60;
+      display: inline-block;
+    }
+
+    .social span:nth-child(2) {
+      background: #0077b5;
+    }
+
+    .footer small {
+      color: #c7c7c7;
+      font-size: 12px;
+    }
+
+    svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    @media (max-width: 1180px) {
+      .topbar {
+        overflow-x: auto;
+        gap: 28px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .summary {
+        position: static;
+      }
+
+      .products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 820px) {
+      .page {
+        padding: 12px;
+      }
+
+      .brand {
+        min-width: auto;
+      }
+
+      .brand .tcl {
+        font-size: 22px;
+      }
+
+      .brand .sunpower {
+        font-size: 16px;
+      }
+
+      .nav {
+        gap: 18px;
+      }
+
+      .actions .email {
+        display: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy {
+        padding: 30px 24px;
+      }
+
+      h1 {
+        font-size: 44px;
+      }
+
+      .hero h2 {
+        font-size: 28px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      .hero-art {
+        min-height: 190px;
+      }
+
+      .doc-card {
+        left: 16px;
+      }
+
+      .module-card {
+        right: 10px;
+      }
+
+      .kit-card {
+        right: 56px;
+      }
+
+      .filters-row,
+      .products {
+        grid-template-columns: 1fr;
+      }
+
+      .product {
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#">
+      <span class="tcl">TCL</span>
+      <span class="divider"></span>
+      <span class="sunpower">SUNPOWER</span>
+    </a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="#">Home</a>
+      <a href="#">Lead</a>
+      <a href="#">Warranty</a>
+      <a href="#">Marketing</a>
+      <a href="#">Academy</a>
+      <a href="#">Live training</a>
+      <a href="#">Monitoring</a>
+      <a class="active" href="#">Products</a>
+    </nav>
+    <div class="actions">
+      <span class="icon" aria-label="Language">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"></path></svg>
+      </span>
+      <span class="icon" aria-label="Messages">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"></path><path d="m4 7 8 6 8-6"></path></svg>
+        <span class="badge">3</span>
+      </span>
+      <span class="avatar" aria-hidden="true"></span>
+      <span class="email">sunpowerdemotest2@2925.com</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero" aria-labelledby="products-title">
+      <div class="hero-copy">
+        <div class="eyebrow">TCL | SUNPOWER</div>
+        <h1 id="products-title">PRODUCTS</h1>
+        <h2>View available SunPower products for your market</h2>
+        <p>Check eligible PV modules and energy storage kits, review MOQ requirements, and request pricing from your sales team.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="floating-card doc-card">
+          <strong>Performance product guide</strong>
+          <div class="doc-line" style="width: 88%"></div>
+          <div class="doc-line" style="width: 72%"></div>
+          <div class="doc-line" style="width: 94%"></div>
+          <div class="doc-line" style="width: 58%"></div>
+        </div>
+        <div class="floating-card module-card">
+          <div class="mini-panel">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <b>500 W module</b>
+        </div>
+        <div class="floating-card kit-card">
+          <div class="battery-icon"><span></span><span></span><span></span></div>
+          <div>
+            <b>Reserve Kit</b><br>
+            <span style="color:#687083;font-size:13px">Sold as 1 kit</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card filters" aria-label="Product filters">
+      <div class="filters-row">
+        <div class="search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 4 4"></path></svg>
+          <input id="search-filter" type="text" placeholder="Search SKU or product model">
+        </div>
+        <label class="select">
+          <select id="country-filter">
+            <option value="Spain" selected>Country: Spain</option>
+            <option value="Portugal">Country: Portugal</option>
+            <option value="France">Country: France</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="brand-filter">
+            <option value="SunPower" selected>Brand: SunPower</option>
+            <option value="TCL Solar">Brand: TCL Solar</option>
+            <option value="all">Brand: All</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="category-filter">
+            <option value="all" selected>Category(EN): All</option>
+            <option value="Solar Modules">Category(EN): Solar Modules</option>
+            <option value="Energy Storage">Category(EN): Energy Storage</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="subcategory-filter">
+            <option value="all" selected>Sub-Category(EN): All</option>
+            <option value="Residential Modules">Sub-Category(EN): Residential Modules</option>
+            <option value="Battery System">Sub-Category(EN): Battery System</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="type-filter">
+            <option value="all" selected>Product Type: All</option>
+            <option value="PV">Product Type: PV</option>
+            <option value="ESS">Product Type: ESS</option>
+            <option value="HP">Product Type: HP</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="backsheet-filter">
+            <option value="all" selected>Backsheet: All</option>
+            <option value="White">Backsheet: White</option>
+            <option value="Transparent">Backsheet: Transparent</option>
+            <option value="N/A">Backsheet: N/A</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="cell-color-filter">
+            <option value="all" selected>Cell Color: All</option>
+            <option value="Black">Cell Color: Black</option>
+            <option value="Dark Blue">Cell Color: Dark Blue</option>
+            <option value="N/A">Cell Color: N/A</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="cell-tech-filter">
+            <option value="all" selected>Cell Technology: All</option>
+            <option value="BC">Cell Technology: BC</option>
+            <option value="TOPCon">Cell Technology: TOPCon</option>
+            <option value="LFP">Cell Technology: LFP</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="module-tech-filter">
+            <option value="all" selected>Module Technology: All</option>
+            <option value="Half-Cuts">Module Technology: Half-Cuts</option>
+            <option value="Shingle">Module Technology: Shingle</option>
+            <option value="Integrated Cabinet">Module Technology: Integrated Cabinet</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="display-filter">
+            <option value="all" selected>Display: kW + Kit</option>
+            <option value="kw">Display: kW only</option>
+            <option value="kit">Display: Kit only</option>
+          </select>
+        </label>
+      </div>
+      <small>Products are filtered by your account permissions when the page loads. Restricted brands and country-ineligible SKUs are not shown.</small>
+    </section>
+
+    <div class="grid">
+      <section aria-labelledby="available-products">
+        <div class="section-title">
+          <h2 id="available-products">Choose your products</h2>
+          <a href="#">Download SKU list ›</a>
+        </div>
+
+        <div class="products">
+          <article class="card product" data-sku="SPR-BE54-HD500" data-country="Spain" data-brand="SunPower" data-category="Solar Modules" data-subcategory="Residential Modules" data-type="PV" data-backsheet="White" data-cell-color="Black" data-cell-tech="BC" data-module-tech="Half-Cuts" data-unit="pcs" data-min="37" data-step="37" data-capacity="18.5" data-pallet-qty="37" data-status="in-stock">
+            <a class="product-media-link media-frame" href="sunpower-product-detail.html">
+              <span class="brand-badge">SunPower</span>
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAGkCAIAAAAuegPJAAAoUklEQVR4nO3dd3hUZdrH8ZlkIAmEABIJRapGiiXCinRQEEERxIJgX6UsYsHyuqJiw7ZYUBFRooKyyKIIKogEAVFUFpAiIoYmJUgCJLT0Pu8Vh51MKsPMmXnu85zv5+KPaWfO3Odm8ntOHXt2bqENAAAEV0iQ5wcAAAhgAADUYA0YAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABRwOFXMFQAAi2MNGAAABQhgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAGHjStxAAAQdKwBAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAo4+DlgAACCjzVgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAGH06litgAAWBtrwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIAt+P4fSHpdmzHxf0oAAAAASUVORK5CYII=" alt="SPR-BE54-HD500 solar module">
+            </a>
+            <div class="product-body">
+              <div class="product-head">
+                <div>
+                  <a class="product-title-link" href="sunpower-product-detail.html"><h3>SPR-BE54-HD500</h3></a>
+                  <div class="sub">Maxeon 5 AC residential module for rooftop applications</div>
+                  <a class="detail-link" href="sunpower-product-detail.html">View details ›</a>
+                </div>
+                <span class="status">In Stock</span>
+              </div>
+              <div class="specs">
+                <div class="spec"><b>500W</b><span>Power</span></div>
+                <div class="spec"><b>1722×1134×30 mm</b><span>Size</span></div>
+              </div>
+              <div class="qty">
+                <div class="qty-total"><b class="qty-total-value">total: 18.5 kW</b></div>
+                <div class="qty-label">
+                  <span class="qty-value">37 pcs / 1 pallet</span>
+                </div>
+                <div class="stepper">
+                  <button type="button" class="qty-minus" aria-label="Decrease quantity">-</button>
+                  <span class="qty-step-value">37 pcs / 1 pallet</span>
+                  <button type="button" class="qty-plus" aria-label="Increase quantity">+</button>
+                </div>
+                <button type="button" class="cta request-btn" data-request-type="price">Get the price</button>
+                <div class="request-feedback"></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card product" data-sku="SPR-P7-515-BLK-P" data-country="Spain" data-brand="SunPower" data-category="Solar Modules" data-subcategory="Residential Modules" data-type="PV" data-backsheet="Transparent" data-cell-color="Dark Blue" data-cell-tech="TOPCon" data-module-tech="Shingle" data-unit="pcs" data-min="72" data-step="72" data-capacity="18.5" data-pallet-qty="36" data-status="out-of-stock">
+            <a class="product-media-link media-frame" href="sunpower-product-detail.html">
+              <span class="brand-badge tcl">TCL Solar</span>
+              <img src="data:image/png;base64,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" alt="SPR-P7-515-BLK-P solar module">
+            </a>
+            <div class="product-body">
+              <div class="product-head">
+                <div>
+                  <a class="product-title-link" href="sunpower-product-detail.html"><h3>SPR-P7-515-BLK-P</h3></a>
+                  <div class="sub">Performance 7 black module for residential and light commercial rooftops</div>
+                  <a class="detail-link" href="sunpower-product-detail.html">View details ›</a>
+                </div>
+                <span class="status out">Out of Stock</span>
+              </div>
+              <div class="specs">
+                <div class="spec"><b>500W</b><span>Power</span></div>
+                <div class="spec"><b>1722×1134×30 mm</b><span>Size</span></div>
+              </div>
+              <div class="qty">
+                <div class="qty-total"><b class="qty-total-value">total: 18.5 kW</b></div>
+                <div class="qty-label">
+                  <span class="qty-value">72 pcs / 2 pallet</span>
+                </div>
+                <div class="stepper">
+                  <button type="button" class="qty-minus" aria-label="Decrease quantity">-</button>
+                  <span class="qty-step-value">72 pcs / 2 pallet</span>
+                  <button type="button" class="qty-plus" aria-label="Increase quantity">+</button>
+                </div>
+                <button type="button" class="cta request-btn" data-request-type="replenishment">Ask to replenishment</button>
+                <div class="request-feedback"></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card product" data-sku="SPR-RESERVE-1-DC-4-INT" data-country="Portugal" data-brand="TCL Solar" data-category="Energy Storage" data-subcategory="Battery System" data-type="ESS" data-backsheet="N/A" data-cell-color="N/A" data-cell-tech="LFP" data-module-tech="Integrated Cabinet" data-unit="kit" data-min="1" data-step="1" data-capacity="0" data-pallet-qty="1" data-status="in-stock">
+            <a class="product-media-link media-frame" href="sunpower-product-detail.html">
+              <span class="brand-badge tcl">TCL Solar</span>
+              <img src="data:image/png;base64,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" alt="SPR-RESERVE energy storage kit">
+            </a>
+            <div class="product-body">
+              <div class="product-head">
+                <div>
+                  <a class="product-title-link" href="sunpower-product-detail.html"><h3>SPR-RESERVE-1-DC-4-INT</h3></a>
+                  <div class="sub">All-in-one residential storage cabinet with control and battery modules</div>
+                  <a class="detail-link" href="sunpower-product-detail.html">View details ›</a>
+                </div>
+                <span class="status">In Stock</span>
+              </div>
+              <div class="specs">
+                <div class="spec"><b>N/A</b><span>Power</span></div>
+                <div class="spec"><b>1200×600×250 mm</b><span>Size</span></div>
+              </div>
+              <div class="qty">
+                <div class="qty-total"><b class="qty-total-value">total: 0 kW</b></div>
+                <div class="qty-label">
+                  <span class="qty-value">1 kit</span>
+                </div>
+                <div class="stepper">
+                  <button type="button" class="qty-minus" aria-label="Decrease quantity">-</button>
+                  <span class="qty-step-value">1 kit</span>
+                  <button type="button" class="qty-plus" aria-label="Increase quantity">+</button>
+                </div>
+                <button type="button" class="cta request-btn" data-request-type="price">Get the price</button>
+                <div class="request-feedback"></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <aside class="card summary" aria-labelledby="summary-title">
+        <h2 id="summary-title">Request summary</h2>
+        <div class="summary-row"><span>Selected products</span><b id="summary-selected">0</b></div>
+        <div class="summary-row"><span>Total PV capacity</span><b id="summary-capacity">0 kW</b></div>
+        <div class="summary-row"><span>Kit quantity</span><b id="summary-kit">0 kit</b></div>
+        <div class="summary-row"><span>Pending requests</span><b id="summary-requests">0</b></div>
+        <div class="summary-row"><span>Country</span><b id="summary-country">Spain</b></div>
+        <div class="summary-list" id="summary-list"></div>
+        <div class="tier">
+          <div class="tier-mark">A</div>
+          <div>
+            <strong>Authorized installer</strong>
+            <span>Tier discount may apply after sales review.</span>
+          </div>
+        </div>
+        <button type="button" class="cta ghost" id="summary-send-btn">Send price request</button>
+        <p>Your request will be sent to the relevant sales team. Exact pricing and special discounts follow the current approval flow.</p>
+        <div class="summary-note" id="summary-note">No inquiry has been added yet.</div>
+        <button type="button" class="text-link" id="view-requests-btn">View submitted requests</button>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="brand">
+      <span class="tcl">TCL</span>
+      <span class="divider"></span>
+      <span class="sunpower">SUNPOWER</span>
+    </div>
+    <div class="social"><span></span><span></span></div>
+    <small>© 2026 TCL SunPower Global. All rights reserved</small>
+  </footer>
+
+  <div class="modal-backdrop" id="request-modal" role="dialog" aria-modal="true" aria-labelledby="request-modal-title">
+    <div class="request-modal">
+      <div id="request-form-view">
+        <div class="modal-head"><h2 id="request-modal-title">Send price request</h2><button class="modal-close" type="button" aria-label="Close">×</button></div>
+        <p class="modal-copy">Your request and an Excel summary will be emailed to the sales representative assigned to your company account.</p>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="delivery-period">Expected delivery</label>
+            <select id="delivery-period"><option value="">Select a period</option><option>Now</option><option>In one week</option><option>In one month</option><option>Within three months</option><option value="date">Choose a date</option></select>
+          </div>
+          <div class="form-field" id="delivery-date-field" hidden>
+            <label for="delivery-date">Delivery date</label><input type="date" id="delivery-date">
+          </div>
+          <div class="form-field full"><label for="inquiry-note">Request note (optional)</label><textarea id="inquiry-note" placeholder="Add project requirements, delivery constraints or product questions"></textarea></div>
+        </div>
+        <div class="consent-box"><label><input type="checkbox" id="gdpr-consent"><span>I agree that TCL SunPower and the sales representative assigned to my company may use this request information to contact me about pricing and availability. I have read the privacy notice and understand my GDPR rights.</span></label></div>
+        <div class="modal-error" id="modal-error"></div>
+        <div class="modal-actions"><button type="button" class="cta ghost modal-cancel">Cancel</button><button type="button" class="cta" id="confirm-send-btn">Submit request</button></div>
+      </div>
+      <div class="success-panel" id="request-success-view">
+        <div class="success-mark">✓</div><h2>Request submitted</h2>
+        <p class="modal-copy">Request <strong id="success-request-no">REQ-20260624-001</strong> was sent to your assigned sales representative. An Excel summary was attached to the email.</p>
+        <div class="history-record" id="latest-request-record"></div>
+        <div class="modal-actions"><button type="button" class="cta ghost modal-close-success">Close</button><button type="button" class="cta" id="success-view-history">View submitted requests</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="history-modal" role="dialog" aria-modal="true" aria-labelledby="history-title">
+    <div class="request-modal"><div class="modal-head"><h2 id="history-title">Submitted requests</h2><button class="modal-close history-close" type="button" aria-label="Close">×</button></div><p class="modal-copy">Your latest price and replenishment requests are retained here for traceability.</p><div id="history-list"><div class="history-record">No submitted request yet.</div></div></div>
+  </div>
+  <script>
+    const products = Array.from(document.querySelectorAll('.product'));
+    const searchFilter = document.getElementById('search-filter');
+    const countryFilter = document.getElementById('country-filter');
+    const brandFilter = document.getElementById('brand-filter');
+    const categoryFilter = document.getElementById('category-filter');
+    const subcategoryFilter = document.getElementById('subcategory-filter');
+    const typeFilter = document.getElementById('type-filter');
+    const backsheetFilter = document.getElementById('backsheet-filter');
+    const cellColorFilter = document.getElementById('cell-color-filter');
+    const cellTechFilter = document.getElementById('cell-tech-filter');
+    const moduleTechFilter = document.getElementById('module-tech-filter');
+    const displayFilter = document.getElementById('display-filter');
+    const summarySelected = document.getElementById('summary-selected');
+    const summaryCapacity = document.getElementById('summary-capacity');
+    const summaryKit = document.getElementById('summary-kit');
+    const summaryRequests = document.getElementById('summary-requests');
+    const summaryCountry = document.getElementById('summary-country');
+    const summaryNote = document.getElementById('summary-note');
+    const summaryList = document.getElementById('summary-list');
+    const summarySendBtn = document.getElementById('summary-send-btn');
+    const requestModal = document.getElementById('request-modal');
+    const historyModal = document.getElementById('history-modal');
+    const deliveryPeriod = document.getElementById('delivery-period');
+    const deliveryDateField = document.getElementById('delivery-date-field');
+    const deliveryDate = document.getElementById('delivery-date');
+    const inquiryNote = document.getElementById('inquiry-note');
+    const gdprConsent = document.getElementById('gdpr-consent');
+    const modalError = document.getElementById('modal-error');
+    const requestFormView = document.getElementById('request-form-view');
+    const requestSuccessView = document.getElementById('request-success-view');
+    const latestRequestRecord = document.getElementById('latest-request-record');
+    const historyList = document.getElementById('history-list');
+    const submittedRequests = [];
+
+    const productState = products.map((card) => ({
+      card,
+      sku: card.dataset.sku,
+      country: card.dataset.country,
+      brand: card.dataset.brand,
+      category: card.dataset.category,
+      subcategory: card.dataset.subcategory,
+      type: card.dataset.type,
+      backsheet: card.dataset.backsheet,
+      cellColor: card.dataset.cellColor,
+      cellTech: card.dataset.cellTech,
+      moduleTech: card.dataset.moduleTech,
+      unit: card.dataset.unit,
+      min: Number(card.dataset.min),
+      step: Number(card.dataset.step),
+      capacity: Number(card.dataset.capacity),
+      palletQty: Number(card.dataset.palletQty || card.dataset.min),
+      status: card.dataset.status,
+      quantity: Number(card.dataset.min),
+      requestType: null,
+      requestSent: false
+    }));
+
+    function formatQty(item) {
+      return item.unit === 'kit' ? item.quantity + ' kit' : item.quantity + ' pcs';
+    }
+
+    function formatStepperQty(item) {
+      if (item.unit === 'kit') return item.quantity + ' kit';
+      const palletCount = Math.max(1, Math.round(item.quantity / item.palletQty));
+      return item.quantity + ' pcs / ' + palletCount + ' pallet';
+    }
+
+    function formatTotalCapacity(item) {
+      if (item.unit === 'kit') return 'total: 0 kW';
+      const total = (item.quantity / item.min) * item.capacity;
+      return 'total: ' + total.toFixed(1).replace(/\.0$/, '.0') + ' kW';
+    }
+
+    function updateCard(item) {
+      item.card.querySelector('.qty-value').textContent = formatStepperQty(item);
+      item.card.querySelector('.qty-step-value').textContent = formatStepperQty(item);
+      item.card.querySelector('.qty-total-value').textContent = formatTotalCapacity(item);
+      item.card.querySelector('.qty-minus').disabled = item.quantity <= item.min;
+      const button = item.card.querySelector('.request-btn');
+      const feedback = item.card.querySelector('.request-feedback');
+
+      if (!item.requestType) {
+        button.classList.remove('requested');
+        button.textContent = item.status === 'out-of-stock' ? 'Ask to replenishment' : 'Get the price';
+        feedback.textContent = '';
+        return;
+      }
+
+      button.classList.add('requested');
+      if (item.requestSent) {
+        button.textContent = 'Added to Chart';
+        feedback.textContent = 'Submitted to Rep_sales under the company account.';
+      } else {
+        button.textContent = 'Added to Chart';
+        feedback.textContent = 'Added to the request summary.';
+      }
+    }
+
+    function renderSummaryList(requestedItems) {
+      if (!requestedItems.length) {
+        summaryList.innerHTML = '<div class="summary-empty">No product has been added to the inquiry list.</div>';
+        return;
+      }
+
+      summaryList.innerHTML = requestedItems.map((item) => `
+        <div class="summary-item">
+          <div class="summary-item-head">
+            <div>
+              <div class="summary-item-title">${item.sku}</div>
+              <div class="summary-item-meta">${item.brand} · ${formatQty(item)}${item.requestType === 'replenishment' ? ' · replenishment request' : ' · pricing request'}</div>
+            </div>
+            <button type="button" class="summary-remove" data-remove-sku="${item.sku}" aria-label="Remove request">×</button>
+          </div>
+          <div class="summary-item-meta">${item.requestSent ? 'Sent to Rep_sales. You can submit again after changing quantity or keeping this line.' : 'Ready to send.'}</div>
+        </div>
+      `).join('');
+    }
+
+    function resetCardButton(item) {
+      updateCard(item);
+    }
+
+    function applyFilters() {
+      const keyword = searchFilter.value.trim().toLowerCase();
+      const countryValue = countryFilter.value;
+      const brandValue = brandFilter.value;
+      const categoryValue = categoryFilter.value;
+      const subcategoryValue = subcategoryFilter.value;
+      const typeValue = typeFilter.value;
+      const backsheetValue = backsheetFilter.value;
+      const cellColorValue = cellColorFilter.value;
+      const cellTechValue = cellTechFilter.value;
+      const moduleTechValue = moduleTechFilter.value;
+      const displayValue = displayFilter.value;
+      summaryCountry.textContent = countryValue;
+
+      productState.forEach((item) => {
+        const matchesKeyword = !keyword
+          || item.sku.toLowerCase().includes(keyword)
+          || item.card.querySelector('.sub').textContent.toLowerCase().includes(keyword)
+          || item.category.toLowerCase().includes(keyword)
+          || item.subcategory.toLowerCase().includes(keyword);
+        const matchesCountry = item.country === countryValue;
+        const matchesBrand = brandValue === 'all' || item.brand === brandValue;
+        const matchesCategory = categoryValue === 'all' || item.category === categoryValue;
+        const matchesSubcategory = subcategoryValue === 'all' || item.subcategory === subcategoryValue;
+        const matchesType = typeValue === 'all' || item.type === typeValue;
+        const matchesBacksheet = backsheetValue === 'all' || item.backsheet === backsheetValue;
+        const matchesCellColor = cellColorValue === 'all' || item.cellColor === cellColorValue;
+        const matchesCellTech = cellTechValue === 'all' || item.cellTech === cellTechValue;
+        const matchesModuleTech = moduleTechValue === 'all' || item.moduleTech === moduleTechValue;
+        const matchesDisplay = displayValue === 'all'
+          || (displayValue === 'kw' && item.unit === 'pcs')
+          || (displayValue === 'kit' && item.unit === 'kit');
+
+        item.card.style.display = matchesKeyword
+          && matchesCountry
+          && matchesBrand
+          && matchesCategory
+          && matchesSubcategory
+          && matchesType
+          && matchesBacksheet
+          && matchesCellColor
+          && matchesCellTech
+          && matchesModuleTech
+          && matchesDisplay ? '' : 'none';
+      });
+    }
+
+    function updateSummary() {
+      const requestedItems = productState.filter((item) => item.requestType);
+      const totalSelected = requestedItems.length;
+      const totalCapacity = requestedItems
+        .filter((item) => item.unit === 'pcs')
+        .reduce((sum, item) => sum + (item.quantity / item.min) * item.capacity, 0);
+      const totalKit = requestedItems
+        .filter((item) => item.unit === 'kit')
+        .reduce((sum, item) => sum + item.quantity, 0);
+
+      summarySelected.textContent = String(totalSelected);
+      summaryCapacity.textContent = totalCapacity.toFixed(2).replace(/\.00$/, '') + ' kW';
+      summaryKit.textContent = totalKit + ' kit';
+      summaryRequests.textContent = String(requestedItems.length);
+      renderSummaryList(requestedItems);
+
+      if (!requestedItems.length) {
+        summaryNote.textContent = 'No inquiry has been added yet.';
+        summarySendBtn.textContent = 'Send price request';
+        summarySendBtn.classList.remove('requested');
+        summarySendBtn.classList.add('ghost');
+        return;
+      }
+
+      const labels = requestedItems.map((item) => {
+        return item.requestType === 'replenishment'
+          ? item.sku + ' x ' + formatQty(item) + ' (replenishment)'
+          : item.sku + ' x ' + formatQty(item);
+      });
+
+      summaryNote.textContent = 'Current inquiry: ' + labels.join('; ');
+      summarySendBtn.textContent = 'Send ' + requestedItems.length + ' request' + (requestedItems.length > 1 ? 's' : '');
+      summarySendBtn.classList.remove('ghost');
+    }
+
+    productState.forEach((item) => {
+      updateCard(item);
+
+      item.card.querySelector('.qty-plus').addEventListener('click', () => {
+        item.quantity += item.step;
+        if (item.requestType) item.requestSent = false;
+        updateCard(item);
+        updateSummary();
+      });
+
+      item.card.querySelector('.qty-minus').addEventListener('click', () => {
+        if (item.quantity <= item.min) return;
+        item.quantity -= item.step;
+        if (item.requestType) item.requestSent = false;
+        updateCard(item);
+        updateSummary();
+      });
+
+      item.card.querySelector('.request-btn').addEventListener('click', (event) => {
+        const type = event.currentTarget.dataset.requestType;
+        item.requestType = type;
+        item.requestSent = false;
+
+        const feedback = item.card.querySelector('.request-feedback');
+        feedback.textContent = '';
+        event.currentTarget.classList.add('requested');
+        updateCard(item);
+        updateSummary();
+      });
+    });
+
+    [searchFilter, countryFilter, brandFilter, categoryFilter, subcategoryFilter, typeFilter, backsheetFilter, cellColorFilter, cellTechFilter, moduleTechFilter, displayFilter].forEach((control) => {
+      control.addEventListener('input', applyFilters);
+      control.addEventListener('change', applyFilters);
+    });
+
+    summaryList.addEventListener('click', (event) => {
+      const removeButton = event.target.closest('[data-remove-sku]');
+      if (!removeButton) return;
+      const item = productState.find((entry) => entry.sku === removeButton.dataset.removeSku);
+      if (!item) return;
+      item.requestType = null;
+      item.requestSent = false;
+      resetCardButton(item);
+      updateSummary();
+    });
+
+    summarySendBtn.addEventListener('click', () => {
+      const requestedItems = productState.filter((item) => item.requestType);
+      if (!requestedItems.length) {
+        summaryNote.textContent = 'Select at least one product inquiry before sending.';
+        return;
+      }
+
+      requestFormView.style.display = '';
+      requestSuccessView.classList.remove('show');
+      modalError.textContent = '';
+      requestModal.classList.add('open');
+    });
+
+    deliveryPeriod.addEventListener('change', () => {
+      deliveryDateField.hidden = deliveryPeriod.value !== 'date';
+      if (deliveryPeriod.value !== 'date') deliveryDate.value = '';
+    });
+
+    function closeRequestModal() { requestModal.classList.remove('open'); }
+    requestModal.querySelector('.modal-close').addEventListener('click', closeRequestModal);
+    requestModal.querySelector('.modal-cancel').addEventListener('click', closeRequestModal);
+    requestModal.querySelector('.modal-close-success').addEventListener('click', closeRequestModal);
+
+    document.getElementById('confirm-send-btn').addEventListener('click', () => {
+      const requestedItems = productState.filter((item) => item.requestType);
+      if (!deliveryPeriod.value || (deliveryPeriod.value === 'date' && !deliveryDate.value)) {
+        modalError.textContent = 'Select an expected delivery period or date.';
+        return;
+      }
+      if (!gdprConsent.checked) {
+        modalError.textContent = 'Consent is required before the sales representative can contact you.';
+        return;
+      }
+
+      const requestNo = 'REQ-' + new Date().toISOString().slice(0, 10).replaceAll('-', '') + '-' + String(submittedRequests.length + 1).padStart(3, '0');
+      const delivery = deliveryPeriod.value === 'date' ? deliveryDate.value : deliveryPeriod.value;
+      const record = { requestNo, delivery, note: inquiryNote.value.trim(), items: requestedItems.map((item) => `${item.sku} · ${formatQty(item)}`), sentAt: new Date().toLocaleString() };
+      submittedRequests.unshift(record);
+
+      requestedItems.forEach((item) => { item.requestSent = true; updateCard(item); });
+      summarySendBtn.textContent = 'Submit again';
+      summarySendBtn.classList.add('requested');
+      summaryNote.textContent = 'Inquiry email and Excel attachment sent to Rep_sales. Request ID: ' + requestNo;
+      document.getElementById('success-request-no').textContent = requestNo;
+      latestRequestRecord.innerHTML = `<strong>${requestNo}</strong><div class="summary-item-meta">${record.items.join('<br>')}<br>Expected delivery: ${delivery}${record.note ? '<br>Note: ' + record.note : ''}</div>`;
+      historyList.innerHTML = submittedRequests.map((entry) => `<div class="history-record"><strong>${entry.requestNo}</strong><div class="summary-item-meta">${entry.sentAt}<br>${entry.items.join('<br>')}<br>Expected delivery: ${entry.delivery}${entry.note ? '<br>Note: ' + entry.note : ''}</div></div>`).join('');
+      requestFormView.style.display = 'none';
+      requestSuccessView.classList.add('show');
+      updateSummary();
+    });
+
+    function openHistory() { historyModal.classList.add('open'); }
+    document.getElementById('view-requests-btn').addEventListener('click', openHistory);
+    document.getElementById('success-view-history').addEventListener('click', () => { closeRequestModal(); openHistory(); });
+    historyModal.querySelector('.history-close').addEventListener('click', () => historyModal.classList.remove('open'));
+
+    applyFilters();
+    updateSummary();
+  </script>
+</body>
+</html>
