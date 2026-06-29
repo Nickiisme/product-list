@@ -1,1 +1,572 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Inquiry Management</title><style>body{margin:0;background:linear-gradient(180deg,#f8faff 0%,#f4f7fd 100%);color:#2f3440;font-family:"PingFang SC","Microsoft YaHei","Segoe UI",Arial,sans-serif}*{box-sizing:border-box}button,input,select{font:inherit}.topbar{height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 18px 0 20px;background:#fff;border-bottom:1px solid #eef1f7}.topbar-left,.topbar-right{display:flex;align-items:center;gap:24px}.logos{display:flex;align-items:center;gap:18px;padding-right:22px;border-right:1px solid #ebeff7}.logo-tcl{font-size:34px;font-weight:900;color:#f42727}.logo-rings{position:relative;width:96px;height:30px}.ring{position:absolute;width:24px;height:24px;border-radius:50%;border:3px solid}.ring.r1{left:0;top:0;border-color:#2f7ef8}.ring.r2{left:22px;top:0;border-color:#2f2f2f}.ring.r3{left:44px;top:0;border-color:#ff5959}.ring.r4{left:11px;top:12px;border-color:#efc330}.ring.r5{left:33px;top:12px;border-color:#3bab62}.logo-sunpower{font-size:22px;font-weight:800;color:#ff5d4d}.menu{display:flex;align-items:center;gap:54px;font-size:17px;color:#434957}.menu-item{display:flex;align-items:center;gap:10px}.menu-caret{font-size:12px;color:#5d6578}.topbar-right{gap:18px;font-size:17px;color:#2e3342}.avatar{display:flex;align-items:center;gap:8px;font-weight:600}.avatar-badge{width:30px;height:30px;border-radius:50%;background:linear-gradient(180deg,#cfd6e7 0%,#bcc5db 100%);position:relative}.avatar-badge::before{content:"";position:absolute;top:5px;left:10px;width:10px;height:10px;border-radius:50%;background:#fff}.avatar-badge::after{content:"";position:absolute;left:6px;bottom:5px;width:18px;height:10px;border-radius:10px 10px 7px 7px;background:#fff}.crumbs{display:flex;align-items:center;gap:8px;padding:14px 20px 0;flex-wrap:wrap}.crumb{padding:8px 14px;border-radius:999px;border:1px solid #edf0f7;background:#fff;color:#3d4250;font-weight:600;line-height:1;box-shadow:0 1px 2px rgba(27,39,94,.04)}.crumb.active{background:#dfe6ff;border-color:#d7dfff}.page{padding:16px 20px 36px}.card{background:#fff;border:1px solid #eef2f9;border-radius:18px;box-shadow:0 1px 2px rgba(27,39,94,.04)}.search-card{padding:18px;margin-bottom:18px}.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.card-head h1{margin:0;font-size:18px;font-weight:800}.head-actions{display:flex;gap:12px}.btn{height:34px;border-radius:6px;border:1px solid #3e63f4;background:#fff;color:#3e63f4;padding:0 18px;font-size:14px;display:inline-flex;align-items:center;justify-content:center}.btn.primary{background:#3e63f4;color:#fff}.filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 20px}.field label{display:block;margin-bottom:7px;font-size:13px;color:#565d6f;font-weight:600}.control{width:100%;height:38px;border:1px solid #d9e1f2;border-radius:8px;background:#fff;padding:0 12px;color:#353c4a}.table-card{padding:16px 16px 12px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.toolbar h2{margin:0;font-size:16px;font-weight:800}.toolbar-actions{display:flex;gap:10px}table{width:100%;border-collapse:collapse;font-size:14px}thead th{background:#eef3ff;color:#3b4252;font-weight:800;padding:13px 12px;text-align:left;border-bottom:1px solid #e3e8f5}tbody td{padding:16px 12px;border-bottom:1px solid #edf1f8;vertical-align:top}.req-id{font-weight:800;color:#222936;margin-bottom:6px}.sub{color:#838ba0;font-size:12px;line-height:1.5}.chip{display:inline-flex;align-items:center;min-height:26px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}.chip.blue{background:#eef3ff;color:#3e63f4}.chip.green{background:#ebfaf2;color:#2f9f67}.chip.orange{background:#fff5ea;color:#ff9b45}.chip.red{background:#fff1f1;color:#ff7f7f}.stack{display:flex;flex-direction:column;gap:6px}.metric{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:#313748}.note-box{margin-top:16px;padding:14px 16px;border-radius:12px;background:#f8faff;border:1px dashed #dbe4ff;color:#5b6476;font-size:13px;line-height:1.6}.pager{display:flex;justify-content:flex-end;align-items:center;gap:10px;padding-top:16px;color:#646d80;font-size:13px}.page-chip{min-width:32px;height:32px;border-radius:8px;display:grid;place-items:center;border:1px solid #dce3f5;background:#fff}.page-chip.active{background:#3e63f4;color:#fff;border-color:#3e63f4}</style></head><body><header class="topbar"><div class="topbar-left"><div class="logos"><div class="logo-tcl">TCL</div><div class="logo-rings"><span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span><span class="ring r4"></span><span class="ring r5"></span></div><div class="logo-sunpower">Sunpower</div></div><nav class="menu"><div class="menu-item">PartnerPortal <span class="menu-caret">▼</span></div><div class="menu-item">System Management <span class="menu-caret">▼</span></div></nav></div><div class="topbar-right"><span>⌕</span><span>🌐</span><div class="avatar"><span class="avatar-badge"></span><span>Xin296 sukeeee</span></div></div></header><div class="crumbs"><span class="crumb">Home</span><span class="crumb">Product</span><span class="crumb active">Inquiry Management</span></div><main class="page"><section class="card search-card"><div class="card-head"><h1>Inquiry Management</h1><div class="head-actions"><button class="btn">Reset</button><button class="btn primary">Search</button></div></div><div class="filters"><div class="field"><label>Country</label><select class="control"><option>All countries</option><option>Spain</option><option>France</option><option>Italy</option></select></div><div class="field"><label>Brand</label><select class="control"><option>All brands</option><option>SunPower</option><option>TCL Solar</option></select></div><div class="field"><label>Request type</label><select class="control"><option>All</option><option>Price request</option><option>Replenishment request</option></select></div><div class="field"><label>Request status</label><select class="control"><option>All</option><option>New</option><option>Quoted</option><option>Won</option><option>Lost</option></select></div><div class="field"><label>Partner name</label><input class="control" placeholder="Please input"></div><div class="field"><label>Partner code</label><input class="control" placeholder="Please input"></div><div class="field"><label>Assigned sales</label><select class="control"><option>Rep_sales (auto-assigned)</option><option>Stefano Ricci</option><option>Lydie Perrin</option></select></div><div class="field"><label>Submitted period</label><input class="control" value="2026-06-01 to 2026-06-24"></div></div></section><section class="card table-card"><div class="toolbar"><h2>Inquiry records</h2><div class="toolbar-actions"><button class="btn">Export</button><button class="btn primary">Batch assign</button></div></div><table><thead><tr><th style="width:14%">Inquiry</th><th style="width:13%">Partner</th><th style="width:18%">Products</th><th style="width:10%">Type</th><th style="width:12%">Sales owner</th><th style="width:10%">Status</th><th style="width:12%">Business result</th><th style="width:11%">Submitted time</th></tr></thead><tbody><tr><td><div class="req-id">INQ-20260624-001</div><div class="sub">Spain / Authorized installer</div></td><td><div class="req-id">Solar Madrid SL</div><div class="sub">Partner code: ES-004219</div></td><td><div class="stack"><div>SPR-BE54-HD500</div><div class="sub">74 pcs / 1 pallet / 37.0 kW</div></div></td><td><span class="chip blue">Price request</span></td><td><div class="req-id">Rep_sales</div><div class="sub">Auto-routed by company account</div></td><td><span class="chip orange">Quoted</span></td><td><div class="metric">Quotation sent</div><div class="sub">Waiting for customer confirmation</div></td><td><div>2026-06-24</div><div class="sub">11:18</div></td></tr><tr><td><div class="req-id">INQ-20260624-002</div><div class="sub">Spain / Authorized installer</div></td><td><div class="req-id">Solar Madrid SL</div><div class="sub">Partner code: ES-004219</div></td><td><div class="stack"><div>SPR-P7-515-BLK-P</div><div class="sub">72 pcs / 2 pallets / replenishment request</div></div></td><td><span class="chip blue">Replenishment</span></td><td><div class="req-id">Rep_sales</div><div class="sub">Auto-routed by company account</div></td><td><span class="chip green">Won</span></td><td><div class="metric">Converted to order</div><div class="sub">Confirmed after stock follow-up</div></td><td><div>2026-06-24</div><div class="sub">11:24</div></td></tr><tr><td><div class="req-id">INQ-20260623-014</div><div class="sub">France / Premier installer</div></td><td><div class="req-id">Lyon PV Services</div><div class="sub">Partner code: FR-001872</div></td><td><div class="stack"><div>SPR-RESERVE-1-DC-4-INT</div><div class="sub">12 kit / ESS inquiry</div></div></td><td><span class="chip blue">Price request</span></td><td><div class="req-id">Rep_sales</div><div class="sub">Auto-routed by company account</div></td><td><span class="chip red">Lost</span></td><td><div class="metric">No deal</div><div class="sub">Customer rejected the quoted price</div></td><td><div>2026-06-23</div><div class="sub">16:42</div></td></tr></tbody></table><div class="note-box">Inquiry emails are automatically sent to the company account's <strong>Rep_sales</strong>. This page is the back-office follow-up view for submitted price requests and replenishment requests, including whether the lead was quoted, converted, or lost.</div><div class="pager"><span>Total 3</span><span class="page-chip">‹</span><span class="page-chip active">1</span><span class="page-chip">›</span></div></section></main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Price Request Records</title>
+  <style>
+    :root {
+      --bg: #f6f8fe;
+      --panel: #ffffff;
+      --line: #e3e8f5;
+      --text: #2f3440;
+      --muted: #838ba0;
+      --blue: #3e63f4;
+      --blue-2: #eef3ff;
+      --green: #2f9f67;
+      --green-bg: #ebfaf2;
+      --orange: #ff9b45;
+      --orange-bg: #fff5ea;
+      --red: #ff7f7f;
+      --red-bg: #fff1f1;
+      --shadow: 0 1px 2px rgba(27, 39, 94, 0.04);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f8faff 0%, #f4f7fd 100%);
+      color: var(--text);
+      font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+    }
+    button, input, select { font: inherit; }
+    .topbar {
+      height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px 0 20px;
+      background: #fff;
+      border-bottom: 1px solid #eef1f7;
+    }
+    .topbar-left, .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .logos {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding-right: 22px;
+      border-right: 1px solid #ebeff7;
+    }
+    .logo-tcl {
+      font-size: 34px;
+      font-weight: 900;
+      color: #f42727;
+      letter-spacing: 0.02em;
+    }
+    .logo-rings {
+      position: relative;
+      width: 96px;
+      height: 30px;
+    }
+    .ring {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 3px solid;
+    }
+    .ring.r1 { left: 0; top: 0; border-color: #2f7ef8; }
+    .ring.r2 { left: 22px; top: 0; border-color: #2f2f2f; }
+    .ring.r3 { left: 44px; top: 0; border-color: #ff5959; }
+    .ring.r4 { left: 11px; top: 12px; border-color: #efc330; }
+    .ring.r5 { left: 33px; top: 12px; border-color: #3bab62; }
+    .logo-sunpower {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ff5d4d;
+      letter-spacing: 0.02em;
+    }
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 54px;
+      font-size: 17px;
+      color: #434957;
+    }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .menu-caret {
+      font-size: 12px;
+      color: #5d6578;
+      margin-top: 1px;
+    }
+    .topbar-right {
+      gap: 18px;
+      font-size: 17px;
+      color: #2e3342;
+    }
+    .avatar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+    .avatar-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #cfd6e7 0%, #bcc5db 100%);
+      position: relative;
+    }
+    .avatar-badge::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #fff;
+    }
+    .avatar-badge::after {
+      content: "";
+      position: absolute;
+      left: 6px;
+      bottom: 5px;
+      width: 18px;
+      height: 10px;
+      border-radius: 10px 10px 7px 7px;
+      background: #fff;
+    }
+    .crumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 20px 0;
+      flex-wrap: wrap;
+    }
+    .crumb {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid #edf0f7;
+      background: #fff;
+      color: #3d4250;
+      font-weight: 600;
+      line-height: 1;
+      box-shadow: var(--shadow);
+    }
+    .crumb.active {
+      background: #dfe6ff;
+      border-color: #d7dfff;
+    }
+    .page {
+      padding: 16px 20px 36px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid #eef2f9;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+    .search-card {
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .card-head h1 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 800;
+    }
+    .head-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .btn {
+      height: 34px;
+      border-radius: 6px;
+      border: 1px solid var(--blue);
+      background: #fff;
+      color: var(--blue);
+      padding: 0 18px;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+      text-decoration: none;
+    }
+    .btn.primary {
+      background: var(--blue);
+      color: #fff;
+    }
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px 20px;
+    }
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      color: #565d6f;
+      font-weight: 600;
+    }
+    .control {
+      width: 100%;
+      height: 38px;
+      border: 1px solid #d9e1f2;
+      border-radius: 8px;
+      background: #fff;
+      padding: 0 12px;
+      color: #353c4a;
+    }
+    .table-card {
+      padding: 16px 16px 12px;
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .toolbar h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+    }
+    .toolbar-actions {
+      display: flex;
+      gap: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    thead th {
+      background: #eef3ff;
+      color: #3b4252;
+      font-weight: 800;
+      padding: 13px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+    }
+    tbody td {
+      padding: 16px 12px;
+      border-bottom: 1px solid #edf1f8;
+      vertical-align: top;
+    }
+    .req-id {
+      font-weight: 800;
+      color: #222936;
+      margin-bottom: 6px;
+    }
+    .sub {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .chip.blue {
+      background: var(--blue-2);
+      color: var(--blue);
+    }
+    .chip.green {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+    .chip.orange {
+      background: var(--orange-bg);
+      color: var(--orange);
+    }
+    .chip.red {
+      background: var(--red-bg);
+      color: var(--red);
+    }
+    .stack {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .metric {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      color: #313748;
+    }
+    .note-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #f8faff;
+      border: 1px dashed #dbe4ff;
+      color: #5b6476;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .pager {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      padding-top: 16px;
+      color: #646d80;
+      font-size: 13px;
+    }
+    .page-chip {
+      min-width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #dce3f5;
+      background: #fff;
+    }
+    .page-chip.active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logos">
+        <div class="logo-tcl">TCL</div>
+        <div class="logo-rings">
+          <span class="ring r1"></span>
+          <span class="ring r2"></span>
+          <span class="ring r3"></span>
+          <span class="ring r4"></span>
+          <span class="ring r5"></span>
+        </div>
+        <div class="logo-sunpower">Sunpower</div>
+      </div>
+      <nav class="menu">
+        <div class="menu-item">PartnerPortal <span class="menu-caret">▼</span></div>
+        <div class="menu-item">System Management <span class="menu-caret">▼</span></div>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <span>⌕</span>
+      <span>🌐</span>
+      <div class="avatar">
+        <span class="avatar-badge"></span>
+        <span>Xin296 sukeeee</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="crumbs">
+    <span class="crumb">Home</span>
+    <span class="crumb">Product</span>
+    <span class="crumb active">Price Request Records</span>
+  </div>
+
+  <main class="page">
+    <section class="card search-card">
+      <div class="card-head">
+        <h1>Price Request Records</h1>
+        <div class="head-actions">
+          <button class="btn">Reset</button>
+          <button class="btn primary">Search</button>
+        </div>
+      </div>
+      <div class="filters">
+        <div class="field">
+          <label>Country</label>
+          <select class="control">
+            <option>All countries</option>
+            <option>Spain</option>
+            <option>France</option>
+            <option>Italy</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Company</label>
+          <select class="control">
+            <option>All companies</option>
+            <option>Solar Madrid SL</option>
+            <option>Lyon PV Services</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>User</label>
+          <select class="control">
+            <option>All users</option>
+            <option>Ana Ruiz</option>
+            <option>Luc Moreau</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Sales rep</label>
+          <select class="control">
+            <option>All sales reps</option>
+            <option>Stefano Ricci</option>
+            <option>Lydie Perrin</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Installer tier</label>
+          <select class="control"><option>All tiers</option><option>Authorized</option><option>Premier</option><option>Elite</option></select>
+        </div>
+        <div class="field">
+          <label>Sent from</label>
+          <input class="control" value="2026-06-01">
+        </div>
+        <div class="field">
+          <label>Sent to</label>
+          <input class="control" value="2026-06-24">
+        </div>
+      </div>
+    </section>
+
+    <section class="card table-card">
+      <div class="toolbar">
+        <h2>Submitted requests</h2>
+        <div class="toolbar-actions">
+          <button class="btn" id="export-all">Export all</button>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Request / country</th><th>Customer</th><th>Company / tier</th><th>Inquiry items</th>
+            <th>Note / expected delivery</th><th>Sales rep</th><th>Email result</th><th>Sent time</th><th>Operation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="req-id">INQ-20260624-001</div>
+              <div class="sub">Spain</div>
+            </td>
+            <td>
+              <div class="req-id">Ana Ruiz</div><div class="sub">ana@solarmadrid.example</div>
+            </td>
+            <td>
+              <div class="stack">
+                <div>Solar Madrid SL</div><div class="sub">Authorized</div>
+              </div>
+            </td>
+            <td><div>SPR-BE54-HD500</div><div class="sub">74 PC / 37.0 kW</div></td>
+            <td>
+              <div>Roof project</div><div class="sub">Expected: 2026-07-15</div>
+            </td>
+            <td>Stefano Ricci</td>
+            <td>
+              <span class="chip green">Sent</span>
+            </td>
+            <td>
+              <div>2026-06-24</div>
+              <div class="sub">11:18</div>
+            </td>
+            <td><button class="btn record-download">Download Excel</button></td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="req-id">INQ-20260624-002</div>
+              <div class="sub">Spain</div>
+            </td>
+            <td>
+              <div class="req-id">Ana Ruiz</div><div class="sub">ana@solarmadrid.example</div>
+            </td>
+            <td>
+              <div class="stack">
+                <div>Solar Madrid SL</div><div class="sub">Authorized</div>
+              </div>
+            </td>
+            <td><div>SPR-P7-515-BLK-P</div><div class="sub">72 PC / replenishment</div></td>
+            <td>
+              <div>Stock notification</div><div class="sub">Expected: within 1 month</div>
+            </td>
+            <td>Stefano Ricci</td>
+            <td>
+              <span class="chip green">Sent</span>
+            </td>
+            <td>
+              <div>2026-06-24</div>
+              <div class="sub">11:24</div>
+            </td>
+            <td><button class="btn record-download">Download Excel</button></td>
+          </tr>
+
+          <tr>
+            <td>
+              <div class="req-id">INQ-20260623-014</div>
+              <div class="sub">France</div>
+            </td>
+            <td>
+              <div class="req-id">Luc Moreau</div><div class="sub">luc@lyonpv.example</div>
+            </td>
+            <td>
+              <div class="stack">
+                <div>Lyon PV Services</div><div class="sub">Premier</div>
+              </div>
+            </td>
+            <td><div>SPR-RESERVE-1-DC-4-INT</div><div class="sub">12 KIT</div></td>
+            <td>
+              <div>Include warranty docs</div><div class="sub">Expected: within 3 months</div>
+            </td>
+            <td>Lydie Perrin</td>
+            <td>
+              <span class="chip green">Sent</span>
+            </td>
+            <td>
+              <div>2026-06-23</div>
+              <div class="sub">16:42</div>
+            </td>
+            <td><button class="btn record-download">Download Excel</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note-box">
+        Inquiry emails are automatically sent to the company account's <strong>Rep_sales</strong>. Phase 1 is a read-only report:
+        filter, inspect and export submitted requests. Quotation follow-up and won/lost management are out of scope.
+      </div>
+
+      <div class="pager">
+        <span>Total 3</span>
+        <span class="page-chip">‹</span>
+        <span class="page-chip active">1</span>
+        <span class="page-chip">›</span>
+      </div>
+    </section>
+  </main>
+  <script>
+    const headers = ['Customer company', 'User account', 'Installer tier', 'SKU model', 'Required quantity', 'Current available stock', 'Required time'];
+    const records = [
+      ['Solar Madrid SL', 'ana@solarmadrid.example', 'Authorized', 'SPR-BE54-HD500', '74 PC', '148 PC', '2026-07-15'],
+      ['Solar Madrid SL', 'ana@solarmadrid.example', 'Authorized', 'SPR-P7-515-BLK-P', '72 PC', '0 PC', 'Within one month'],
+      ['Lyon PV Services', 'luc@lyonpv.example', 'Premier', 'SPR-RESERVE-1-DC-4-INT', '12 KIT', '8 KIT', 'Within three months']
+    ];
+    function exportExcel(rows, filename) {
+      const tableRows = [headers, ...rows].map((row) => '<tr>' + row.map((cell) => '<td>' + cell + '</td>').join('') + '</tr>').join('');
+      const blob = new Blob(['<html><meta charset="UTF-8"><table>' + tableRows + '</table></html>'], { type: 'application/vnd.ms-excel' });
+      const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = filename; link.click(); URL.revokeObjectURL(link.href);
+    }
+    document.getElementById('export-all').addEventListener('click', () => exportExcel(records, 'price-request-records.xls'));
+    document.querySelectorAll('.record-download').forEach((button, index) => button.addEventListener('click', () => exportExcel([records[index]], 'price-request-' + (index + 1) + '.xls')));
+  </script>
+</body>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</html>

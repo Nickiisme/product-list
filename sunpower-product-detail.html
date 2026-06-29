@@ -176,6 +176,12 @@
       overflow: hidden;
     }
 
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
     .gallery-main {
       position: relative;
       min-height: 430px;
@@ -461,11 +467,156 @@
       border: 1px solid #d8e0ff;
     }
 
-    .request-note {
-      margin-top: 12px;
+    .summary-card {
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid rgba(231, 233, 239, 0.78);
+      box-shadow: 0 1px 0 rgba(16, 24, 40, 0.03);
+      padding: 24px;
+    }
+
+    .summary-card h2 {
+      margin: 0;
+      padding-bottom: 18px;
+      font-size: 33px;
+      line-height: 33px;
+      color: #2f3033;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 0 15px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .summary-row b {
+      color: #252a33;
+      font-size: 15px;
+      text-align: right;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+      margin: 12px 0 0;
+    }
+
+    .summary-empty {
+      padding: 10px 0 2px;
       color: var(--muted);
       font-size: 13px;
+    }
+
+    .summary-item {
+      border: 1px solid #e6ebf5;
+      border-radius: 8px;
+      padding: 12px;
+      background: #fbfcff;
+    }
+
+    .summary-item-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #1f2530;
+      line-height: 1.3;
+    }
+
+    .summary-item-meta {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
       line-height: 1.45;
+    }
+
+    .summary-card .cta {
+      width: 100%;
+      height: 46px;
+      margin-top: 12px;
+    }
+
+    .submitted-link {
+      width: 100%;
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 8px;
+      border: 0;
+      border-radius: 8px;
+      background: #f8faff;
+      color: var(--blue);
+      font-weight: 700;
+      cursor: pointer;
+      padding: 12px 14px;
+      font-size: 13px;
+    }
+
+    .summary-note {
+      margin-top: 10px;
+      color: #40506b;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      place-items: center;
+      padding: 24px;
+      background: rgba(20, 25, 36, 0.52);
+    }
+
+    .modal-backdrop.open { display: grid; }
+
+    .request-modal {
+      width: min(620px, 100%);
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 28px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .modal-close {
+      border: 0;
+      background: transparent;
+      font-size: 26px;
+      cursor: pointer;
+      color: #697181;
+    }
+
+    .modal-copy {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .history-record {
+      margin-top: 12px;
+      padding: 12px;
+      border: 1px solid #e2e7f1;
+      border-radius: 8px;
+      background: #fbfcff;
+      text-align: left;
     }
 
     .benefit-card {
@@ -796,6 +947,7 @@
 
     <section class="hero">
       <div class="hero-grid">
+        <div class="left-column">
         <div class="gallery">
           <div class="gallery-main">
             <span class="status-chip">In Stock</span>
@@ -821,28 +973,38 @@
           </div>
         </div>
 
+          <aside class="summary-card" aria-labelledby="detail-summary-title">
+            <h2 id="detail-summary-title">Request summary</h2>
+            <div class="summary-row"><span>Selected products</span><b id="detail-summary-selected">0</b></div>
+            <div class="summary-row"><span>Total PV capacity</span><b id="detail-summary-capacity">0 kW</b></div>
+            <div class="summary-row"><span>Kit quantity</span><b id="detail-summary-kit">0 kit</b></div>
+            <div class="summary-list" id="detail-summary-list"><div class="summary-empty">No product has been added to the inquiry list.</div></div>
+            <button type="button" class="cta" id="detail-summary-send">Send price request</button>
+            <button type="button" class="submitted-link" id="detail-view-requests">View submitted requests</button>
+            <div class="summary-note" id="detail-summary-note">No inquiry has been added yet.</div>
+          </aside>
+        </div>
+
         <div class="detail-panel">
           <section class="heading-card">
-            <div class="eyebrow">SunPower Residential PV Module</div>
-            <h1>SPR-BE54-HD500</h1>
-            <div class="subtitle">
+            <div class="eyebrow" data-product-eyebrow>SunPower Residential PV Module</div>
+            <h1 data-product-model>SPR-BE54-HD500</h1>
+            <div class="subtitle" data-product-description>
               500 W high efficiency residential module for authorized installers in Spain. Sold in pallet increments with Stage 1 pricing visibility and country-brand permission control.
             </div>
             <div class="headline-meta">
-              <span class="meta-pill">SKU: SPR-BE54-HD500</span>
-              <span class="meta-pill">Brand: SunPower</span>
+              <span class="meta-pill">Product Model:</span>
+              <span class="meta-pill" data-product-brand>Brand: SunPower</span>
+              <span class="meta-pill" data-product-type>Type: PV</span>
             </div>
-            <div class="quick-specs">
+            <div class="quick-specs" data-quick-specs>
               <div class="quick-spec"><b>500 W</b><span>Billable Watts per module</span></div>
               <div class="quick-spec"><b>1722×1134×30 mm</b><span>Size</span></div>
             </div>
-            <div class="stepper"><button>-</button><span>37 pcs · 18.5 kW</span><button>+</button></div>
+            <div class="stepper"><button type="button">-</button><span data-stepper-summary>37 pcs · 18.5 kW</span><button type="button">+</button></div>
             <div class="cta-row">
-              <button class="cta">Get the price</button>
+              <button class="cta" id="detail-add-request" type="button">Get the price</button>
               <a class="ghost" href="sunpower-products-tab.html" style="display:grid;place-items:center">Back to products</a>
-            </div>
-            <div class="request-note">
-              Installer name, country, selected quantity, kW total and tier benefit will be sent in the request email. No online order is created at this stage.
             </div>
           </section>
         </div>
@@ -866,7 +1028,8 @@
 
         <article class="section-card">
           <h2>Technical specification</h2>
-          <table class="spec-table">
+          <table class="spec-table" aria-label="Technical specification">
+            <tbody data-spec-table>
             <tr><th>Product model</th><td>SPR-BE54-HD500</td></tr>
             <tr><th>Display mode</th><td>kW</td></tr>
             <tr><th>Billable Watts(W)</th><td>500 W</td></tr>
@@ -878,6 +1041,7 @@
             <tr><th>Brand visibility</th><td>SunPower installers only</td></tr>
             <tr><th>Inventory status</th><td>In Stock</td></tr>
             <tr><th>Price visibility</th><td>PRICE_REQUEST_ONLY</td></tr>
+            </tbody>
           </table>
         </article>
 
@@ -942,5 +1106,229 @@
     <div class="social"><span></span><span></span></div>
     <small>© 2026 TCL SunPower Global. All rights reserved</small>
   </footer>
+  <div class="modal-backdrop" id="detail-history-modal" role="dialog" aria-modal="true" aria-labelledby="detail-history-title">
+    <div class="request-modal">
+      <div class="modal-head">
+        <h2 id="detail-history-title">Submitted requests</h2>
+        <button class="modal-close" id="detail-history-close" type="button" aria-label="Close">×</button>
+      </div>
+      <p class="modal-copy">Your latest price requests are retained here for traceability.</p>
+      <div id="detail-history-list"></div>
+    </div>
+  </div>
+  <script>
+    const productExamples = {
+      pv: {
+        eyebrow: "SunPower Residential PV Module",
+        model: "SPR-BE54-HD500",
+        brand: "Brand: SunPower",
+        type: "Type: PV",
+        description: "500 W high efficiency residential module for authorized installers in Spain. Sold in pallet increments with kW visibility and country-brand permission control.",
+        quickSpecs: [
+          ["500 W", "Billable Watts per module"],
+          ["1722×1134×30 mm", "Size"]
+        ],
+        stepper: "37 pcs · 18.5 kW",
+        specs: [
+          ["Product model", "SPR-BE54-HD500"],
+          ["Product type", "PV"],
+          ["Display mode", "kW"],
+          ["Billable Watts(W)", "500 W"],
+          ["kW per piece", "0.50 kW"],
+          ["Total PCS per pallet", "37 pcs"],
+          ["kW per pallet", "18.5 kW"],
+          ["MOQ", "37 pcs / 1 pallet"],
+          ["Applicable countries", "Spain, Portugal, Italy, France"],
+          ["Brand visibility", "SunPower installers only"],
+          ["Inventory status", "In Stock"],
+          ["Price visibility", "PRICE_REQUEST_ONLY"]
+        ]
+      },
+      btp: {
+        eyebrow: "SunPower Battery Pack",
+        model: "SPR-BTP-5KWH-G20",
+        brand: "Brand: SunPower",
+        type: "Type: BTP",
+        description: "Battery pack product for storage configurations. The parameter area focuses on capacity, voltage and unit quantity instead of kW module conversion.",
+        quickSpecs: [
+          ["5.12 kWh", "Usable capacity"],
+          ["51.2 V", "Nominal voltage"]
+        ],
+        stepper: "4 pcs · 20.48 kWh",
+        specs: [
+          ["Product model", "SPR-BTP-5KWH-G20"],
+          ["Product type", "BTP"],
+          ["Display mode", "pcs"],
+          ["Usable capacity", "5.12 kWh"],
+          ["Nominal voltage", "51.2 V"],
+          ["Unit of measure", "PC"],
+          ["Total PCS per pallet", "4 pcs"],
+          ["MOQ", "4 pcs / 1 pallet"],
+          ["Applicable countries", "Spain, Portugal, Italy"],
+          ["Brand visibility", "SunPower installers only"],
+          ["Inventory status", "In Stock"],
+          ["Price visibility", "PRICE_REQUEST_ONLY"]
+        ]
+      },
+      kit: {
+        eyebrow: "SunPower Storage Kit",
+        model: "SPR-RESERVE-1-DC-4-INT",
+        brand: "Brand: SunPower",
+        type: "Type: Kit",
+        description: "Bundled kit product for storage proposals. The parameter area focuses on kit composition, unit of measure and kit-level MOQ.",
+        quickSpecs: [
+          ["1 inverter + 4 battery modules", "Kit contents"],
+          ["KIT", "Unit of measure"]
+        ],
+        stepper: "10 kits",
+        specs: [
+          ["Product model", "SPR-RESERVE-1-DC-4-INT"],
+          ["Product type", "Kit"],
+          ["Display mode", "kit"],
+          ["Kit contents", "1 inverter + 4 battery modules"],
+          ["Unit of measure", "KIT"],
+          ["Total kits per pallet", "10 kits"],
+          ["MOQ", "10 kits / 1 pallet"],
+          ["Applicable countries", "Spain, France"],
+          ["Brand visibility", "SunPower installers only"],
+          ["Inventory status", "Out of Stock"],
+          ["Price visibility", "PRICE_REQUEST_ONLY"]
+        ]
+      },
+      accessory: {
+        eyebrow: "SunPower Accessory",
+        model: "SPR-CABLE-PAIR-4M",
+        brand: "Brand: SunPower",
+        type: "Type: Accessory",
+        description: "Accessory product for installation support. The parameter area focuses on accessory specification, unit and case MOQ instead of energy or kW values.",
+        quickSpecs: [
+          ["4 m cable pair", "Accessory specification"],
+          ["EA", "Unit of measure"]
+        ],
+        stepper: "20 ea",
+        specs: [
+          ["Product model", "SPR-CABLE-PAIR-4M"],
+          ["Product type", "Accessory"],
+          ["Display mode", "pcs"],
+          ["Accessory specification", "4 m cable pair"],
+          ["Connector type", "MC4 compatible"],
+          ["Unit of measure", "EA"],
+          ["Total PCS per case", "20 ea"],
+          ["MOQ", "20 ea / 1 case"],
+          ["Applicable countries", "Spain, Portugal, Italy, France"],
+          ["Brand visibility", "SunPower installers only"],
+          ["Inventory status", "In Stock"],
+          ["Price visibility", "PRICE_REQUEST_ONLY"]
+        ]
+      }
+    };
+
+    const renderProduct = (type) => {
+      const product = productExamples[type];
+      document.querySelector("[data-product-eyebrow]").textContent = product.eyebrow;
+      document.querySelector("[data-product-model]").textContent = product.model;
+      document.querySelector("[data-product-brand]").textContent = product.brand;
+      document.querySelector("[data-product-type]").textContent = product.type;
+      document.querySelector("[data-product-description]").textContent = product.description;
+      document.querySelector("[data-stepper-summary]").textContent = product.stepper;
+      document.querySelector("[data-quick-specs]").innerHTML = product.quickSpecs
+        .map(([value, label]) => `<div class="quick-spec"><b>${value}</b><span>${label}</span></div>`)
+        .join("");
+      document.querySelector("[data-spec-table]").innerHTML = product.specs
+        .map(([label, value]) => `<tr><th>${label}</th><td>${value}</td></tr>`)
+        .join("");
+    };
+
+    renderProduct("pv");
+
+    const detailRequest = {
+      sku: "SPR-BE54-HD500",
+      brand: "SunPower",
+      quantity: 37,
+      unit: "PC",
+      capacity: 18.5,
+      added: false
+    };
+    const detailSubmittedRequests = [
+      {
+        requestNo: "REQ-20260625-001",
+        delivery: "within-1-month",
+        note: "Please confirm pallet MOQ and availability for Spain.",
+        items: ["SPR-BE54-HD500 · 37 PC"],
+        sentAt: "2026/6/25 15:30:00"
+      }
+    ];
+
+    const detailSummarySelected = document.getElementById("detail-summary-selected");
+    const detailSummaryCapacity = document.getElementById("detail-summary-capacity");
+    const detailSummaryKit = document.getElementById("detail-summary-kit");
+    const detailSummaryList = document.getElementById("detail-summary-list");
+    const detailSummaryNote = document.getElementById("detail-summary-note");
+    const detailAddRequest = document.getElementById("detail-add-request");
+    const detailSummarySend = document.getElementById("detail-summary-send");
+    const detailHistoryModal = document.getElementById("detail-history-modal");
+    const detailHistoryList = document.getElementById("detail-history-list");
+
+    function renderDetailSummary() {
+      detailSummarySelected.textContent = detailRequest.added ? "1" : "0";
+      detailSummaryCapacity.textContent = detailRequest.added ? detailRequest.capacity + " kW" : "0 kW";
+      detailSummaryKit.textContent = "0 kit";
+      detailSummaryList.innerHTML = detailRequest.added
+        ? `<div class="summary-item"><div class="summary-item-title">${detailRequest.sku}</div><div class="summary-item-meta">${detailRequest.brand} · ${detailRequest.quantity} ${detailRequest.unit} · pricing request</div></div>`
+        : `<div class="summary-empty">No product has been added to the inquiry list.</div>`;
+      detailSummaryNote.textContent = detailRequest.added
+        ? "Current inquiry: " + detailRequest.sku + " x " + detailRequest.quantity + " " + detailRequest.unit
+        : "No inquiry has been added yet.";
+      detailSummarySend.textContent = detailRequest.added ? "Send 1 request" : "Send price request";
+    }
+
+    function renderDetailHistory() {
+      detailHistoryList.innerHTML = detailSubmittedRequests.map((entry) => `
+        <div class="history-record">
+          <strong>${entry.requestNo}</strong>
+          <div class="summary-item-meta">
+            ${entry.sentAt}<br>
+            ${entry.items.join("<br>")}<br>
+            Expected delivery: ${entry.delivery}${entry.note ? "<br>Note: " + entry.note : ""}
+          </div>
+        </div>
+      `).join("");
+    }
+
+    detailAddRequest.addEventListener("click", () => {
+      detailRequest.added = true;
+      detailAddRequest.textContent = "Added to Chart";
+      renderDetailSummary();
+    });
+
+    detailSummarySend.addEventListener("click", () => {
+      if (!detailRequest.added) {
+        detailSummaryNote.textContent = "Select at least one product inquiry before sending.";
+        return;
+      }
+      const requestNo = "REQ-" + new Date().toISOString().slice(0, 10).replaceAll("-", "") + "-" + String(detailSubmittedRequests.length + 1).padStart(3, "0");
+      detailSubmittedRequests.unshift({
+        requestNo,
+        delivery: "within-1-month",
+        note: "",
+        items: [detailRequest.sku + " · " + detailRequest.quantity + " " + detailRequest.unit],
+        sentAt: new Date().toLocaleString()
+      });
+      detailSummarySend.textContent = "Submit again";
+      detailSummaryNote.textContent = "Inquiry email and Excel attachment sent to Rep_sales. Request ID: " + requestNo;
+      renderDetailHistory();
+    });
+
+    document.getElementById("detail-view-requests").addEventListener("click", () => {
+      renderDetailHistory();
+      detailHistoryModal.classList.add("open");
+    });
+    document.getElementById("detail-history-close").addEventListener("click", () => {
+      detailHistoryModal.classList.remove("open");
+    });
+
+    renderDetailSummary();
+    renderDetailHistory();
+  </script>
 </body>
 </html>

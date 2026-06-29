@@ -4,5 +4,770 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Product Display Configuration</title>
-  <style>body{margin:0;background:linear-gradient(180deg,#f8faff 0%,#f4f7fd 100%);color:#2f3440;font-family:"PingFang SC","Microsoft YaHei","Segoe UI",Arial,sans-serif}*{box-sizing:border-box}button,input,select{font:inherit}.topbar{height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 18px 0 20px;background:#fff;border-bottom:1px solid #eef1f7}.topbar-left,.topbar-right{display:flex;align-items:center;gap:24px}.logos{display:flex;align-items:center;gap:18px;padding-right:22px;border-right:1px solid #ebeff7}.logo-tcl{font-size:34px;font-weight:900;color:#f42727}.logo-rings{position:relative;width:96px;height:30px}.ring{position:absolute;width:24px;height:24px;border-radius:50%;border:3px solid}.ring.r1{left:0;top:0;border-color:#2f7ef8}.ring.r2{left:22px;top:0;border-color:#2f2f2f}.ring.r3{left:44px;top:0;border-color:#ff5959}.ring.r4{left:11px;top:12px;border-color:#efc330}.ring.r5{left:33px;top:12px;border-color:#3bab62}.logo-sunpower{font-size:22px;font-weight:800;color:#ff5d4d}.menu{display:flex;align-items:center;gap:54px;font-size:17px;color:#434957}.menu-item{display:flex;align-items:center;gap:10px}.menu-caret{font-size:12px;color:#5d6578}.topbar-right{gap:18px;font-size:17px;color:#2e3342}.icon-btn{width:28px;height:28px;display:grid;place-items:center}.avatar{display:flex;align-items:center;gap:8px;font-weight:600}.avatar-badge{width:30px;height:30px;border-radius:50%;background:linear-gradient(180deg,#cfd6e7 0%,#bcc5db 100%);position:relative}.avatar-badge::before{content:"";position:absolute;top:5px;left:10px;width:10px;height:10px;border-radius:50%;background:#fff}.avatar-badge::after{content:"";position:absolute;left:6px;bottom:5px;width:18px;height:10px;border-radius:10px 10px 7px 7px;background:#fff}.crumbs{display:flex;align-items:center;gap:8px;padding:14px 20px 0;flex-wrap:wrap}.crumb{padding:8px 14px;border-radius:999px;border:1px solid #edf0f7;background:#fff;color:#3d4250;font-weight:600;line-height:1;box-shadow:0 1px 2px rgba(27,39,94,.04)}.crumb.active{background:#dfe6ff;border-color:#d7dfff}.page{padding:16px 20px 36px}.card{background:#fff;border:1px solid #eef2f9;border-radius:18px;box-shadow:0 1px 2px rgba(27,39,94,.04)}.search-card{padding:18px 18px 20px}.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.card-head h1{margin:0;font-size:18px;line-height:1.2;font-weight:800}.head-actions{display:flex;gap:12px}.btn{height:34px;border-radius:6px;border:1px solid #3e63f4;background:#fff;color:#3e63f4;padding:0 18px;font-size:14px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}.btn.primary{background:#3e63f4;color:#fff}.btn.danger{border-color:#ffcccc;color:#ff7b7b;background:#fff7f7}.filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 20px}.field label{display:block;font-size:14px;color:#4b5160;margin-bottom:7px}.control{width:100%;height:34px;border:1px solid #d5ddf2;border-radius:7px;background:#fff;color:#b0b7c7;padding:0 12px;font-size:14px}.table-card{margin-top:20px;padding:16px 16px 12px}.toolbar{display:flex;justify-content:flex-end;gap:12px;margin-bottom:16px;flex-wrap:wrap}.table-wrap{border:1px solid #eff2f8;border-radius:12px;overflow:hidden;background:#fff}table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:14px}thead tr{background:#dfe5f7;color:#343947}th,td{padding:12px 10px;text-align:left;border-bottom:1px solid #edf1f8;vertical-align:middle}th{font-size:13px;font-weight:700}.checkbox-col{width:34px;text-align:center}.sort{float:right;display:inline-grid;gap:2px;margin-top:1px;color:#8c93a7;font-size:10px}.name-cell strong,.sku-cell strong{display:block;color:#2f3440;font-size:14px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sub{color:#838ba0;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tag{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}.tag.blue{color:#365ef2;background:#edf2ff}.tag.green{color:#2f9f67;background:#ebfaf2}.tag.orange{color:#ff9b45;background:#fff5ea}.tag.gray{color:#697181;background:#f0f3f8}.tag.red{color:#ff7979;background:#fff1f1}.ops{display:flex;gap:8px;flex-wrap:wrap}.text-btn{color:#3e63f4;font-size:13px;font-weight:700;padding:0;border:0;background:transparent;text-decoration:none}.pagination{display:flex;justify-content:flex-end;align-items:center;gap:10px;padding:16px 4px 4px;color:#5a6174}.page-size,.page-input,.pager-btn,.page-no{height:32px;border:1px solid #d5ddf2;border-radius:7px;background:#fff;display:inline-flex;align-items:center;justify-content:center}.page-size{padding:0 12px;min-width:138px}.pager-btn{width:32px;color:#8f95a5}.page-no{width:34px;background:#3e63f4;color:#fff;border-color:#3e63f4;font-weight:700}.page-input{width:52px;color:#5a6174}.floating{position:fixed;right:20px;bottom:18px;width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#f6ecff,#e8efff);border:1px solid #f0f1fa;box-shadow:0 6px 18px rgba(60,79,170,.08);display:grid;place-items:center;color:#9a8fe7;font-size:20px}</style>
-</head><body><header class="topbar"><div class="topbar-left"><div class="logos"><div class="logo-tcl">TCL</div><div class="logo-rings"><span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span><span class="ring r4"></span><span class="ring r5"></span></div><div class="logo-sunpower">Sunpower</div></div><nav class="menu"><div class="menu-item">PartnerPortal <span class="menu-caret">▼</span></div><div class="menu-item">System Management <span class="menu-caret">▼</span></div></nav></div><div class="topbar-right"><span class="icon-btn">⌕</span><span class="icon-btn">🌐</span><div class="avatar"><span class="avatar-badge"></span><span>Xin296 sukeee</span></div></div></header><div class="crumbs"><span class="crumb">Home</span><span class="crumb">Product Management</span><span class="crumb active">Product Display Configuration</span></div><main class="page"><section class="card search-card"><div class="card-head"><h1>Product Display Configuration</h1><div class="head-actions"><button class="btn">Reset</button><button class="btn primary">Search</button></div></div><div class="filters"><div class="field"><label>Country</label><select class="control"><option>Select country</option></select></div><div class="field"><label>Brand</label><select class="control"><option>Select brand</option></select></div><div class="field"><label>Product type</label><select class="control"><option>Select product type</option></select></div><div class="field"><label>Display mode</label><select class="control"><option>Select display mode</option></select></div><div class="field"><label>SKU / Product model</label><input class="control" value="Please input"></div><div class="field"><label>Stock status</label><select class="control"><option>Select status</option></select></div><div class="field"><label>Website visible</label><select class="control"><option>Select visibility</option></select></div><div class="field"><label>Price visibility</label><select class="control"><option>Select price mode</option></select></div></div></section><section class="card table-card"><div class="toolbar"><a class="btn" href="sunpower-product-admin-add.html">Add product config</a><button class="btn">Import</button><button class="btn">Export</button><button class="btn danger">Reset to default</button><button class="btn primary">Batch update</button><button class="btn">Publish config</button></div><div class="table-wrap"><table><thead><tr><th class="checkbox-col"><input type="checkbox"></th><th>Country <span class="sort">▲<span>▼</span></span></th><th>Brand <span class="sort">▲<span>▼</span></span></th><th>SKU / Model <span class="sort">▲<span>▼</span></span></th><th>Product name <span class="sort">▲<span>▼</span></span></th><th>Product type <span class="sort">▲<span>▼</span></span></th><th>Display mode <span class="sort">▲<span>▼</span></span></th><th>MOQ / Increment <span class="sort">▲<span>▼</span></span></th><th>Stock status <span class="sort">▲<span>▼</span></span></th><th>Price visibility <span class="sort">▲<span>▼</span></span></th><th>Updated by <span class="sort">▲<span>▼</span></span></th><th>Updated time <span class="sort">▲<span>▼</span></span></th><th>Operation <span class="sort">▲<span>▼</span></span></th></tr></thead><tbody><tr><td class="checkbox-col"><input type="checkbox"></td><td>Spain</td><td><span class="tag blue">SunPower</span></td><td class="sku-cell"><strong>SPR-BE54-HD500</strong><span class="sub">Item no. PV-ESP-500-01</span></td><td class="name-cell"><strong>Residential PV Module</strong><span class="sub">Product image + docs configured</span></td><td>PV Module</td><td><span class="tag blue">kW</span></td><td>37 pcs / 37 pcs</td><td><span class="tag green">In Stock</span></td><td><span class="tag gray">Request only</span></td><td>Xin296</td><td>2026-06-15 10:42</td><td><div class="ops"><a class="text-btn" href="sunpower-product-detail.html">View</a><a class="text-btn" href="sunpower-product-admin-edit.html">Edit</a><button class="text-btn">Copy</button></div></td></tr><tr><td class="checkbox-col"><input type="checkbox"></td><td>Spain</td><td><span class="tag blue">SunPower</span></td><td class="sku-cell"><strong>SPR-RESERVE-1-DC-4-INT</strong><span class="sub">Item no. ESS-INT-004</span></td><td class="name-cell"><strong>Energy Storage Kit</strong><span class="sub">Kit docs + compatibility list configured</span></td><td>Energy Storage</td><td><span class="tag orange">KIT</span></td><td>1 kit / 1 kit</td><td><span class="tag green">In Stock</span></td><td><span class="tag gray">Request only</span></td><td>Xin296</td><td>2026-06-15 10:36</td><td><div class="ops"><a class="text-btn" href="sunpower-product-detail.html">View</a><a class="text-btn" href="sunpower-product-admin-edit.html">Edit</a><button class="text-btn">Copy</button></div></td></tr><tr><td class="checkbox-col"><input type="checkbox"></td><td>France</td><td><span class="tag blue">SunPower</span></td><td class="sku-cell"><strong>SPR-P7-515-BLK-P</strong><span class="sub">Item no. PV-FR-515-02</span></td><td class="name-cell"><strong>Performance 7 Black Module</strong><span class="sub">Country visibility enabled, stock display shown</span></td><td>PV Module</td><td><span class="tag blue">kW</span></td><td>36 pcs / 36 pcs</td><td><span class="tag red">Out of Stock</span></td><td><span class="tag gray">Request only</span></td><td>Admin</td><td>2026-06-14 19:18</td><td><div class="ops"><a class="text-btn" href="sunpower-product-detail.html">View</a><a class="text-btn" href="sunpower-product-admin-edit.html">Edit</a><button class="text-btn">Disable</button></div></td></tr><tr><td class="checkbox-col"><input type="checkbox"></td><td>Germany</td><td><span class="tag gray">TCL Solar</span></td><td class="sku-cell"><strong>TCL-460M54-BI</strong><span class="sub">Item no. TCL-DE-460-01</span></td><td class="name-cell"><strong>TCL Solar Bifacial Module</strong><span class="sub">Visible only to TCL Solar installer accounts</span></td><td>PV Module</td><td><span class="tag blue">kW</span></td><td>40 pcs / 40 pcs</td><td><span class="tag green">In Stock</span></td><td><span class="tag gray">Request only</span></td><td>System</td><td>2026-06-14 16:05</td><td><div class="ops"><a class="text-btn" href="sunpower-product-detail.html">View</a><a class="text-btn" href="sunpower-product-admin-edit.html">Edit</a><button class="text-btn">Rule</button></div></td></tr></tbody></table></div><div class="pagination"><span>Total 4</span><span class="page-size">10 Article/Page</span><span class="pager-btn">‹</span><span class="page-no">1</span><span class="pager-btn">›</span><span>Go to</span><span class="page-input">1</span><span>Page</span></div></section></main><div class="floating">⌁</div></body></html>
+  <style>
+    :root {
+      --bg: #f6f8fe;
+      --panel: #ffffff;
+      --line: #e3e8f5;
+      --line-2: #d5ddf2;
+      --text: #2f3440;
+      --muted: #838ba0;
+      --blue: #3e63f4;
+      --blue-2: #eef3ff;
+      --blue-3: #dbe4ff;
+      --red: #ff7f7f;
+      --red-bg: #fff1f1;
+      --green: #2f9f67;
+      --green-bg: #ebfaf2;
+      --orange: #ff9b45;
+      --orange-bg: #fff5ea;
+      --shadow: 0 1px 2px rgba(27, 39, 94, 0.04);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f8faff 0%, #f4f7fd 100%);
+      color: var(--text);
+      font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .topbar {
+      height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px 0 20px;
+      background: #fff;
+      border-bottom: 1px solid #eef1f7;
+    }
+
+    .topbar-left,
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .logos {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding-right: 22px;
+      border-right: 1px solid #ebeff7;
+    }
+
+    .logo-tcl {
+      font-size: 34px;
+      font-weight: 900;
+      color: #f42727;
+      letter-spacing: 0.02em;
+    }
+
+    .logo-rings {
+      position: relative;
+      width: 96px;
+      height: 30px;
+    }
+
+    .ring {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 3px solid;
+      background: transparent;
+    }
+
+    .ring.r1 { left: 0; top: 0; border-color: #2f7ef8; }
+    .ring.r2 { left: 22px; top: 0; border-color: #2f2f2f; }
+    .ring.r3 { left: 44px; top: 0; border-color: #ff5959; }
+    .ring.r4 { left: 11px; top: 12px; border-color: #efc330; }
+    .ring.r5 { left: 33px; top: 12px; border-color: #3bab62; }
+
+    .logo-sunpower {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ff5d4d;
+      letter-spacing: 0.02em;
+    }
+
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 54px;
+      font-size: 17px;
+      color: #434957;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .menu-caret {
+      font-size: 12px;
+      color: #5d6578;
+      margin-top: 1px;
+    }
+
+    .topbar-right {
+      gap: 18px;
+      font-size: 17px;
+      color: #2e3342;
+    }
+
+    .icon-btn {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+    }
+
+    .avatar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .avatar-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #cfd6e7 0%, #bcc5db 100%);
+      position: relative;
+    }
+
+    .avatar-badge::before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .avatar-badge::after {
+      content: "";
+      position: absolute;
+      left: 6px;
+      bottom: 5px;
+      width: 18px;
+      height: 10px;
+      border-radius: 10px 10px 7px 7px;
+      background: #fff;
+    }
+
+    .crumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .crumb {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid #edf0f7;
+      background: #fff;
+      color: #3d4250;
+      font-weight: 600;
+      line-height: 1;
+      box-shadow: var(--shadow);
+    }
+
+    .crumb.active {
+      background: #dfe6ff;
+      border-color: #d7dfff;
+    }
+
+    .page {
+      padding: 16px 20px 36px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid #eef2f9;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .search-card {
+      padding: 18px 18px 20px;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .card-head h1 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 800;
+    }
+
+    .head-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      height: 34px;
+      border-radius: 6px;
+      border: 1px solid var(--blue);
+      background: #fff;
+      color: var(--blue);
+      padding: 0 18px;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: default;
+      text-decoration: none;
+    }
+
+    .btn.primary {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .btn.danger {
+      border-color: #ffcccc;
+      color: #ff7b7b;
+      background: #fff7f7;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px 20px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 14px;
+      color: #4b5160;
+      margin-bottom: 7px;
+    }
+
+    .control {
+      width: 100%;
+      height: 34px;
+      border: 1px solid var(--line-2);
+      border-radius: 7px;
+      background: #fff;
+      color: #b0b7c7;
+      padding: 0 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .control.select {
+      appearance: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #81889a 50%),
+        linear-gradient(135deg, #81889a 50%, transparent 50%);
+      background-position:
+        calc(100% - 18px) 13px,
+        calc(100% - 12px) 13px;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+    }
+
+    .table-card {
+      margin-top: 20px;
+      padding: 16px 16px 12px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .table-wrap {
+      border: 1px solid #eff2f8;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 14px;
+    }
+
+    thead tr {
+      background: #dfe5f7;
+      color: #343947;
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid #edf1f8;
+      vertical-align: middle;
+    }
+
+    th {
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    tbody tr:hover {
+      background: #fbfcff;
+    }
+
+    .checkbox-col {
+      width: 34px;
+      text-align: center;
+    }
+
+    .sort {
+      float: right;
+      display: inline-grid;
+      gap: 2px;
+      margin-top: 1px;
+      color: #8c93a7;
+      font-size: 10px;
+    }
+
+    .name-cell strong,
+    .sku-cell strong {
+      display: block;
+      color: #2f3440;
+      font-size: 14px;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 26px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .tag.blue { color: #365ef2; background: #edf2ff; }
+    .tag.green { color: var(--green); background: var(--green-bg); }
+    .tag.orange { color: var(--orange); background: var(--orange-bg); }
+    .tag.gray { color: #697181; background: #f0f3f8; }
+    .tag.red { color: #ff7979; background: var(--red-bg); }
+
+    .ops {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .text-btn {
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: default;
+      text-decoration: none;
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 4px 4px;
+      color: #5a6174;
+    }
+
+    .page-size,
+    .page-input,
+    .pager-btn,
+    .page-no {
+      height: 32px;
+      border: 1px solid var(--line-2);
+      border-radius: 7px;
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .page-size {
+      padding: 0 12px;
+      min-width: 138px;
+    }
+
+    .pager-btn {
+      width: 32px;
+      color: #8f95a5;
+    }
+
+    .page-no {
+      width: 34px;
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+      font-weight: 700;
+    }
+
+    .page-input {
+      width: 52px;
+      color: #5a6174;
+    }
+
+    .floating {
+      position: fixed;
+      right: 20px;
+      bottom: 18px;
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #f6ecff, #e8efff);
+      border: 1px solid #f0f1fa;
+      box-shadow: 0 6px 18px rgba(60, 79, 170, 0.08);
+      display: grid;
+      place-items: center;
+      color: #9a8fe7;
+      font-size: 20px;
+    }
+
+    @media (max-width: 1400px) {
+      .filters {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 1080px) {
+      .menu {
+        gap: 28px;
+        font-size: 15px;
+      }
+
+      .filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 1480px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar,
+      .topbar-left,
+      .topbar-right,
+      .logos {
+        gap: 12px;
+      }
+
+      .menu {
+        display: none;
+      }
+
+      .filters {
+        grid-template-columns: 1fr;
+      }
+
+      .card-head,
+      .toolbar,
+      .pagination {
+        align-items: stretch;
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logos">
+        <div class="logo-tcl">TCL</div>
+        <div class="logo-rings">
+          <span class="ring r1"></span>
+          <span class="ring r2"></span>
+          <span class="ring r3"></span>
+          <span class="ring r4"></span>
+          <span class="ring r5"></span>
+        </div>
+        <div class="logo-sunpower">Sunpower</div>
+      </div>
+      <nav class="menu" aria-label="System menu">
+        <div class="menu-item">PartnerPortal <span class="menu-caret">▼</span></div>
+        <div class="menu-item">System Management <span class="menu-caret">▼</span></div>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <span class="icon-btn">⌕</span>
+      <span class="icon-btn">🌐</span>
+      <div class="avatar">
+        <span class="avatar-badge"></span>
+        <span>Xin296 sukeee</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="crumbs">
+    <span class="crumb">Home</span>
+    <span class="crumb">Product Management</span>
+    <span class="crumb active">Product Display Configuration</span>
+  </div>
+
+  <main class="page">
+    <section class="card search-card">
+      <div class="card-head">
+        <h1>Product Display Configuration</h1>
+        <div class="head-actions">
+          <button class="btn">Reset</button>
+          <button class="btn primary">Search</button>
+        </div>
+      </div>
+
+      <div class="filters">
+        <div class="field">
+          <label>Country</label>
+          <select class="control select">
+            <option>Select country</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Brand</label>
+          <select class="control select">
+            <option>Select brand</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Product type</label>
+          <select class="control select">
+            <option>Select product type</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Display mode</label>
+          <select class="control select">
+            <option>Select display mode</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>SKU / Product model</label>
+          <input class="control" value="Please input">
+        </div>
+        <div class="field">
+          <label>Stock status</label>
+          <select class="control select">
+            <option>Select status</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Website visible</label>
+          <select class="control select">
+            <option>Select visibility</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Price visibility</label>
+          <select class="control select">
+            <option>Select price mode</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card table-card">
+      <div class="toolbar">
+        <a class="btn" href="sunpower-product-admin-add.html">Add product config</a>
+        <button class="btn">Import</button>
+        <button class="btn">Export</button>
+        <button class="btn danger">Reset to default</button>
+        <button class="btn primary">Batch update</button>
+        <button class="btn">Publish config</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="checkbox-col"><input type="checkbox"></th>
+              <th>Country <span class="sort">▲<span>▼</span></span></th>
+              <th>Brand <span class="sort">▲<span>▼</span></span></th>
+              <th>SKU / Model <span class="sort">▲<span>▼</span></span></th>
+              <th>Product name <span class="sort">▲<span>▼</span></span></th>
+              <th>Product type <span class="sort">▲<span>▼</span></span></th>
+              <th>Display mode <span class="sort">▲<span>▼</span></span></th>
+              <th>MOQ / Increment <span class="sort">▲<span>▼</span></span></th>
+              <th>Stock status <span class="sort">▲<span>▼</span></span></th>
+              <th>Price visibility <span class="sort">▲<span>▼</span></span></th>
+              <th>Updated by <span class="sort">▲<span>▼</span></span></th>
+              <th>Updated time <span class="sort">▲<span>▼</span></span></th>
+              <th>Operation <span class="sort">▲<span>▼</span></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="checkbox-col"><input type="checkbox"></td>
+              <td>Spain</td>
+              <td><span class="tag blue">SunPower</span></td>
+              <td class="sku-cell">
+                <strong>SPR-BE54-HD500</strong>
+                <span class="sub">Item no. PV-ESP-500-01</span>
+              </td>
+              <td class="name-cell">
+                <strong>Residential PV Module</strong>
+                <span class="sub">Product image + docs configured</span>
+              </td>
+              <td>PV Module</td>
+              <td><span class="tag blue">kW</span></td>
+              <td>37 pcs / 37 pcs</td>
+              <td><span class="tag green">In Stock</span></td>
+              <td><span class="tag gray">Request only</span></td>
+              <td>Xin296</td>
+              <td>2026-06-15 10:42</td>
+              <td>
+                <div class="ops">
+                  <a class="text-btn" href="sunpower-product-detail.html">View</a>
+                  <a class="text-btn" href="sunpower-product-admin-edit.html">Edit</a>
+                  <button class="text-btn">Copy</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="checkbox-col"><input type="checkbox"></td>
+              <td>Spain</td>
+              <td><span class="tag blue">SunPower</span></td>
+              <td class="sku-cell">
+                <strong>SPR-RESERVE-1-DC-4-INT</strong>
+                <span class="sub">Item no. ESS-INT-004</span>
+              </td>
+              <td class="name-cell">
+                <strong>Energy Storage Kit</strong>
+                <span class="sub">Kit docs + compatibility list configured</span>
+              </td>
+              <td>Energy Storage</td>
+              <td><span class="tag orange">KIT</span></td>
+              <td>1 kit / 1 kit</td>
+              <td><span class="tag green">In Stock</span></td>
+              <td><span class="tag gray">Request only</span></td>
+              <td>Xin296</td>
+              <td>2026-06-15 10:36</td>
+              <td>
+                <div class="ops">
+                  <a class="text-btn" href="sunpower-product-detail.html">View</a>
+                  <a class="text-btn" href="sunpower-product-admin-edit.html">Edit</a>
+                  <button class="text-btn">Copy</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="checkbox-col"><input type="checkbox"></td>
+              <td>France</td>
+              <td><span class="tag blue">SunPower</span></td>
+              <td class="sku-cell">
+                <strong>SPR-P7-515-BLK-P</strong>
+                <span class="sub">Item no. PV-FR-515-02</span>
+              </td>
+              <td class="name-cell">
+                <strong>Performance 7 Black Module</strong>
+                <span class="sub">Country visibility enabled, stock display shown</span>
+              </td>
+              <td>PV Module</td>
+              <td><span class="tag blue">kW</span></td>
+              <td>36 pcs / 36 pcs</td>
+              <td><span class="tag red">Out of Stock</span></td>
+              <td><span class="tag gray">Request only</span></td>
+              <td>Admin</td>
+              <td>2026-06-14 19:18</td>
+              <td>
+                <div class="ops">
+                  <a class="text-btn" href="sunpower-product-detail.html">View</a>
+                  <a class="text-btn" href="sunpower-product-admin-edit.html">Edit</a>
+                  <button class="text-btn">Disable</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="checkbox-col"><input type="checkbox"></td>
+              <td>Germany</td>
+              <td><span class="tag gray">TCL Solar</span></td>
+              <td class="sku-cell">
+                <strong>TCL-460M54-BI</strong>
+                <span class="sub">Item no. TCL-DE-460-01</span>
+              </td>
+              <td class="name-cell">
+                <strong>TCL Solar Bifacial Module</strong>
+                <span class="sub">Visible only to TCL Solar installer accounts</span>
+              </td>
+              <td>PV Module</td>
+              <td><span class="tag blue">kW</span></td>
+              <td>40 pcs / 40 pcs</td>
+              <td><span class="tag green">In Stock</span></td>
+              <td><span class="tag gray">Request only</span></td>
+              <td>System</td>
+              <td>2026-06-14 16:05</td>
+              <td>
+                <div class="ops">
+                  <a class="text-btn" href="sunpower-product-detail.html">View</a>
+                  <a class="text-btn" href="sunpower-product-admin-edit.html">Edit</a>
+                  <button class="text-btn">Rule</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span>Total 4</span>
+        <span class="page-size">10 Article/Page</span>
+        <span class="pager-btn">‹</span>
+        <span class="page-no">1</span>
+        <span class="pager-btn">›</span>
+        <span>Go to</span>
+        <span class="page-input">1</span>
+        <span>Page</span>
+      </div>
+    </section>
+  </main>
+
+  <div class="floating">⌁</div>
+</body>
+</html>
