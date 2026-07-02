@@ -290,6 +290,13 @@
       background-repeat: no-repeat;
     }
 
+    .field-note {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
     .table-card {
       margin-top: 20px;
       padding: 16px 16px 12px;
@@ -303,15 +310,25 @@
       flex-wrap: wrap;
     }
 
+    .toolbar-info {
+      margin-right: auto;
+      align-self: center;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
     .table-wrap {
       border: 1px solid #eff2f8;
       border-radius: 12px;
-      overflow: hidden;
+      overflow-x: auto;
+      overflow-y: hidden;
       background: #fff;
     }
 
     table {
       width: 100%;
+      min-width: 1900px;
       border-collapse: collapse;
       table-layout: fixed;
       font-size: 14px;
@@ -364,6 +381,63 @@
       text-overflow: ellipsis;
     }
 
+    .editable-name {
+      width: 100%;
+      height: 32px;
+      border: 1px solid #d5ddf2;
+      border-radius: 7px;
+      padding: 0 10px;
+      color: #2f3440;
+      font-size: 13px;
+      font-weight: 700;
+      outline: none;
+      background: #fff;
+    }
+
+    .editable-name:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(62, 99, 244, 0.12);
+    }
+
+    .image-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .thumb {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      border: 1px solid #dfe6f5;
+      background: linear-gradient(135deg, #eef3ff, #ffffff);
+      display: grid;
+      place-items: center;
+      color: #8b94a8;
+      font-size: 10px;
+      font-weight: 700;
+      flex: 0 0 auto;
+    }
+
+    .country-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .country-chip {
+      display: inline-flex;
+      height: 22px;
+      align-items: center;
+      padding: 0 8px;
+      border-radius: 999px;
+      color: #365ef2;
+      background: #edf2ff;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
     .sub {
       color: var(--muted);
       font-size: 12px;
@@ -388,6 +462,32 @@
     .tag.orange { color: var(--orange); background: var(--orange-bg); }
     .tag.gray { color: #697181; background: #f0f3f8; }
     .tag.red { color: #ff7979; background: var(--red-bg); }
+
+    .switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #465066;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .switch::before {
+      content: "";
+      width: 34px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--green);
+      box-shadow: inset 16px 0 0 rgba(255, 255, 255, 0.85);
+      border: 1px solid #d5f0e1;
+    }
+
+    .switch.off::before {
+      background: #c8cfdd;
+      box-shadow: inset -16px 0 0 rgba(255, 255, 255, 0.85);
+      border-color: #d9deea;
+    }
 
     .ops {
       display: flex;
@@ -488,7 +588,7 @@
       }
 
       table {
-        min-width: 1480px;
+        min-width: 1880px;
       }
     }
 
@@ -591,6 +691,7 @@
         <div class="field">
           <label>SKU / Product model</label>
           <input class="control" value="Please input">
+          <div class="field-note">Creation time is synchronized from SKU list.</div>
         </div>
         <div class="field">
           <label>Stock status</label>
@@ -610,14 +711,21 @@
             <option>Select price mode</option>
           </select>
         </div>
+        <div class="field">
+          <label>Global status</label>
+          <select class="control select">
+            <option>Select global status</option>
+          </select>
+        </div>
       </div>
     </section>
 
     <section class="card table-card">
       <div class="toolbar">
+        <div class="toolbar-info">Export supports batch update for Product name and Applicable Countries. Other SKU fields are synchronized from SKU list.</div>
         <a class="btn" href="sunpower-product-admin-add.html">Add product config</a>
         <button class="btn">Import</button>
-        <button class="btn">Export</button>
+        <button class="btn">Export batch template</button>
         <button class="btn danger">Reset to default</button>
         <button class="btn primary">Batch update</button>
         <button class="btn">Publish config</button>
@@ -628,15 +736,18 @@
           <thead>
             <tr>
               <th class="checkbox-col"><input type="checkbox"></th>
-              <th>Country <span class="sort">▲<span>▼</span></span></th>
               <th>Brand <span class="sort">▲<span>▼</span></span></th>
               <th>SKU / Model <span class="sort">▲<span>▼</span></span></th>
               <th>Product name <span class="sort">▲<span>▼</span></span></th>
+              <th>Primary image <span class="sort">▲<span>▼</span></span></th>
+              <th>Applicable country <span class="sort">▲<span>▼</span></span></th>
               <th>Product type <span class="sort">▲<span>▼</span></span></th>
               <th>Display mode <span class="sort">▲<span>▼</span></span></th>
               <th>MOQ / Increment <span class="sort">▲<span>▼</span></span></th>
               <th>Stock status <span class="sort">▲<span>▼</span></span></th>
+              <th>Global status <span class="sort">▲<span>▼</span></span></th>
               <th>Price visibility <span class="sort">▲<span>▼</span></span></th>
+              <th>Creation time <span class="sort">▲<span>▼</span></span></th>
               <th>Updated by <span class="sort">▲<span>▼</span></span></th>
               <th>Updated time <span class="sort">▲<span>▼</span></span></th>
               <th>Operation <span class="sort">▲<span>▼</span></span></th>
@@ -645,21 +756,29 @@
           <tbody>
             <tr>
               <td class="checkbox-col"><input type="checkbox"></td>
-              <td>Spain</td>
               <td><span class="tag blue">SunPower</span></td>
               <td class="sku-cell">
                 <strong>SPR-BE54-HD500</strong>
                 <span class="sub">Item no. PV-ESP-500-01</span>
               </td>
               <td class="name-cell">
-                <strong>Residential PV Module</strong>
-                <span class="sub">Product image + docs configured</span>
+                <input class="editable-name" value="Residential PV Module" aria-label="Edit product name">
+                <span class="sub">Self-maintained website content</span>
+              </td>
+              <td>
+                <div class="image-cell"><span class="thumb">IMG</span><button class="text-btn">Upload</button></div>
+              </td>
+              <td>
+                <div class="country-tags"><span class="country-chip">Spain</span></div>
+                <span class="sub">Self-maintained SKU-country relation</span>
               </td>
               <td>PV Module</td>
               <td><span class="tag blue">kW</span></td>
               <td>37 pcs / 37 pcs</td>
               <td><span class="tag green">In Stock</span></td>
+              <td><span class="switch">On shelf</span></td>
               <td><span class="tag gray">Request only</span></td>
+              <td>2026-05-28 09:12</td>
               <td>Xin296</td>
               <td>2026-06-15 10:42</td>
               <td>
@@ -672,21 +791,29 @@
             </tr>
             <tr>
               <td class="checkbox-col"><input type="checkbox"></td>
-              <td>Spain</td>
               <td><span class="tag blue">SunPower</span></td>
               <td class="sku-cell">
                 <strong>SPR-RESERVE-1-DC-4-INT</strong>
                 <span class="sub">Item no. ESS-INT-004</span>
               </td>
               <td class="name-cell">
-                <strong>Energy Storage Kit</strong>
-                <span class="sub">Kit docs + compatibility list configured</span>
+                <input class="editable-name" value="Energy Storage Kit" aria-label="Edit product name">
+                <span class="sub">Self-maintained website content</span>
+              </td>
+              <td>
+                <div class="image-cell"><span class="thumb">IMG</span><button class="text-btn">Upload</button></div>
+              </td>
+              <td>
+                <div class="country-tags"><span class="country-chip">Spain</span><span class="country-chip">Italy</span></div>
+                <span class="sub">Self-maintained SKU-country relation</span>
               </td>
               <td>Energy Storage</td>
               <td><span class="tag orange">KIT</span></td>
               <td>1 kit / 1 kit</td>
               <td><span class="tag green">In Stock</span></td>
+              <td><span class="switch">On shelf</span></td>
               <td><span class="tag gray">Request only</span></td>
+              <td>2026-05-30 14:06</td>
               <td>Xin296</td>
               <td>2026-06-15 10:36</td>
               <td>
@@ -699,21 +826,29 @@
             </tr>
             <tr>
               <td class="checkbox-col"><input type="checkbox"></td>
-              <td>France</td>
               <td><span class="tag blue">SunPower</span></td>
               <td class="sku-cell">
                 <strong>SPR-P7-515-BLK-P</strong>
                 <span class="sub">Item no. PV-FR-515-02</span>
               </td>
               <td class="name-cell">
-                <strong>Performance 7 Black Module</strong>
-                <span class="sub">Country visibility enabled, stock display shown</span>
+                <input class="editable-name" value="Performance 7 Black Module" aria-label="Edit product name">
+                <span class="sub">Self-maintained website content</span>
+              </td>
+              <td>
+                <div class="image-cell"><span class="thumb">IMG</span><button class="text-btn">Upload</button></div>
+              </td>
+              <td>
+                <div class="country-tags"><span class="country-chip">France</span></div>
+                <span class="sub">Self-maintained SKU-country relation</span>
               </td>
               <td>PV Module</td>
               <td><span class="tag blue">kW</span></td>
               <td>36 pcs / 36 pcs</td>
               <td><span class="tag red">Out of Stock</span></td>
+              <td><span class="switch off">Off shelf</span></td>
               <td><span class="tag gray">Request only</span></td>
+              <td>2026-05-25 18:32</td>
               <td>Admin</td>
               <td>2026-06-14 19:18</td>
               <td>
@@ -726,21 +861,29 @@
             </tr>
             <tr>
               <td class="checkbox-col"><input type="checkbox"></td>
-              <td>Germany</td>
               <td><span class="tag gray">TCL Solar</span></td>
               <td class="sku-cell">
                 <strong>TCL-460M54-BI</strong>
                 <span class="sub">Item no. TCL-DE-460-01</span>
               </td>
               <td class="name-cell">
-                <strong>TCL Solar Bifacial Module</strong>
-                <span class="sub">Visible only to TCL Solar installer accounts</span>
+                <input class="editable-name" value="TCL Solar Bifacial Module" aria-label="Edit product name">
+                <span class="sub">Self-maintained website content</span>
+              </td>
+              <td>
+                <div class="image-cell"><span class="thumb">IMG</span><button class="text-btn">Upload</button></div>
+              </td>
+              <td>
+                <div class="country-tags"><span class="country-chip">Germany</span></div>
+                <span class="sub">Self-maintained SKU-country relation</span>
               </td>
               <td>PV Module</td>
               <td><span class="tag blue">kW</span></td>
               <td>40 pcs / 40 pcs</td>
               <td><span class="tag green">In Stock</span></td>
+              <td><span class="switch">On shelf</span></td>
               <td><span class="tag gray">Request only</span></td>
+              <td>2026-05-22 11:24</td>
               <td>System</td>
               <td>2026-06-14 16:05</td>
               <td>

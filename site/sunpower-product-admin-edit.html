@@ -77,6 +77,31 @@
       background-size: 6px 6px, 6px 6px;
       background-repeat: no-repeat;
     }
+    .control[readonly], .textarea[readonly], .control:disabled {
+      background: #f5f7fb;
+      color: #697184;
+      border-color: #e1e7f2;
+      cursor: not-allowed;
+    }
+    .control.select:disabled {
+      opacity: 1;
+      background-image: none;
+    }
+    .source-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #697184;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .source-note::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #9aa3b7;
+    }
     .field.span-2 { grid-column: span 2; }
     .field.span-3 { grid-column: span 3; }
     .pill-row { display: flex; gap: 10px; flex-wrap: wrap; min-height: 36px; align-items: center; }
@@ -114,6 +139,39 @@
     }
     .notice strong { display: block; margin-bottom: 6px; }
     .notice span { color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .image-upload {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 16px;
+      align-items: stretch;
+      margin-bottom: 16px;
+    }
+    .image-preview {
+      min-height: 132px;
+      border: 1px solid #dfe6f5;
+      border-radius: 12px;
+      background:
+        linear-gradient(135deg, rgba(62, 99, 244, 0.08), rgba(255, 255, 255, 0.8)),
+        #f8faff;
+      display: grid;
+      place-items: center;
+      color: #8a93a8;
+      font-size: 13px;
+      text-align: center;
+      padding: 16px;
+    }
+    .upload-box {
+      border: 1px dashed #b9c6e8;
+      border-radius: 12px;
+      padding: 14px;
+      background: #fbfcff;
+      display: grid;
+      gap: 10px;
+      align-content: center;
+    }
+    .upload-box strong { font-size: 14px; }
+    .upload-box span { color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .upload-box input { width: 100%; color: #4b5160; font-size: 13px; }
     @media (max-width: 1180px) {
       .layout { grid-template-columns: 1fr; }
       .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -122,6 +180,7 @@
       .menu { display: none; }
       .grid { grid-template-columns: 1fr; }
       .field.span-2, .field.span-3 { grid-column: span 1; }
+      .image-upload { grid-template-columns: 1fr; }
       .actions { align-items: stretch; }
     }
   </style>
@@ -160,28 +219,36 @@
         </div>
 
         <div class="notice">
-          <strong>Editing live website configuration</strong>
-          <span>This record controls what Spain-based SunPower installers can see for `SPR-BE54-HD500`, including MOQ logic, detail page assets and sales request routing.</span>
+          <strong>Editing website display configuration</strong>
+          <span>SKU master data is synchronized from the SKU list and shown as read-only here. This page only edits website-facing product name, display status, publish status and product images.</span>
         </div>
 
         <div class="section">
           <div class="section-head">
-            <h2 class="section-title">Basic information</h2>
+            <h2 class="section-title">SKU synchronized information</h2>
+            <span class="source-note">Synced from SKU list</span>
+          </div>
+          <div class="grid">
+            <div class="field"><label>Country</label><input class="control" value="Spain" readonly></div>
+            <div class="field"><label>Brand</label><input class="control" value="SunPower" readonly></div>
+            <div class="field"><label>Product type</label><input class="control" value="PV Module" readonly></div>
+            <div class="field"><label>SKU</label><input class="control" value="SPR-BE54-HD500" readonly></div>
+            <div class="field"><label>Item number</label><input class="control" value="PV-ESP-500-01" readonly></div>
+            <div class="field"><label>Product model</label><input class="control" value="SPR-BE54-HD500" readonly></div>
+            <div class="field span-3"><label>Product Description(EN)</label><textarea class="textarea" readonly>500 W residential module visible to Spain SunPower installer accounts only. Price is hidden in Stage 1 and can only be requested through sales workflow.</textarea></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head">
+            <h2 class="section-title">Editable website configuration</h2>
             <span class="pill ok">Published</span>
           </div>
           <div class="grid">
-            <div class="field"><label>Country</label><select class="control select"><option>Spain</option></select></div>
-            <div class="field"><label>Brand</label><select class="control select"><option>SunPower</option></select></div>
-            <div class="field"><label>Product type</label><select class="control select"><option>PV Module</option></select></div>
-            <div class="field"><label>SKU</label><input class="control" value="SPR-BE54-HD500"></div>
-            <div class="field"><label>Item number</label><input class="control" value="PV-ESP-500-01"></div>
-            <div class="field"><label>Product model</label><input class="control" value="SPR-BE54-HD500"></div>
-            <div class="field span-2"><label>Product display name</label><input class="control" value="Residential PV Module"></div>
-            <div class="field">
-              <label>Website visible</label>
-              <div class="pill-row"><span class="pill active">Visible</span><span class="pill">Hidden</span></div>
-            </div>
-            <div class="field span-3"><label>Short description</label><textarea class="textarea">500 W residential module visible to Spain SunPower installer accounts only. Price is hidden in Stage 1 and can only be requested through sales workflow.</textarea></div>
+            <div class="field span-2"><label>Product name</label><input class="control" value="Residential PV Module"></div>
+            <div class="field"><label>Website visible</label><select class="control select"><option>Visible</option><option>Hidden</option></select></div>
+            <div class="field"><label>Publish status</label><select class="control select"><option>Published</option><option>Draft</option><option>Disabled</option></select></div>
+            <div class="field"><label>Country listing status</label><select class="control select"><option>Enabled for Spain</option><option>Disabled for Spain</option></select></div>
           </div>
         </div>
 
@@ -191,18 +258,18 @@
             <span class="pill warn">kW mode</span>
           </div>
           <div class="grid">
-            <div class="field"><label>Display mode</label><select class="control select"><option>kW</option></select></div>
-            <div class="field"><label>Display unit</label><select class="control select"><option>pcs</option></select></div>
-            <div class="field"><label>Billable Watts(W)</label><input class="control" value="500"></div>
-            <div class="field"><label>MOQ qty</label><input class="control" value="37"></div>
-            <div class="field"><label>MOQ unit</label><select class="control select"><option>pcs</option></select></div>
-            <div class="field"><label>Order increment qty</label><input class="control" value="37"></div>
-            <div class="field"><label>Total PCS per pallet</label><input class="control" value="37"></div>
-            <div class="field"><label>kW per piece</label><input class="control" value="0.50"></div>
-            <div class="field"><label>kW per pallet</label><input class="control" value="18.5"></div>
-            <div class="field"><label>Installer tier visibility</label><select class="control select"><option>Authorized and above</option></select></div>
-            <div class="field"><label>Country visibility rule</label><select class="control select"><option>Allow</option></select></div>
-            <div class="field"><label>Brand visibility rule</label><select class="control select"><option>SunPower only</option></select></div>
+            <div class="field"><label>Display mode</label><input class="control" value="kW" readonly></div>
+            <div class="field"><label>Display unit</label><input class="control" value="pcs" readonly></div>
+            <div class="field"><label>Billable Watts(W)</label><input class="control" value="500" readonly></div>
+            <div class="field"><label>MOQ qty</label><input class="control" value="37" readonly></div>
+            <div class="field"><label>MOQ unit</label><input class="control" value="pcs" readonly></div>
+            <div class="field"><label>Order increment qty</label><input class="control" value="37" readonly></div>
+            <div class="field"><label>Total PCS per pallet</label><input class="control" value="37" readonly></div>
+            <div class="field"><label>kW per piece</label><input class="control" value="0.50" readonly></div>
+            <div class="field"><label>kW per pallet</label><input class="control" value="18.5" readonly></div>
+            <div class="field"><label>Installer tier visibility</label><input class="control" value="Authorized and above" readonly></div>
+            <div class="field"><label>Country visibility rule</label><input class="control" value="Allow" readonly></div>
+            <div class="field"><label>Brand visibility rule</label><input class="control" value="SunPower only" readonly></div>
           </div>
         </div>
 
@@ -212,25 +279,33 @@
             <span class="hint">Stage 1 price request only</span>
           </div>
           <div class="grid">
-            <div class="field"><label>Stock status</label><select class="control select"><option>In Stock</option></select></div>
-            <div class="field"><label>Available stock qty</label><input class="control" value="740"></div>
-            <div class="field">
-              <label>Show out of stock</label>
-              <div class="pill-row"><span class="pill active">Yes</span><span class="pill">No</span></div>
-            </div>
-            <div class="field"><label>Price visibility</label><select class="control select"><option>PRICE_REQUEST_ONLY</option></select></div>
-            <div class="field"><label>Tier discount label</label><input class="control" value="Authorized installer benefit"></div>
-            <div class="field"><label>Special request enabled</label><div class="pill-row"><span class="pill active">Enabled</span><span class="pill">Disabled</span></div></div>
-            <div class="field"><label>Sales recipient rule</label><select class="control select"><option>Country based</option></select></div>
-            <div class="field"><label>Notification template</label><select class="control select"><option>Default price request template</option></select></div>
-            <div class="field"><label>Approval flow type</label><select class="control select"><option>Existing sales approval</option></select></div>
+            <div class="field"><label>Stock status</label><input class="control" value="In Stock" readonly></div>
+            <div class="field"><label>Available stock qty</label><input class="control" value="740" readonly></div>
+            <div class="field"><label>Show out of stock</label><input class="control" value="Yes" readonly></div>
+            <div class="field"><label>Price visibility</label><input class="control" value="PRICE_REQUEST_ONLY" readonly></div>
+            <div class="field"><label>Tier discount label</label><input class="control" value="Authorized installer benefit" readonly></div>
+            <div class="field"><label>Special request enabled</label><input class="control" value="Enabled" readonly></div>
+            <div class="field"><label>Sales recipient rule</label><input class="control" value="Country based" readonly></div>
+            <div class="field"><label>Notification template</label><input class="control" value="Default price request template" readonly></div>
+            <div class="field"><label>Approval flow type</label><input class="control" value="Existing sales approval" readonly></div>
           </div>
         </div>
 
         <div class="section">
           <div class="section-head">
-            <h2 class="section-title">Assets and related products</h2>
-            <span class="hint">Used by product detail page</span>
+            <h2 class="section-title">Product images</h2>
+            <span class="hint">Editable website asset</span>
+          </div>
+          <div class="image-upload">
+            <div class="image-preview">
+              Current primary image<br>module-500.png
+            </div>
+            <div class="upload-box">
+              <strong>Upload product image</strong>
+              <span>Supports JPG, PNG or WebP. The uploaded image can be set as the primary product image for the website list and detail page.</span>
+              <input type="file" accept="image/png,image/jpeg,image/webp">
+              <div class="pill-row"><span class="pill active">Set as primary image</span><span class="pill">Gallery image</span></div>
+            </div>
           </div>
           <table class="table-lite">
             <thead>
@@ -263,8 +338,8 @@
             </tbody>
           </table>
           <div class="grid" style="margin-top:16px">
-            <div class="field span-2"><label>Related SKUs</label><input class="control" value="SPR-P7-515-BLK-P, SPR-RESERVE-1-DC-4-INT"></div>
-            <div class="field"><label>Compatible SKUs</label><input class="control" value="SPR-RESERVE-1-DC-4-INT"></div>
+            <div class="field span-2"><label>Related SKUs</label><input class="control" value="SPR-P7-515-BLK-P, SPR-RESERVE-1-DC-4-INT" readonly></div>
+            <div class="field"><label>Compatible SKUs</label><input class="control" value="SPR-RESERVE-1-DC-4-INT" readonly></div>
           </div>
         </div>
 

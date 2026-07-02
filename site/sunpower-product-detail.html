@@ -973,16 +973,6 @@
           </div>
         </div>
 
-          <aside class="summary-card" aria-labelledby="detail-summary-title">
-            <h2 id="detail-summary-title">Request summary</h2>
-            <div class="summary-row"><span>Selected products</span><b id="detail-summary-selected">0</b></div>
-            <div class="summary-row"><span>Total PV capacity</span><b id="detail-summary-capacity">0 kW</b></div>
-            <div class="summary-row"><span>Kit quantity</span><b id="detail-summary-kit">0 kit</b></div>
-            <div class="summary-list" id="detail-summary-list"><div class="summary-empty">No product has been added to the inquiry list.</div></div>
-            <button type="button" class="cta" id="detail-summary-send">Send price request</button>
-            <button type="button" class="submitted-link" id="detail-view-requests">View submitted requests</button>
-            <div class="summary-note" id="detail-summary-note">No inquiry has been added yet.</div>
-          </aside>
         </div>
 
         <div class="detail-panel">
@@ -1106,16 +1096,6 @@
     <div class="social"><span></span><span></span></div>
     <small>© 2026 TCL SunPower Global. All rights reserved</small>
   </footer>
-  <div class="modal-backdrop" id="detail-history-modal" role="dialog" aria-modal="true" aria-labelledby="detail-history-title">
-    <div class="request-modal">
-      <div class="modal-head">
-        <h2 id="detail-history-title">Submitted requests</h2>
-        <button class="modal-close" id="detail-history-close" type="button" aria-label="Close">×</button>
-      </div>
-      <p class="modal-copy">Your latest price requests are retained here for traceability.</p>
-      <div id="detail-history-list"></div>
-    </div>
-  </div>
   <script>
     const productExamples = {
       pv: {
@@ -1241,94 +1221,12 @@
 
     renderProduct("pv");
 
-    const detailRequest = {
-      sku: "SPR-BE54-HD500",
-      brand: "SunPower",
-      quantity: 37,
-      unit: "PC",
-      capacity: 18.5,
-      added: false
-    };
-    const detailSubmittedRequests = [
-      {
-        requestNo: "REQ-20260625-001",
-        delivery: "within-1-month",
-        note: "Please confirm pallet MOQ and availability for Spain.",
-        items: ["SPR-BE54-HD500 · 37 PC"],
-        sentAt: "2026/6/25 15:30:00"
-      }
-    ];
-
-    const detailSummarySelected = document.getElementById("detail-summary-selected");
-    const detailSummaryCapacity = document.getElementById("detail-summary-capacity");
-    const detailSummaryKit = document.getElementById("detail-summary-kit");
-    const detailSummaryList = document.getElementById("detail-summary-list");
-    const detailSummaryNote = document.getElementById("detail-summary-note");
     const detailAddRequest = document.getElementById("detail-add-request");
-    const detailSummarySend = document.getElementById("detail-summary-send");
-    const detailHistoryModal = document.getElementById("detail-history-modal");
-    const detailHistoryList = document.getElementById("detail-history-list");
-
-    function renderDetailSummary() {
-      detailSummarySelected.textContent = detailRequest.added ? "1" : "0";
-      detailSummaryCapacity.textContent = detailRequest.added ? detailRequest.capacity + " kW" : "0 kW";
-      detailSummaryKit.textContent = "0 kit";
-      detailSummaryList.innerHTML = detailRequest.added
-        ? `<div class="summary-item"><div class="summary-item-title">${detailRequest.sku}</div><div class="summary-item-meta">${detailRequest.brand} · ${detailRequest.quantity} ${detailRequest.unit} · pricing request</div></div>`
-        : `<div class="summary-empty">No product has been added to the inquiry list.</div>`;
-      detailSummaryNote.textContent = detailRequest.added
-        ? "Current inquiry: " + detailRequest.sku + " x " + detailRequest.quantity + " " + detailRequest.unit
-        : "No inquiry has been added yet.";
-      detailSummarySend.textContent = detailRequest.added ? "Send 1 request" : "Send price request";
-    }
-
-    function renderDetailHistory() {
-      detailHistoryList.innerHTML = detailSubmittedRequests.map((entry) => `
-        <div class="history-record">
-          <strong>${entry.requestNo}</strong>
-          <div class="summary-item-meta">
-            ${entry.sentAt}<br>
-            ${entry.items.join("<br>")}<br>
-            Expected delivery: ${entry.delivery}${entry.note ? "<br>Note: " + entry.note : ""}
-          </div>
-        </div>
-      `).join("");
-    }
 
     detailAddRequest.addEventListener("click", () => {
-      detailRequest.added = true;
-      detailAddRequest.textContent = "Added to Chart";
-      renderDetailSummary();
+      detailAddRequest.textContent = "Request submitted";
+      detailAddRequest.disabled = true;
     });
-
-    detailSummarySend.addEventListener("click", () => {
-      if (!detailRequest.added) {
-        detailSummaryNote.textContent = "Select at least one product inquiry before sending.";
-        return;
-      }
-      const requestNo = "REQ-" + new Date().toISOString().slice(0, 10).replaceAll("-", "") + "-" + String(detailSubmittedRequests.length + 1).padStart(3, "0");
-      detailSubmittedRequests.unshift({
-        requestNo,
-        delivery: "within-1-month",
-        note: "",
-        items: [detailRequest.sku + " · " + detailRequest.quantity + " " + detailRequest.unit],
-        sentAt: new Date().toLocaleString()
-      });
-      detailSummarySend.textContent = "Submit again";
-      detailSummaryNote.textContent = "Inquiry email and Excel attachment sent to Rep_sales. Request ID: " + requestNo;
-      renderDetailHistory();
-    });
-
-    document.getElementById("detail-view-requests").addEventListener("click", () => {
-      renderDetailHistory();
-      detailHistoryModal.classList.add("open");
-    });
-    document.getElementById("detail-history-close").addEventListener("click", () => {
-      detailHistoryModal.classList.remove("open");
-    });
-
-    renderDetailSummary();
-    renderDetailHistory();
   </script>
 </body>
 </html>
