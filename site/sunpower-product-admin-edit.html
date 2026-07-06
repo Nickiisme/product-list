@@ -3,394 +3,941 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Edit Product Configuration</title>
+  <title>Edit Product Config</title>
   <style>
     :root {
-      --panel: #ffffff;
-      --line: #e3e8f5;
-      --text: #2f3440;
-      --muted: #838ba0;
-      --blue: #3e63f4;
-      --blue-2: #eef3ff;
-      --blue-3: #dbe4ff;
-      --green: #2f9f67;
-      --green-bg: #ebfaf2;
-      --orange: #ff9b45;
-      --orange-bg: #fff5ea;
-      --red: #ff7f7f;
-      --red-bg: #fff1f1;
-      --shadow: 0 1px 2px rgba(27, 39, 94, 0.04);
+      --bg: #f7f9fe;
+      --panel: #fff;
+      --line: #e6ebf5;
+      --line-strong: #d7deec;
+      --text: #172033;
+      --muted: #7d879a;
+      --blue: #3565f4;
+      --blue-soft: #eaf0ff;
+      --green: #28b875;
+      --green-soft: #dcf7e9;
+      --red: #ff4d4f;
+      --shadow: 0 8px 28px rgba(42, 58, 96, .06);
     }
+
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      background: linear-gradient(180deg, #f8faff 0%, #f4f7fd 100%);
+      background: var(--bg);
       color: var(--text);
       font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+      font-size: 14px;
     }
+
     a { color: inherit; text-decoration: none; }
     button, input, select, textarea { font: inherit; }
+
     .topbar {
-      height: 66px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px 0 20px; background: #fff; border-bottom: 1px solid #eef1f7;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: #fff;
+      border-bottom: 1px solid #edf1f8;
     }
-    .topbar-left, .topbar-right { display: flex; align-items: center; gap: 24px; }
-    .logos { display: flex; align-items: center; gap: 18px; padding-right: 22px; border-right: 1px solid #ebeff7; }
-    .logo-tcl { font-size: 34px; font-weight: 900; color: #f42727; }
-    .logo-rings { position: relative; width: 96px; height: 30px; }
-    .ring { position: absolute; width: 24px; height: 24px; border-radius: 50%; border: 3px solid; }
-    .ring.r1 { left: 0; top: 0; border-color: #2f7ef8; }
-    .ring.r2 { left: 22px; top: 0; border-color: #2f2f2f; }
-    .ring.r3 { left: 44px; top: 0; border-color: #ff5959; }
-    .ring.r4 { left: 11px; top: 12px; border-color: #efc330; }
-    .ring.r5 { left: 33px; top: 12px; border-color: #3bab62; }
-    .logo-sunpower { font-size: 22px; font-weight: 800; color: #ff5d4d; }
-    .menu { display: flex; align-items: center; gap: 54px; font-size: 17px; color: #434957; }
-    .menu-item { display: flex; align-items: center; gap: 10px; }
-    .menu-caret { font-size: 12px; color: #5d6578; }
-    .avatar { display: flex; align-items: center; gap: 8px; font-weight: 600; }
-    .avatar-badge { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(180deg, #cfd6e7 0%, #bcc5db 100%); position: relative; }
-    .avatar-badge::before { content: ""; position: absolute; top: 5px; left: 10px; width: 10px; height: 10px; border-radius: 50%; background: #fff; }
-    .avatar-badge::after { content: ""; position: absolute; left: 6px; bottom: 5px; width: 18px; height: 10px; border-radius: 10px 10px 7px 7px; background: #fff; }
-    .crumbs { display: flex; gap: 8px; padding: 14px 20px 0; flex-wrap: wrap; }
-    .crumb { padding: 8px 14px; border-radius: 999px; border: 1px solid #edf0f7; background: #fff; color: #3d4250; font-weight: 600; box-shadow: var(--shadow); }
-    .crumb.active { background: #dfe6ff; border-color: #d7dfff; }
-    .page { padding: 16px 20px 36px; }
-    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
-    .card { background: var(--panel); border: 1px solid #eef2f9; border-radius: 18px; box-shadow: var(--shadow); }
-    .form-card, .aside { padding: 18px; }
-    .card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .card-head h1, .section-title, .aside h2 { margin: 0; font-size: 18px; line-height: 1.2; font-weight: 800; }
-    .hint { color: var(--muted); font-size: 12px; }
-    .section + .section { margin-top: 18px; padding-top: 18px; border-top: 1px solid #eef2f9; }
-    .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 18px; }
-    .field label { display: block; font-size: 14px; color: #4b5160; margin-bottom: 7px; }
-    .control, .textarea {
-      width: 100%; border: 1px solid #d5ddf2; border-radius: 7px; background: #fff; color: #3c4455; padding: 0 12px; font-size: 14px;
+
+    .top-left,
+    .top-right,
+    .brand,
+    .nav,
+    .user {
+      display: flex;
+      align-items: center;
     }
-    .control { height: 36px; }
-    .textarea { min-height: 88px; padding-top: 10px; resize: vertical; }
-    .control.select {
-      appearance: none;
-      background-image: linear-gradient(45deg, transparent 50%, #81889a 50%), linear-gradient(135deg, #81889a 50%, transparent 50%);
-      background-position: calc(100% - 18px) 14px, calc(100% - 12px) 14px;
-      background-size: 6px 6px, 6px 6px;
-      background-repeat: no-repeat;
+
+    .top-left { gap: 28px; }
+    .brand { gap: 18px; padding-right: 24px; border-right: 1px solid #e6ebf5; }
+    .logo-tcl { font-size: 34px; font-weight: 900; color: #f5222d; letter-spacing: .02em; }
+    .logo-sunpower { color: #ff2f2f; font-weight: 800; font-size: 22px; }
+    .rings { position: relative; width: 88px; height: 30px; }
+    .ring { position: absolute; width: 24px; height: 24px; border: 3px solid; border-radius: 50%; }
+    .ring:nth-child(1) { left: 0; top: 0; border-color: #2d80ff; }
+    .ring:nth-child(2) { left: 21px; top: 0; border-color: #222; }
+    .ring:nth-child(3) { left: 42px; top: 0; border-color: #ff4b55; }
+    .ring:nth-child(4) { left: 10px; top: 12px; border-color: #f6c31d; }
+    .ring:nth-child(5) { left: 31px; top: 12px; border-color: #37a756; }
+    .nav { gap: 44px; color: #2f3748; font-weight: 600; }
+    .nav span::after { content: "▼"; margin-left: 10px; font-size: 10px; color: #697386; }
+    .user { gap: 9px; font-weight: 700; }
+    .avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #d9deec, #bcc6dc);
+      position: relative;
     }
-    .control[readonly], .textarea[readonly], .control:disabled {
-      background: #f5f7fb;
-      color: #697184;
-      border-color: #e1e7f2;
-      cursor: not-allowed;
+    .avatar::before {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #fff;
+      top: 6px;
+      left: 10px;
     }
-    .control.select:disabled {
-      opacity: 1;
-      background-image: none;
+    .avatar::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 9px;
+      border-radius: 9px 9px 5px 5px;
+      background: #fff;
+      bottom: 6px;
+      left: 6px;
     }
-    .source-note {
+
+    .page {
+      padding: 18px 24px 34px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .crumbs {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .crumb {
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 18px;
+      border: 1px solid #e8edf7;
+      border-radius: 999px;
+      background: #fff;
+      box-shadow: 0 4px 14px rgba(42, 58, 96, .05);
+      font-weight: 700;
+      color: #2d374a;
+    }
+
+    .crumb.active {
+      color: var(--blue);
+      background: #e9efff;
+      border-color: #e0e8ff;
+    }
+
+    .shell {
+      background: #fff;
+      border: 1px solid #e9eef7;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 24px 26px 24px;
+    }
+
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e9eef7;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    .meta-line {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #4d596e;
+      font-size: 15px;
+      margin-bottom: 10px;
+    }
+
+    .status {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      color: #697184;
-      font-size: 12px;
-      font-weight: 600;
+      height: 26px;
+      padding: 0 10px;
+      border-radius: 6px;
+      background: var(--green-soft);
+      color: #168a55;
+      font-weight: 800;
+      font-size: 13px;
     }
-    .source-note::before {
+
+    .status::before,
+    .stock-ok::before {
       content: "";
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: #9aa3b7;
+      background: #72d69b;
     }
-    .field.span-2 { grid-column: span 2; }
-    .field.span-3 { grid-column: span 3; }
-    .pill-row { display: flex; gap: 10px; flex-wrap: wrap; min-height: 36px; align-items: center; }
-    .pill {
-      display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; font-size: 13px; font-weight: 700; background: #f7f9fe; border: 1px solid #e2e8f6;
+
+    .sub-meta {
+      display: flex;
+      gap: 12px;
+      color: #7b8497;
+      font-size: 13px;
     }
-    .pill.active { color: var(--blue); background: var(--blue-2); border-color: var(--blue-3); }
-    .pill.ok { color: var(--green); background: var(--green-bg); border-color: #d5f0e1; }
-    .pill.warn { color: var(--orange); background: var(--orange-bg); border-color: #ffe3c7; }
-    .table-lite {
-      width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 13px; border: 1px solid #ebeff7; border-radius: 12px; overflow: hidden;
-    }
-    .table-lite th, .table-lite td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #edf1f8; vertical-align: middle; }
-    .table-lite th { background: #dfe5f7; font-weight: 700; }
-    .btn {
-      height: 36px; border-radius: 7px; border: 1px solid var(--blue); background: #fff; color: var(--blue); padding: 0 18px; font-size: 14px; display: inline-flex; align-items: center; justify-content: center;
-    }
-    .btn.primary { background: var(--blue); color: #fff; }
-    .btn.danger { border-color: #ffd5d5; color: #ff8080; background: #fff7f7; }
-    .actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
-    .left-actions, .right-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-    .timeline { display: grid; gap: 10px; }
-    .event {
-      border-left: 3px solid #dbe4ff; padding-left: 12px; color: #525969; font-size: 12px; line-height: 1.45;
-    }
-    .event strong { display: block; color: #313743; margin-bottom: 4px; }
-    .stats { display: grid; gap: 10px; }
-    .stat {
-      border: 1px solid #e3e8f5; border-radius: 10px; padding: 12px; background: #fbfcff;
-    }
-    .stat strong { display: block; margin-bottom: 5px; font-size: 14px; }
-    .stat span { color: var(--muted); font-size: 12px; line-height: 1.45; }
-    .notice {
-      border-radius: 12px; padding: 14px; background: linear-gradient(135deg, #eef3ff, #ffffff); border: 1px solid #dde6ff; margin-bottom: 18px;
-    }
-    .notice strong { display: block; margin-bottom: 6px; }
-    .notice span { color: var(--muted); font-size: 12px; line-height: 1.45; }
-    .image-upload {
-      display: grid;
-      grid-template-columns: 180px minmax(0, 1fr);
+
+    .head-actions {
+      display: flex;
+      align-items: center;
       gap: 16px;
-      align-items: stretch;
-      margin-bottom: 16px;
     }
-    .image-preview {
-      min-height: 132px;
-      border: 1px solid #dfe6f5;
-      border-radius: 12px;
-      background:
-        linear-gradient(135deg, rgba(62, 99, 244, 0.08), rgba(255, 255, 255, 0.8)),
-        #f8faff;
+
+    .btn {
+      height: 48px;
+      min-width: 100px;
+      padding: 0 22px;
+      border-radius: 6px;
+      border: 1px solid var(--line-strong);
+      background: #fff;
+      color: #293447;
+      font-weight: 800;
+      cursor: default;
+    }
+
+    .btn.danger {
+      border-color: #ff8f8f;
+      color: var(--red);
+      min-width: 160px;
+    }
+
+    .btn.primary {
+      color: #fff;
+      border-color: var(--blue);
+      background: linear-gradient(180deg, #416df6, #315bea);
+      min-width: 184px;
+      box-shadow: 0 8px 18px rgba(53, 101, 244, .22);
+    }
+
+    .btn.primary::after {
+      content: "⌄";
+      margin-left: 18px;
+      padding-left: 18px;
+      border-left: 1px solid rgba(255, 255, 255, .25);
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 28px;
+      padding-top: 0;
+    }
+
+    .main-column {
+      border-right: 1px solid #eef2f8;
+      padding-right: 28px;
+    }
+
+    .section {
+      padding: 24px 0;
+      border-bottom: 1px solid #e9eef7;
+    }
+
+    .section:last-child { border-bottom: 0; }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .step {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
       display: grid;
       place-items: center;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 800;
+      box-shadow: 0 4px 12px rgba(53, 101, 244, .28);
+      flex: 0 0 auto;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .section-hint {
       color: #8a93a8;
       font-size: 13px;
-      text-align: center;
-      padding: 16px;
+      font-weight: 600;
     }
-    .upload-box {
-      border: 1px dashed #b9c6e8;
-      border-radius: 12px;
-      padding: 14px;
-      background: #fbfcff;
+
+    .collapse {
+      margin-left: auto;
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .lock {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #7d879a;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .grid {
       display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px 32px;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .span-2 { grid-column: span 2; }
+    .span-3 { grid-column: span 3; }
+
+    label {
+      display: block;
+      color: #526078;
+      font-weight: 700;
+      margin-bottom: 9px;
+    }
+
+    .required { color: var(--red); margin-right: 4px; }
+
+    .control,
+    .textarea {
+      width: 100%;
+      border: 1px solid #dfe6f2;
+      border-radius: 6px;
+      background: #fff;
+      color: #263248;
+      font-weight: 650;
+      outline: none;
+    }
+
+    .control {
+      height: 44px;
+      padding: 0 14px;
+    }
+
+    .select {
+      appearance: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #687388 50%),
+        linear-gradient(135deg, #687388 50%, transparent 50%);
+      background-position:
+        calc(100% - 18px) 18px,
+        calc(100% - 12px) 18px;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+    }
+
+    .readonly {
+      background: #f3f6fb;
+      color: #6b7588;
+      cursor: not-allowed;
+    }
+
+    .field-note {
+      color: #8a93a8;
+      margin-top: 7px;
+      font-size: 12px;
+    }
+
+    .textarea {
+      min-height: 144px;
+      padding: 14px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .counter {
+      margin-top: 8px;
+      color: #6f788b;
+      text-align: right;
+      font-weight: 700;
+    }
+
+    .images {
+      display: grid;
+      grid-template-columns: repeat(4, 170px);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .image-card,
+    .add-image {
+      height: 198px;
+      border: 1px solid #dfe6f2;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .image-card {
+      display: grid;
+      grid-template-rows: 150px 48px;
+      position: relative;
+    }
+
+    .cover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 32px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      background: var(--blue);
+      color: #fff;
+      border-radius: 6px 0 8px 0;
+      font-size: 13px;
+      font-weight: 800;
+      z-index: 2;
+    }
+
+    .image-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .image-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 1px solid #e8edf7;
+    }
+
+    .image-actions button {
+      border: 0;
+      background: #fff;
+      color: #39455c;
+      font-size: 19px;
+      border-right: 1px solid #e8edf7;
+    }
+
+    .image-actions button:last-child { border-right: 0; }
+
+    .add-image {
+      border-style: dashed;
+      display: grid;
+      place-items: center;
+      color: #526078;
+      font-weight: 750;
+    }
+
+    .add-image b {
+      display: block;
+      text-align: center;
+      font-size: 36px;
+      line-height: 1;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+
+    .frontend-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, .95fr);
+      gap: 32px;
+      align-items: start;
+    }
+
+    .preview {
+      border: 1px solid #dfe6f2;
+      border-radius: 8px;
+      padding: 20px;
+      min-height: 230px;
+      background: #fff;
+    }
+
+    .preview h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .preview p {
+      margin: 0 0 18px;
+      color: #3f4b61;
+      line-height: 1.5;
+    }
+
+    .download-preview-title {
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .preview-file {
+      height: 36px;
+      border: 1px solid #e2e8f2;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      color: #526078;
+      margin-top: 8px;
+      font-weight: 700;
+    }
+
+    .download-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #e2e8f2;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .download-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #e8edf7;
+      color: #334057;
+      font-weight: 700;
+    }
+
+    .download-table tr:last-child td { border-bottom: 0; }
+    .download-table .file { color: #526078; font-weight: 650; }
+
+    .small-btn {
+      height: 36px;
+      padding: 0 16px;
+      border: 1px solid #d9e0ee;
+      border-radius: 6px;
+      background: #fff;
+      color: #334057;
+      font-weight: 800;
+    }
+
+    .sku-box {
+      background: #f7f9fd;
+      border: 1px solid #e4eaf4;
+      color: #6c768a;
+    }
+
+    .technical-closed {
+      padding: 18px 0 8px;
+    }
+
+    .right-column {
+      padding-top: 28px;
+    }
+
+    .stock-card {
+      border: 1px solid #e6ebf5;
+      border-radius: 12px;
+      padding: 26px 20px 22px;
+      background: #fff;
+      position: sticky;
+      top: 20px;
+    }
+
+    .stock-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .stock-head h2 {
+      font-size: 20px;
+    }
+
+    .sync {
+      text-align: right;
+      color: #687388;
+      font-size: 12px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .stock-label {
+      color: #526078;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .stock-ok {
+      display: inline-flex;
+      align-items: center;
       gap: 10px;
-      align-content: center;
+      color: #1fae6b;
+      font-weight: 800;
+      margin-bottom: 28px;
     }
-    .upload-box strong { font-size: 14px; }
-    .upload-box span { color: var(--muted); font-size: 12px; line-height: 1.45; }
-    .upload-box input { width: 100%; color: #4b5160; font-size: 13px; }
+
+    .quantity {
+      border: 1px solid #e1e7f1;
+      border-radius: 8px;
+      padding: 26px 18px;
+      margin-bottom: 30px;
+      background: #fbfcff;
+    }
+
+    .quantity span {
+      display: block;
+      color: #4e5a70;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .quantity strong {
+      display: block;
+      font-size: 34px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .warehouse-title {
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .warehouse-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .warehouse-row {
+      height: 54px;
+      border: 1px solid #e1e7f1;
+      border-radius: 7px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      color: #334057;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .warehouse-row span:last-child {
+      color: #4e5a70;
+      font-weight: 700;
+    }
+
+    .stock-note {
+      margin-top: 20px;
+      border-radius: 8px;
+      padding: 18px;
+      display: flex;
+      gap: 12px;
+      background: #f7f9fd;
+      color: #526078;
+      line-height: 1.5;
+      font-weight: 700;
+      justify-content: center;
+    }
+
+    .bottom-note {
+      margin-top: 28px;
+      border: 1px solid #dbe5ff;
+      border-radius: 8px;
+      background: #f5f8ff;
+      color: #3d4a62;
+      padding: 16px 22px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      font-weight: 700;
+    }
+
+    .info-dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
     @media (max-width: 1180px) {
-      .layout { grid-template-columns: 1fr; }
-      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .content { grid-template-columns: 1fr; }
+      .main-column { border-right: 0; padding-right: 0; }
+      .right-column { padding-top: 0; }
+      .stock-card { position: static; }
+      .images { grid-template-columns: repeat(2, 170px); }
     }
+
     @media (max-width: 760px) {
-      .menu { display: none; }
-      .grid { grid-template-columns: 1fr; }
-      .field.span-2, .field.span-3 { grid-column: span 1; }
-      .image-upload { grid-template-columns: 1fr; }
-      .actions { align-items: stretch; }
+      .topbar { height: auto; padding: 14px; align-items: flex-start; }
+      .brand { border-right: 0; padding-right: 0; }
+      .nav { display: none; }
+      .page-head,
+      .sub-meta,
+      .meta-line,
+      .head-actions { flex-wrap: wrap; }
+      .grid,
+      .grid.three,
+      .frontend-grid { grid-template-columns: 1fr; }
+      .span-2,
+      .span-3 { grid-column: span 1; }
+      .images { grid-template-columns: 1fr; }
+      .image-card,
+      .add-image { width: 100%; }
     }
   </style>
 </head>
 <body>
   <header class="topbar">
-    <div class="topbar-left">
-      <div class="logos">
+    <div class="top-left">
+      <div class="brand">
         <div class="logo-tcl">TCL</div>
-        <div class="logo-rings">
-          <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span><span class="ring r4"></span><span class="ring r5"></span>
+        <div class="rings" aria-hidden="true">
+          <span class="ring"></span><span class="ring"></span><span class="ring"></span><span class="ring"></span><span class="ring"></span>
         </div>
         <div class="logo-sunpower">Sunpower</div>
       </div>
-      <nav class="menu" aria-label="System menu">
-        <div class="menu-item">PartnerPortal <span class="menu-caret">▼</span></div>
-        <div class="menu-item">System Management <span class="menu-caret">▼</span></div>
+      <nav class="nav" aria-label="System navigation">
+        <span>PartnerPortal</span>
+        <span>System Management</span>
       </nav>
     </div>
-    <div class="topbar-right">
-      <div class="avatar"><span class="avatar-badge"></span><span>Xin296 sukeee</span></div>
+    <div class="top-right">
+      <div class="user"><span class="avatar"></span><span>Xin296 sukeee</span></div>
     </div>
   </header>
 
-  <div class="crumbs">
-    <a class="crumb" href="sunpower-product-admin.html">Product Display Configuration</a>
-    <span class="crumb active">Edit Product Config</span>
-  </div>
-
   <main class="page">
-    <div class="layout">
-      <section class="card form-card">
-        <div class="card-head">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a class="crumb" href="sunpower-product-admin.html">‹ Product Display Configuration</a>
+      <span class="crumb active">Edit Product Config</span>
+    </nav>
+
+    <section class="shell">
+      <div class="page-head">
+        <div>
           <h1>Edit Product Config</h1>
-          <span class="hint">Last updated by Xin296 on 2026-06-15 10:42</span>
-        </div>
-
-        <div class="notice">
-          <strong>Editing website display configuration</strong>
-          <span>SKU master data is synchronized from the SKU list and shown as read-only here. This page only edits website-facing product name, display status, publish status and product images.</span>
-        </div>
-
-        <div class="section">
-          <div class="section-head">
-            <h2 class="section-title">SKU synchronized information</h2>
-            <span class="source-note">Synced from SKU list</span>
+          <div class="meta-line">
+            <span>SKU: SPR-P7-515-BLK-P</span>
+            <span class="status">Published</span>
           </div>
-          <div class="grid">
-            <div class="field"><label>Country</label><input class="control" value="Spain" readonly></div>
-            <div class="field"><label>Brand</label><input class="control" value="SunPower" readonly></div>
-            <div class="field"><label>Product type</label><input class="control" value="PV Module" readonly></div>
-            <div class="field"><label>SKU</label><input class="control" value="SPR-BE54-HD500" readonly></div>
-            <div class="field"><label>Item number</label><input class="control" value="PV-ESP-500-01" readonly></div>
-            <div class="field"><label>Product model</label><input class="control" value="SPR-BE54-HD500" readonly></div>
-            <div class="field span-3"><label>Product Description(EN)</label><textarea class="textarea" readonly>500 W residential module visible to Spain SunPower installer accounts only. Price is hidden in Stage 1 and can only be requested through sales workflow.</textarea></div>
+          <div class="sub-meta">
+            <span>Last updated: Jul 08, 2026 16:00</span>
+            <span>|</span>
+            <span>Updated by: Xin296 sukeee</span>
           </div>
         </div>
-
-        <div class="section">
-          <div class="section-head">
-            <h2 class="section-title">Editable website configuration</h2>
-            <span class="pill ok">Published</span>
-          </div>
-          <div class="grid">
-            <div class="field span-2"><label>Product name</label><input class="control" value="Residential PV Module"></div>
-            <div class="field"><label>Website visible</label><select class="control select"><option>Visible</option><option>Hidden</option></select></div>
-            <div class="field"><label>Publish status</label><select class="control select"><option>Published</option><option>Draft</option><option>Disabled</option></select></div>
-            <div class="field"><label>Country listing status</label><select class="control select"><option>Enabled for Spain</option><option>Disabled for Spain</option></select></div>
-          </div>
+        <div class="head-actions">
+          <button class="btn">Cancel</button>
+          <button class="btn danger">Disable Product</button>
+          <button class="btn primary">Update and Publish</button>
         </div>
+      </div>
 
-        <div class="section">
-          <div class="section-head">
-            <h2 class="section-title">Display and business rules</h2>
-            <span class="pill warn">kW mode</span>
-          </div>
-          <div class="grid">
-            <div class="field"><label>Display mode</label><input class="control" value="kW" readonly></div>
-            <div class="field"><label>Display unit</label><input class="control" value="pcs" readonly></div>
-            <div class="field"><label>Billable Watts(W)</label><input class="control" value="500" readonly></div>
-            <div class="field"><label>MOQ qty</label><input class="control" value="37" readonly></div>
-            <div class="field"><label>MOQ unit</label><input class="control" value="pcs" readonly></div>
-            <div class="field"><label>Order increment qty</label><input class="control" value="37" readonly></div>
-            <div class="field"><label>Total PCS per pallet</label><input class="control" value="37" readonly></div>
-            <div class="field"><label>kW per piece</label><input class="control" value="0.50" readonly></div>
-            <div class="field"><label>kW per pallet</label><input class="control" value="18.5" readonly></div>
-            <div class="field"><label>Installer tier visibility</label><input class="control" value="Authorized and above" readonly></div>
-            <div class="field"><label>Country visibility rule</label><input class="control" value="Allow" readonly></div>
-            <div class="field"><label>Brand visibility rule</label><input class="control" value="SunPower only" readonly></div>
-          </div>
-        </div>
-
-        <div class="section">
-          <div class="section-head">
-            <h2 class="section-title">Commercial and stock settings</h2>
-            <span class="hint">Stage 1 price request only</span>
-          </div>
-          <div class="grid">
-            <div class="field"><label>Stock status</label><input class="control" value="In Stock" readonly></div>
-            <div class="field"><label>Available stock qty</label><input class="control" value="740" readonly></div>
-            <div class="field"><label>Show out of stock</label><input class="control" value="Yes" readonly></div>
-            <div class="field"><label>Price visibility</label><input class="control" value="PRICE_REQUEST_ONLY" readonly></div>
-            <div class="field"><label>Tier discount label</label><input class="control" value="Authorized installer benefit" readonly></div>
-            <div class="field"><label>Special request enabled</label><input class="control" value="Enabled" readonly></div>
-            <div class="field"><label>Sales recipient rule</label><input class="control" value="Country based" readonly></div>
-            <div class="field"><label>Notification template</label><input class="control" value="Default price request template" readonly></div>
-            <div class="field"><label>Approval flow type</label><input class="control" value="Existing sales approval" readonly></div>
-          </div>
-        </div>
-
-        <div class="section">
-          <div class="section-head">
-            <h2 class="section-title">Product images</h2>
-            <span class="hint">Editable website asset</span>
-          </div>
-          <div class="image-upload">
-            <div class="image-preview">
-              Current primary image<br>module-500.png
+      <div class="content">
+        <div class="main-column">
+          <section class="section">
+            <div class="section-head">
+              <span class="step">1</span>
+              <h2>Basic Information</h2>
             </div>
-            <div class="upload-box">
-              <strong>Upload product image</strong>
-              <span>Supports JPG, PNG or WebP. The uploaded image can be set as the primary product image for the website list and detail page.</span>
-              <input type="file" accept="image/png,image/jpeg,image/webp">
-              <div class="pill-row"><span class="pill active">Set as primary image</span><span class="pill">Gallery image</span></div>
+            <div class="grid">
+              <div>
+                <label><span class="required">*</span>Product Name</label>
+                <input class="control" value="Residential PV Module">
+              </div>
+              <div>
+                <label><span class="required">*</span>Display Country</label>
+                <select class="control select">
+                  <option>Spain</option>
+                  <option>France</option>
+                  <option>Germany</option>
+                </select>
+              </div>
+              <div>
+                <label>Label (Optional)</label>
+                <select class="control select">
+                  <option>Residential</option>
+                  <option>Commercial</option>
+                  <option>New</option>
+                  <option>Hot</option>
+                </select>
+              </div>
+              <div>
+                <label>Product Tag (Optional)</label>
+                <select class="control select">
+                  <option>Actions</option>
+                  <option>PV Module</option>
+                  <option>Energy Storage</option>
+                </select>
+              </div>
             </div>
-          </div>
-          <table class="table-lite">
-            <thead>
-              <tr>
-                <th>Asset type</th>
-                <th>Configured item</th>
-                <th>Status</th>
-                <th>Operation</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Primary image</td>
-                <td>module-500.png</td>
-                <td><span class="pill ok">Visible</span></td>
-                <td><a class="btn" href="#" style="height:30px;padding:0 12px">Replace</a></td>
-              </tr>
-              <tr>
-                <td>Datasheet</td>
-                <td>SPR-BE54-HD500-datasheet.pdf</td>
-                <td><span class="pill ok">Visible</span></td>
-                <td><a class="btn" href="#" style="height:30px;padding:0 12px">Update</a></td>
-              </tr>
-              <tr>
-                <td>Installation manual</td>
-                <td>SPR-module-installation.pdf</td>
-                <td><span class="pill ok">Visible</span></td>
-                <td><a class="btn" href="#" style="height:30px;padding:0 12px">Update</a></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="grid" style="margin-top:16px">
-            <div class="field span-2"><label>Related SKUs</label><input class="control" value="SPR-P7-515-BLK-P, SPR-RESERVE-1-DC-4-INT" readonly></div>
-            <div class="field"><label>Compatible SKUs</label><input class="control" value="SPR-RESERVE-1-DC-4-INT" readonly></div>
-          </div>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <span class="step">2</span>
+              <h2>Product Images</h2>
+              <span class="section-hint">Recommended ratio 1:1, supports PNG / JPG, up to 6 images.</span>
+            </div>
+            <div class="images">
+              <article class="image-card">
+                <span class="cover">Cover</span>
+                <img src="product-tab-assets/module-500.png" alt="Solar house cover">
+                <div class="image-actions"><button type="button">✎</button><button type="button">⌫</button></div>
+              </article>
+              <article class="image-card">
+                <img src="product-tab-assets/module-515.png" alt="Solar panel detail">
+                <div class="image-actions"><button type="button">✎</button><button type="button">⌫</button></div>
+              </article>
+              <article class="image-card">
+                <img src="product-tab-assets/reserve-kit.png" alt="Solar home system">
+                <div class="image-actions"><button type="button">✎</button><button type="button">⌫</button></div>
+              </article>
+              <button class="add-image" type="button"><span><b>+</b>Add Image</span></button>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <span class="step">3</span>
+              <h2>Frontend Display</h2>
+              <span class="section-hint">Content in this section will be shown on the frontend product detail page.</span>
+            </div>
+            <div class="frontend-grid">
+              <div>
+                <label>Overview <span class="section-hint">(Optional)</span> ⓘ</label>
+                <div class="field-note">Leave blank to hide this section on the frontend.</div>
+                <textarea class="textarea">Controlled autosize</textarea>
+                <div class="counter">18 / 500</div>
+              </div>
+              <div>
+                <label>Preview</label>
+                <div class="preview">
+                  <h3>Residential PV Module</h3>
+                  <p>Controlled autosize</p>
+                  <div class="download-preview-title">Download Files</div>
+                  <div class="preview-file"><span>Product Datasheet</span><span>⇩</span></div>
+                  <div class="preview-file"><span>Product Certification</span><span>⇩</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:24px">
+              <label>Downloads <span class="section-hint">(Optional)</span></label>
+              <div class="field-note">Leave blank to hide this section on the frontend.</div>
+              <table class="download-table">
+                <tbody>
+                  <tr>
+                    <td>Product Datasheet</td>
+                    <td class="file">▣ datasheet.pdf&nbsp;&nbsp; 1.2MB</td>
+                    <td style="width:110px"><button class="small-btn">Replace</button></td>
+                  </tr>
+                  <tr>
+                    <td>Product Certification</td>
+                    <td class="file">▣ certification.pdf&nbsp;&nbsp; 845KB</td>
+                    <td><button class="small-btn">Replace</button></td>
+                  </tr>
+                  <tr>
+                    <td>Product Warranty</td>
+                    <td class="file">▣ warranty.pdf&nbsp;&nbsp; 1.1MB</td>
+                    <td><button class="small-btn">Replace</button></td>
+                  </tr>
+                  <tr>
+                    <td>Other Files <span class="section-hint">(Optional)</span></td>
+                    <td class="file">No file uploaded</td>
+                    <td><button class="small-btn">Upload</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="section">
+            <div class="section-head">
+              <span class="step">4</span>
+              <h2>SKU Information</h2>
+              <span class="lock">♙ Synced from ARK, not editable</span>
+              <span class="collapse">Collapse ︿</span>
+            </div>
+            <div class="grid three">
+              <div>
+                <label>Applicable Country</label>
+                <input class="control readonly" value="Spain" readonly>
+              </div>
+              <div>
+                <label>Brand</label>
+                <input class="control readonly" value="SunPower" readonly>
+              </div>
+              <div>
+                <label>Product Type</label>
+                <input class="control readonly" value="PV Module" readonly>
+              </div>
+              <div>
+                <label>Product Model</label>
+                <input class="control readonly" value="SPR-BE54-HD500" readonly>
+              </div>
+              <div>
+                <label>Item Number</label>
+                <input class="control readonly" value="930920494" readonly>
+              </div>
+              <div class="span-3">
+                <label>Product Description (EN)</label>
+                <textarea class="textarea readonly" readonly>---</textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="section technical-closed">
+            <div class="section-head">
+              <span class="step">5</span>
+              <h2>Technical Information</h2>
+              <span class="lock">♙ Synced from ARK, not editable</span>
+              <span class="collapse">Collapse ︿</span>
+            </div>
+          </section>
         </div>
 
-        <div class="actions">
-          <div class="left-actions">
-            <button class="btn danger">Disable config</button>
-            <button class="btn">Copy as new</button>
-          </div>
-          <div class="right-actions">
-            <a class="btn" href="sunpower-product-admin.html">Cancel</a>
-            <button class="btn">Save draft</button>
-            <button class="btn primary">Update and publish</button>
-          </div>
-        </div>
-      </section>
+        <aside class="right-column">
+          <section class="stock-card" aria-label="Stock Information">
+            <div class="stock-head">
+              <h2>Stock Information</h2>
+              <div class="sync">Synced from ARK<br>Jul 08, 2026 16:00</div>
+            </div>
 
-      <aside class="card aside">
-        <h2>Record status</h2>
-        <div class="stats">
-          <div class="stat">
-            <strong>Visibility scope</strong>
-            <span>Spain + SunPower + SKU `SPR-BE54-HD500`</span>
-          </div>
-          <div class="stat">
-            <strong>Current website behavior</strong>
-            <span>Visible in list page, visible in detail page, request-only pricing, pallet increment 37 pcs.</span>
-          </div>
-          <div class="stat">
-            <strong>Last published</strong>
-            <span>2026-06-15 10:42 by Xin296</span>
-          </div>
-        </div>
+            <div class="stock-label">Stock Status</div>
+            <div class="stock-ok">In Stock</div>
 
-        <div style="margin-top:18px; padding-top:18px; border-top:1px solid #eef2f9">
-          <h2 style="font-size:16px; margin:0 0 12px">Change history</h2>
-          <div class="timeline">
-            <div class="event">
-              <strong>2026-06-15 10:42 · MOQ update</strong>
-              Order increment confirmed as `37 pcs` to align with pallet rule in Spain.
+            <div class="quantity">
+              <span>Total Available Quantity</span>
+              <strong>740</strong>
+              <div>pcs</div>
             </div>
-            <div class="event">
-              <strong>2026-06-15 09:58 · Detail page assets added</strong>
-              Datasheet and installation manual attached for detail page download area.
+
+            <div class="warehouse-title">Available Stock by Warehouse</div>
+            <div class="warehouse-list">
+              <div class="warehouse-row"><span>W75</span><span>340 pcs</span></div>
+              <div class="warehouse-row"><span>W72 (NL)</span><span>500 pcs</span></div>
+              <div class="warehouse-row"><span>CN</span><span>0 pcs</span></div>
+              <div class="warehouse-row"><span>DE</span><span>0 pcs</span></div>
+              <div class="warehouse-row"><span>FR</span><span>0 pcs</span></div>
+              <div class="warehouse-row"><span>ES</span><span>0 pcs</span></div>
             </div>
-            <div class="event">
-              <strong>2026-06-14 18:26 · Initial visibility rule</strong>
-              Country and brand visibility enabled for SunPower installer accounts only.
-            </div>
-          </div>
-        </div>
-      </aside>
+
+            <div class="stock-note"><span>ⓘ</span><span>Stock data is synchronized<br>every 15 minutes.</span></div>
+          </section>
+        </aside>
+      </div>
+    </section>
+
+    <div class="bottom-note">
+      <span class="info-dot">i</span>
+      <span><strong>Note:</strong> If Overview or Downloads is left blank, the corresponding section will not be displayed on the frontend.</span>
     </div>
   </main>
 </body>

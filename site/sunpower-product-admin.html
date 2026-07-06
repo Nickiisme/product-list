@@ -567,6 +567,199 @@
       font-size: 20px;
     }
 
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(34, 43, 61, 0.46);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      z-index: 20;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .warehouse-modal {
+      width: min(1120px, 100%);
+      max-height: calc(100vh - 56px);
+      overflow: hidden;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 28px 80px rgba(25, 34, 54, 0.24);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      padding: 22px 28px 16px;
+      border-bottom: 1px solid #eef2f8;
+    }
+
+    .modal-head h2 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .modal-copy {
+      margin: 0;
+      color: #697181;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid #e0e6f1;
+      background: #fff;
+      color: #384154;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .modal-body {
+      overflow: auto;
+      padding: 26px 28px 28px;
+    }
+
+    .mapping-table {
+      width: 100%;
+      min-width: 920px;
+      border-collapse: collapse;
+      table-layout: fixed;
+      border: 1px solid #e5ebf5;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .mapping-table th {
+      background: #f4f6fb;
+      color: #4b556b;
+      font-size: 16px;
+      padding: 18px 16px;
+      border-bottom: 1px solid #dfe6f1;
+    }
+
+    .mapping-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #e6ebf4;
+      vertical-align: middle;
+    }
+
+    .mapping-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .mapping-form-row {
+      background: #fbfcff;
+    }
+
+    .map-control {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid #d8e0ee;
+      border-radius: 8px;
+      background: #fff;
+      color: #334057;
+      padding: 0 12px;
+      font-weight: 700;
+    }
+
+    .warehouse-select {
+      height: 108px;
+      padding: 8px 12px;
+    }
+
+    .toggle {
+      width: 56px;
+      height: 30px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--blue);
+      position: relative;
+      vertical-align: middle;
+    }
+
+    .toggle::after {
+      content: "";
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(24, 38, 75, 0.2);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .country-name {
+      font-weight: 800;
+      color: #334057;
+    }
+
+    .warehouse-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .warehouse-tag {
+      display: inline-flex;
+      align-items: center;
+      height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      color: #315bea;
+      background: #eef3ff;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .map-status {
+      display: inline-flex;
+      align-items: center;
+      height: 30px;
+      padding: 0 12px;
+      border-radius: 999px;
+      font-weight: 800;
+    }
+
+    .map-status.enabled {
+      color: #168a55;
+      background: #e8f8ef;
+    }
+
+    .map-status.disabled {
+      color: #b96a14;
+      background: #fff3e4;
+    }
+
+    .modal-op {
+      color: var(--blue);
+      font-weight: 800;
+      margin-right: 18px;
+    }
+
+    .modal-op.delete {
+      color: #ff6f73;
+    }
+
     @media (max-width: 1400px) {
       .filters {
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -613,6 +806,10 @@
       .pagination {
         align-items: stretch;
         justify-content: flex-start;
+      }
+
+      .modal-backdrop {
+        padding: 14px;
       }
     }
   </style>
@@ -728,6 +925,7 @@
         <button class="btn">Export batch template</button>
         <button class="btn danger">Reset to default</button>
         <button class="btn primary">Batch update</button>
+        <button class="btn" id="warehouse-config-open" type="button">Country & Warehouse</button>
         <button class="btn">Publish config</button>
       </div>
 
@@ -911,6 +1109,102 @@
     </section>
   </main>
 
+  <div class="modal-backdrop" id="warehouse-config-modal" role="dialog" aria-modal="true" aria-labelledby="warehouse-config-title">
+    <section class="warehouse-modal">
+      <div class="modal-head">
+        <div>
+          <h2 id="warehouse-config-title">Country &amp; Warehouse</h2>
+          <p class="modal-copy">Maintain country and warehouse relation for the selected product.</p>
+        </div>
+        <button class="modal-close" id="warehouse-config-close" type="button" aria-label="Close">×</button>
+      </div>
+
+      <div class="modal-body">
+        <table class="mapping-table" aria-label="Country and warehouse mapping">
+          <thead>
+            <tr>
+              <th style="width:180px">Region</th>
+              <th>Warehouse</th>
+              <th style="width:150px">Status</th>
+              <th style="width:190px">Updated time</th>
+              <th style="width:170px">Operation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="mapping-form-row">
+              <td>
+                <select class="map-control">
+                  <option>Spain</option>
+                  <option>France</option>
+                  <option>Germany</option>
+                  <option>Netherlands</option>
+                </select>
+              </td>
+              <td>
+                <select class="map-control warehouse-select" multiple>
+                  <option selected>W75</option>
+                  <option selected>W72 (NL)</option>
+                  <option>W61 (DE)</option>
+                  <option>W88 (HK)</option>
+                </select>
+              </td>
+              <td><button class="toggle" type="button" aria-label="Enabled"></button></td>
+              <td></td>
+              <td>
+                <div class="modal-actions">
+                  <button class="btn primary" type="button">Apply</button>
+                  <button class="btn" type="button">Clear</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="country-name">Spain</td>
+              <td><div class="warehouse-tags"><span class="warehouse-tag">W75</span><span class="warehouse-tag">W72 (NL)</span></div></td>
+              <td><span class="map-status enabled">Enabled</span></td>
+              <td>2026/07/08 16:00</td>
+              <td><span class="modal-op">Edit</span><span class="modal-op delete">Delete</span></td>
+            </tr>
+            <tr>
+              <td class="country-name">Netherlands</td>
+              <td><div class="warehouse-tags"><span class="warehouse-tag">W72 (NL)</span></div></td>
+              <td><span class="map-status enabled">Enabled</span></td>
+              <td>2026/07/08 15:42</td>
+              <td><span class="modal-op">Edit</span><span class="modal-op delete">Delete</span></td>
+            </tr>
+            <tr>
+              <td class="country-name">Germany</td>
+              <td><div class="warehouse-tags"><span class="warehouse-tag">W75</span><span class="warehouse-tag">W61 (DE)</span></div></td>
+              <td><span class="map-status enabled">Enabled</span></td>
+              <td>2026/07/07 19:18</td>
+              <td><span class="modal-op">Edit</span><span class="modal-op delete">Delete</span></td>
+            </tr>
+            <tr>
+              <td class="country-name">Hong Kong</td>
+              <td><div class="warehouse-tags"><span class="warehouse-tag">W88 (HK)</span></div></td>
+              <td><span class="map-status disabled">Disabled</span></td>
+              <td>2026/07/06 11:09</td>
+              <td><span class="modal-op">Edit</span><span class="modal-op delete">Delete</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
   <div class="floating">⌁</div>
+  <script>
+    const warehouseConfigModal = document.getElementById("warehouse-config-modal");
+    document.getElementById("warehouse-config-open").addEventListener("click", () => {
+      warehouseConfigModal.classList.add("open");
+    });
+    document.getElementById("warehouse-config-close").addEventListener("click", () => {
+      warehouseConfigModal.classList.remove("open");
+    });
+    warehouseConfigModal.addEventListener("click", (event) => {
+      if (event.target === warehouseConfigModal) {
+        warehouseConfigModal.classList.remove("open");
+      }
+    });
+  </script>
 </body>
 </html>
