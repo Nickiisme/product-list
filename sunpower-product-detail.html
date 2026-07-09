@@ -154,9 +154,7 @@
 
     .hero {
       border-radius: 8px;
-      background:
-        radial-gradient(circle at 85% 15%, rgba(255,255,255,0.32), transparent 26%),
-        linear-gradient(108deg, #ffffff 0%, #fcfcff 49%, #eef3ff 100%);
+      background: #eef3ff;
       border: 1px solid rgba(231, 233, 239, 0.78);
       padding: 24px;
       box-shadow: 0 1px 0 rgba(16, 24, 40, 0.03);
@@ -184,19 +182,36 @@
 
     .gallery-main {
       position: relative;
-      min-height: 430px;
-      background:
-        linear-gradient(180deg, #f5f8ff 0%, #ffffff 100%);
+      min-height: 450px;
+      background: linear-gradient(180deg, #f7faff 0%, #ffffff 100%);
       display: grid;
       place-items: center;
       padding: 24px;
     }
 
-    .gallery-main img {
-      max-width: 100%;
-      max-height: 460px;
-      object-fit: contain;
-      display: block;
+    .gallery-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: 360px;
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(247,250,255,0.3), rgba(255,255,255,0.92)),
+        #f8fbff;
+      display: grid;
+      place-items: center;
+      color: #9aa4b5;
+      font-size: 15px;
+      font-weight: 800;
+      text-align: center;
+      transition: background 180ms ease, color 180ms ease;
+    }
+
+    .gallery-placeholder[data-view="datasheet"],
+    .gallery-placeholder[data-view="warranty"] {
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.9), rgba(241,244,255,0.95)),
+        #f7f9ff;
+      color: #667085;
     }
 
     .zoom-chip,
@@ -246,20 +261,20 @@
       display: grid;
       place-items: center;
       overflow: hidden;
+      cursor: pointer;
+      transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    }
+    .thumb:hover {
+      border-color: #8fa4ff;
+      transform: translateY(-1px);
     }
     .thumb.active {
       border-color: var(--blue);
       box-shadow: inset 0 0 0 1px var(--blue);
     }
-    .thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      padding: 10px;
-      background: #f9fbff;
-    }
     .thumb-doc,
-    .thumb-tech {
+    .thumb-tech,
+    .thumb-blank {
       width: 100%;
       height: 100%;
       padding: 12px;
@@ -268,6 +283,9 @@
       justify-content: center;
       gap: 8px;
       background: linear-gradient(135deg, #fcfcff, #f1f4ff);
+    }
+    .thumb-blank {
+      background: #f9fbff;
     }
     .thumb-line {
       height: 7px;
@@ -294,7 +312,7 @@
 
     .heading-card {
       padding: 24px;
-      min-height: 583px;
+      min-height: 580px;
     }
 
     .eyebrow {
@@ -332,6 +350,8 @@
     }
 
     .meta-pill {
+      display: inline-flex;
+      align-items: center;
       padding: 8px 12px;
       border-radius: 999px;
       border: 1px solid #dfe4ef;
@@ -339,6 +359,19 @@
       color: #344155;
       font-size: 12px;
       font-weight: 700;
+    }
+    .meta-pill.stock {
+      color: var(--green);
+      background: #e9f7ee;
+      border-color: #d8efdf;
+    }
+    .meta-pill.new {
+      min-width: 68px;
+      justify-content: center;
+      color: #fff;
+      background: #14a349;
+      border-color: #14a349;
+      text-align: center;
     }
 
     .quick-specs {
@@ -437,7 +470,7 @@
       background: #f7f8fb;
       color: var(--blue);
       font-size: 22px;
-      cursor: default;
+      cursor: pointer;
     }
 
     .cta-row {
@@ -748,10 +781,15 @@
       font-size: 13px;
     }
 
+    .download-btn.is-downloaded {
+      color: var(--green);
+    }
+
     .sticky-aside {
       position: sticky;
       top: 82px;
       padding: 20px;
+      min-height: 556px;
     }
 
     .aside-section + .aside-section {
@@ -802,6 +840,13 @@
       align-items: center;
       border-bottom: 1px solid var(--line);
       padding-bottom: 10px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 160ms ease;
+    }
+
+    .compat-row:hover {
+      background: #f8faff;
     }
 
     .compat-row:last-child {
@@ -834,6 +879,14 @@
       color: var(--muted);
       font-size: 12px;
       line-height: 1.4;
+    }
+
+    .interaction-note {
+      min-height: 18px;
+      margin-top: 10px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
     }
 
     .footer {
@@ -906,7 +959,7 @@
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="sunpower-products-tab.html">
+    <a class="brand" href="sunpower-products-list.html">
       <span class="tcl">TCL</span>
       <span class="divider"></span>
       <span class="sunpower">SUNPOWER</span>
@@ -919,7 +972,7 @@
       <a href="#">Academy</a>
       <a href="#">Live training</a>
       <a href="#">Monitoring</a>
-      <a class="active" href="sunpower-products-tab.html">Products</a>
+      <a class="active" href="sunpower-products-list.html">Products</a>
     </nav>
     <div class="actions">
       <span class="icon" aria-label="Language">
@@ -936,7 +989,7 @@
 
   <main class="page">
     <nav class="crumbs" aria-label="Breadcrumb">
-      <a href="sunpower-products-tab.html">Products</a>
+      <a href="sunpower-products-list.html">Products</a>
       <span>›</span>
       <span>PV Modules</span>
       <span>›</span>
@@ -950,26 +1003,25 @@
         <div class="left-column">
         <div class="gallery">
           <div class="gallery-main">
-            <span class="status-chip">In Stock</span>
-            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAGkCAIAAAAuegPJAAAoUklEQVR4nO3dd3hUZdrH8ZlkIAmEABIJRapGiiXCinRQEEERxIJgX6UsYsHyuqJiw7ZYUBFRooKyyKIIKogEAVFUFpAiIoYmJUgCJLT0Pu8Vh51MKsPMmXnu85zv5+KPaWfO3Odm8ntOHXt2bqENAAAEV0iQ5wcAAAhgAADUYA0YAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABRwOFXMFQAAi2MNGAAABQhgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAGHjStxAAAQdKwBAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAo4+DlgAACCjzVgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAGH06litgAAWBtrwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIAt+P4fSHpdmzHxf0oAAAAASUVORK5CYII=" alt="SunPower SPR-BE54-HD500 module">
+            <div class="gallery-placeholder" data-gallery-stage data-view="front">Front module preview</div>
           </div>
           <div class="thumbs">
-            <div class="thumb active"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAGkCAIAAAAuegPJAAAoUklEQVR4nO3dd3hUZdrH8ZlkIAmEABIJRapGiiXCinRQEEERxIJgX6UsYsHyuqJiw7ZYUBFRooKyyKIIKogEAVFUFpAiIoYmJUgCJLT0Pu8Vh51MKsPMmXnu85zv5+KPaWfO3Odm8ntOHXt2bqENAAAEV0iQ5wcAAAhgAADUYA0YAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABRwOFXMFQAAi2MNGAAABQhgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAGHjStxAAAQdKwBAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAo4+DlgAACCjzVgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAGH06litgAAWBtrwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIAt+P4fSHpdmzHxf0oAAAAASUVORK5CYII=" alt="Main module view"></div>
-            <div class="thumb"><img src="data:image/png;base64,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" alt="Rear module view"></div>
-            <div class="thumb">
+            <button class="thumb active" type="button" data-gallery-view="front" aria-label="Show front module preview"><div class="thumb-blank"></div></button>
+            <button class="thumb" type="button" data-gallery-view="rear" aria-label="Show rear module preview"><div class="thumb-blank"></div></button>
+            <button class="thumb" type="button" data-gallery-view="datasheet" aria-label="Show datasheet preview">
               <div class="thumb-doc">
                 <div class="thumb-line" style="width:92%"></div>
                 <div class="thumb-line" style="width:74%"></div>
                 <div class="thumb-line"></div>
               </div>
-            </div>
-            <div class="thumb">
+            </button>
+            <button class="thumb" type="button" data-gallery-view="warranty" aria-label="Show warranty preview">
               <div class="thumb-tech">
                 <div class="thumb-line"></div>
                 <div class="thumb-line"></div>
                 <div class="thumb-line" style="width:58%"></div>
               </div>
-            </div>
+            </button>
           </div>
         </div>
 
@@ -977,25 +1029,26 @@
 
         <div class="detail-panel">
           <section class="heading-card">
-            <div class="eyebrow" data-product-eyebrow>SunPower Residential PV Module</div>
+            <div class="eyebrow" data-product-eyebrow>Product name</div>
             <h1 data-product-model>SPR-BE54-HD500</h1>
             <div class="subtitle" data-product-description>
-              500 W high efficiency residential module for authorized installers in Spain. Sold in pallet increments with Stage 1 pricing visibility and country-brand permission control.
+              500W high efficiency residential module for authorized installers in Spain. Sold in pallet increments with Stage 1 pricing visibility and country-brand permission control.
             </div>
             <div class="headline-meta">
-              <span class="meta-pill">Product Model:</span>
               <span class="meta-pill" data-product-brand>Brand: SunPower</span>
-              <span class="meta-pill" data-product-type>Type: PV</span>
+              <span class="meta-pill stock">In Stock</span>
+              <span class="meta-pill new">New</span>
             </div>
             <div class="quick-specs" data-quick-specs>
               <div class="quick-spec"><b>500 W</b><span>Billable Watts per module</span></div>
               <div class="quick-spec"><b>1722×1134×30 mm</b><span>Size</span></div>
             </div>
-            <div class="stepper"><button type="button">-</button><span data-stepper-summary>37 pcs · 18.5 kW</span><button type="button">+</button></div>
+            <div class="stepper"><button type="button" data-qty-change="-1" aria-label="Decrease quantity">-</button><span data-stepper-summary>37 pcs · 18.5 kW</span><button type="button" data-qty-change="1" aria-label="Increase quantity">+</button></div>
             <div class="cta-row">
-              <button class="cta" id="detail-add-request" type="button">Get the price</button>
-              <a class="ghost" href="sunpower-products-tab.html" style="display:grid;place-items:center">Back to products</a>
+              <button class="cta" id="detail-add-request" type="button">Add to cart</button>
+              <a class="ghost" href="sunpower-products-list.html" style="display:grid;place-items:center">Back to products</a>
             </div>
+            <div class="interaction-note" id="detail-feedback" aria-live="polite"></div>
           </section>
         </div>
       </div>
@@ -1006,13 +1059,13 @@
         <article class="section-card">
           <h2>Product overview</h2>
           <div class="section-copy">
-            This module detail page is designed for the new Products experience in the installer portal. It follows the current TCL | SunPower visual system, while adopting a more commerce-oriented layout inspired by industrial product detail pages: large image area, direct SKU identification, purchase-condition summary, and fast access to technical files.
+            SPR-BE54-DC485 is a 485 W M Class residential PV module with 1500 V maximum system voltage, designed to increase energy yield from each installed megawatt while protecting long-term performance in real-world site conditions.
           </div>
           <ul class="bullets">
-            <li>Shows SKU identity and product family clearly above the fold.</li>
-            <li>Explains kW logic instead of showing end-customer shopping price.</li>
-            <li>Surfaces MOQ, pallet quantity and request routing before the user asks for pricing.</li>
-            <li>Supports country-brand visibility rules from the new backend configuration.</li>
+            <li><strong>Higher yield per installed MW:</strong> SPR-BE54-DC485 is a 485 W M Class residential PV module with 1500 V maximum system voltage, designed to increase energy yield from each installed megawatt.</li>
+            <li><strong>Stable output in real-world conditions:</strong> Optimized cell and circuit architecture helps maintain production under partial shading and low-light conditions, reducing the risk of yield loss across diverse site environments.</li>
+            <li><strong>Long-term performance protection:</strong> Bifacial, multi-cut module design and durable glass construction support predictable lifetime energy, with low annual degradation for long-term performance security.</li>
+            <li><strong>Extended warranty coverage:</strong> Includes a 25-year product warranty and a 30-year linear power warranty, with up to 99% minimum guaranteed output in year 1 and 0.35% maximum annual degradation.</li>
           </ul>
         </article>
 
@@ -1020,17 +1073,33 @@
           <h2>Technical specification</h2>
           <table class="spec-table" aria-label="Technical specification">
             <tbody data-spec-table>
-            <tr><th>Product model</th><td>SPR-BE54-HD500</td></tr>
-            <tr><th>Display mode</th><td>kW</td></tr>
             <tr><th>Billable Watts(W)</th><td>500 W</td></tr>
-            <tr><th>kW per piece</th><td>0.50 kW</td></tr>
-            <tr><th>Total PCS per pallet</th><td>37 pcs</td></tr>
-            <tr><th>kW per pallet</th><td>18.5 kW</td></tr>
-            <tr><th>MOQ</th><td>37 pcs / 1 pallet</td></tr>
-            <tr><th>Applicable countries</th><td>Spain, Portugal, Italy, France</td></tr>
-            <tr><th>Brand visibility</th><td>SunPower installers only</td></tr>
-            <tr><th>Inventory status</th><td>In Stock</td></tr>
-            <tr><th>Price visibility</th><td>PRICE_REQUEST_ONLY</td></tr>
+            <tr><th>Customs Declaration Name(EN)</th><td>Solar module</td></tr>
+            <tr><th>Unit of measure</th><td>PC</td></tr>
+            <tr><th>Connector</th><td>MC4 compatible</td></tr>
+            <tr><th>Product Color</th><td>Black</td></tr>
+            <tr><th>Product Net Weight (KG)</th><td>21.2 KG</td></tr>
+            <tr><th>Product Gross Weight (KG)</th><td>23.5 KG</td></tr>
+            <tr><th>Gross weight per pallet(KG)</th><td>909.5 KG</td></tr>
+            <tr><th>Gross weight per pallet(KG) (excluding products)</th><td>40 KG</td></tr>
+            <tr><th>Original Country of Manufacture</th><td>China</td></tr>
+            <tr><th>With SN Outbound(Y/N)</th><td>Y</td></tr>
+            <tr><th>Product Dimensions (Length, mm)</th><td>1722</td></tr>
+            <tr><th>Product Dimensions (Width, mm)</th><td>1134</td></tr>
+            <tr><th>Product Dimensions (Height, mm)</th><td>30</td></tr>
+            <tr><th>Backsheet</th><td>GLASS,White glazing</td></tr>
+            <tr><th>Cell Color</th><td>BLUE</td></tr>
+            <tr><th>Cell Technology</th><td>BC</td></tr>
+            <tr><th>Module Technology</th><td>Half-Cuts</td></tr>
+            <tr><th>Glass Type</th><td>Tempered glass</td></tr>
+            <tr><th>Class</th><td>Class II</td></tr>
+            <tr><th>Platform</th><td>Performance 7</td></tr>
+            <tr><th>Product Warranty(yrs)</th><td>25</td></tr>
+            <tr><th>Performance Warranty(yrs)</th><td>30</td></tr>
+            <tr><th>1st year + degradation</th><td>98.0% first year / -0.25% yearly</td></tr>
+            <tr><th>Total PCS per Pallet</th><td>37 pcs</td></tr>
+            <tr><th>Total Pallets per 40HQ Container</th><td>26 pallets</td></tr>
+            <tr><th>Total Pallets per 20GP Container</th><td>10 pallets</td></tr>
             </tbody>
           </table>
         </article>
@@ -1043,21 +1112,21 @@
                 <strong>Product datasheet</strong>
                 <span>PDF · Core module information for installer review</span>
               </div>
-              <a class="download-btn" href="#">Download</a>
+              <a class="download-btn" href="#" data-download="Product datasheet">Download</a>
             </div>
             <div class="download-item">
               <div>
                 <strong>Product certification</strong>
                 <span>PDF · Mounting, wiring and handling instructions</span>
               </div>
-              <a class="download-btn" href="#">Download</a>
+              <a class="download-btn" href="#" data-download="Product certification">Download</a>
             </div>
             <div class="download-item">
               <div>
                 <strong>Warranty terms</strong>
                 <span>PDF · Country dependent warranty and compliance notes</span>
               </div>
-              <a class="download-btn" href="#">Download</a>
+              <a class="download-btn" href="#" data-download="Warranty terms">Download</a>
             </div>
           </div>
         </article>
@@ -1067,15 +1136,15 @@
         <section class="aside-section">
           <h3 class="aside-title">Compatible and related</h3>
           <div class="compat-list">
-            <div class="compat-row">
+            <div class="compat-row" data-related-product="SPR-P7-515-BLK-P" role="button" tabindex="0">
               <div class="compat-thumb" aria-hidden="true"></div>
               <div>
                 <strong>SPR-P7-515-BLK-P</strong>
                 <span>Higher wattage module in the same catalog family.</span>
               </div>
             </div>
-            <div class="compat-row">
-              <img src="data:image/png;base64,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" alt="Reserve storage kit">
+            <div class="compat-row" data-related-product="SPR-RESERVE-1-DC-4-INT" role="button" tabindex="0">
+              <div class="compat-thumb" aria-hidden="true"></div>
               <div>
                 <strong>SPR-RESERVE-1-DC-4-INT</strong>
                 <span>Storage kit commonly paired in bundled proposals.</span>
@@ -1099,29 +1168,44 @@
   <script>
     const productExamples = {
       pv: {
-        eyebrow: "SunPower Residential PV Module",
+        eyebrow: "Product name",
         model: "SPR-BE54-HD500",
         brand: "Brand: SunPower",
         type: "Type: PV",
-        description: "500 W high efficiency residential module for authorized installers in Spain. Sold in pallet increments with kW visibility and country-brand permission control.",
+        description: "500W high efficiency residential module for authorized installers in Spain. Sold in pallet increments with Stage 1 pricing visibility and country-brand permission control.",
         quickSpecs: [
           ["500 W", "Billable Watts per module"],
           ["1722×1134×30 mm", "Size"]
         ],
         stepper: "37 pcs · 18.5 kW",
         specs: [
-          ["Product model", "SPR-BE54-HD500"],
-          ["Product type", "PV"],
-          ["Display mode", "kW"],
           ["Billable Watts(W)", "500 W"],
-          ["kW per piece", "0.50 kW"],
-          ["Total PCS per pallet", "37 pcs"],
-          ["kW per pallet", "18.5 kW"],
-          ["MOQ", "37 pcs / 1 pallet"],
-          ["Applicable countries", "Spain, Portugal, Italy, France"],
-          ["Brand visibility", "SunPower installers only"],
-          ["Inventory status", "In Stock"],
-          ["Price visibility", "PRICE_REQUEST_ONLY"]
+          ["Customs Declaration Name(EN)", "Solar module"],
+          ["Unit of measure", "PC"],
+          ["Connector", "MC4 compatible"],
+          ["Product Color", "Black"],
+          ["Product Net Weight (KG)", "21.2 KG"],
+          ["Product Gross Weight (KG)", "23.5 KG"],
+          ["Gross weight per pallet(KG)", "909.5 KG"],
+          ["Gross weight per pallet(KG) (excluding products)", "40 KG"],
+          ["Original Country of Manufacture", "China"],
+          ["With SN Outbound(Y/N)", "Y"],
+          ["Product Dimensions (Length, mm)", "1722"],
+          ["Product Dimensions (Width, mm)", "1134"],
+          ["Product Dimensions (Height, mm)", "30"],
+          ["Backsheet", "GLASS,White glazing"],
+          ["Cell Color", "BLUE"],
+          ["Cell Technology", "BC"],
+          ["Module Technology", "Half-Cuts"],
+          ["Glass Type", "Tempered glass"],
+          ["Class", "Class II"],
+          ["Platform", "Performance 7"],
+          ["Product Warranty(yrs)", "25"],
+          ["Performance Warranty(yrs)", "30"],
+          ["1st year + degradation", "98.0% first year / -0.25% yearly"],
+          ["Total PCS per Pallet", "37 pcs"],
+          ["Total Pallets per 40HQ Container", "26 pallets"],
+          ["Total Pallets per 20GP Container", "10 pallets"]
         ]
       },
       btp: {
@@ -1208,7 +1292,8 @@
       document.querySelector("[data-product-eyebrow]").textContent = product.eyebrow;
       document.querySelector("[data-product-model]").textContent = product.model;
       document.querySelector("[data-product-brand]").textContent = product.brand;
-      document.querySelector("[data-product-type]").textContent = product.type;
+      const productTypeNode = document.querySelector("[data-product-type]");
+      if (productTypeNode) productTypeNode.textContent = product.type;
       document.querySelector("[data-product-description]").textContent = product.description;
       document.querySelector("[data-stepper-summary]").textContent = product.stepper;
       document.querySelector("[data-quick-specs]").innerHTML = product.quickSpecs
@@ -1222,10 +1307,71 @@
     renderProduct("pv");
 
     const detailAddRequest = document.getElementById("detail-add-request");
+    const detailFeedback = document.getElementById("detail-feedback");
+    const stepperSummary = document.querySelector("[data-stepper-summary]");
+    const galleryStage = document.querySelector("[data-gallery-stage]");
+    const galleryLabels = {
+      front: "Front module preview",
+      rear: "Rear module preview",
+      datasheet: "Datasheet preview",
+      warranty: "Warranty preview"
+    };
+    let quantity = 37;
+    const quantityStep = 37;
+    const kwPerPiece = 0.5;
+
+    const updateQuantity = () => {
+      const totalKw = quantity * kwPerPiece;
+      stepperSummary.textContent = `${quantity} pcs · ${totalKw.toFixed(1).replace(/\.0$/, "")} kW`;
+      detailAddRequest.disabled = false;
+      detailAddRequest.textContent = "Add to cart";
+      detailFeedback.textContent = "";
+    };
+
+    document.querySelectorAll("[data-gallery-view]").forEach((thumb) => {
+      thumb.addEventListener("click", () => {
+        document.querySelectorAll("[data-gallery-view]").forEach((item) => item.classList.remove("active"));
+        thumb.classList.add("active");
+        const view = thumb.dataset.galleryView;
+        galleryStage.dataset.view = view;
+        galleryStage.textContent = galleryLabels[view];
+      });
+    });
+
+    document.querySelectorAll("[data-qty-change]").forEach((button) => {
+      button.addEventListener("click", () => {
+        quantity = Math.max(quantityStep, quantity + Number(button.dataset.qtyChange) * quantityStep);
+        updateQuantity();
+      });
+    });
 
     detailAddRequest.addEventListener("click", () => {
-      detailAddRequest.textContent = "Request submitted";
+      detailAddRequest.textContent = "Added to cart";
       detailAddRequest.disabled = true;
+      detailFeedback.textContent = `${quantity} pcs added to the request cart.`;
+    });
+
+    document.querySelectorAll("[data-download]").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        link.textContent = "Downloaded";
+        link.classList.add("is-downloaded");
+        detailFeedback.textContent = `${link.dataset.download} is ready for review.`;
+      });
+    });
+
+    document.querySelectorAll("[data-related-product]").forEach((card) => {
+      const selectRelated = () => {
+        detailFeedback.textContent = `${card.dataset.relatedProduct} selected from related products.`;
+        card.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      };
+      card.addEventListener("click", selectRelated);
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          selectRelated();
+        }
+      });
     });
   </script>
 </body>
