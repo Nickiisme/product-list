@@ -169,11 +169,11 @@
     .page {
       max-width: 1460px;
       margin: 0 auto;
-      padding: 18px 24px 46px;
+      padding: 18px 24px 0;
     }
 
     .hero {
-      min-height: 230px;
+      min-height: 332px;
       border-radius: 0;
       color: #fff;
       overflow: hidden;
@@ -181,13 +181,13 @@
         radial-gradient(circle at 86% 20%, rgba(255,255,255,0.22), transparent 30%),
         linear-gradient(106deg, var(--purple) 0%, var(--purple) 55%, #2637aa 55%, #0032a0 100%);
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.05fr 0.95fr;
       align-items: stretch;
       position: relative;
     }
 
     .hero-copy {
-      padding: 42px 50px;
+      padding: 44px 50px;
       position: relative;
       z-index: 1;
     }
@@ -225,7 +225,7 @@
 
     .hero-art {
       position: relative;
-      min-height: 230px;
+      min-height: 332px;
     }
 
     .floating-card {
@@ -240,8 +240,8 @@
     .doc-card {
       width: 255px;
       height: 160px;
-      top: 30px;
-      left: 54px;
+      top: 64px;
+      left: 60px;
       transform: rotate(-18deg);
       padding: 18px;
     }
@@ -264,8 +264,8 @@
     .module-card {
       width: 270px;
       height: 155px;
-      right: 40px;
-      top: 34px;
+      right: 28px;
+      top: 54px;
       transform: rotate(13deg);
       padding: 14px;
     }
@@ -292,7 +292,7 @@
       width: 300px;
       height: 126px;
       right: 164px;
-      bottom: 20px;
+      bottom: 18px;
       transform: rotate(-3deg);
       padding: 18px;
       display: flex;
@@ -320,7 +320,7 @@
       display: grid;
       grid-template-columns: minmax(0, 1fr) 348px;
       gap: 16px;
-      margin-top: 10px;
+      margin-top: 12px;
       align-items: start;
     }
 
@@ -332,7 +332,7 @@
     }
 
     .filters {
-      padding: 18px;
+      padding: 18px 18px 20px;
       margin: 10px 0 16px;
     }
 
@@ -344,7 +344,7 @@
     }
 
     .search {
-      grid-column: span 2;
+      grid-column: span 3;
     }
 
     .search,
@@ -384,6 +384,7 @@
 
     .filter-search-btn {
       min-height: 46px;
+      grid-column: 5;
       border: 0;
       border-radius: 7px;
       background: var(--blue);
@@ -393,6 +394,21 @@
       cursor: pointer;
       padding: 0 18px;
     }
+
+    .filters-row .is-hidden {
+      display: none;
+    }
+
+    .select:has(#country-filter) { order: 2; }
+    .select:has(#brand-filter) { order: 3; }
+    .select:has(#type-filter) { order: 4; }
+    .select:has(#subcategory-filter) { order: 5; }
+    .select:has(#backsheet-filter) { order: 6; }
+    .select:has(#cell-color-filter) { order: 7; }
+    .select:has(#warranty-filter) { order: 8; }
+    .select:has(#cell-tech-filter) { order: 9; }
+    .select:has(#module-tech-filter) { order: 10; }
+    .filter-search-btn { order: 11; }
 
     .filters small {
       display: block;
@@ -430,6 +446,25 @@
       color: #4a505f;
     }
 
+    .status-chip {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 2;
+      min-width: 73px;
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: #14a349;
+      border: 1px solid #14a349;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
     .section-title {
       display: flex;
       justify-content: space-between;
@@ -452,7 +487,7 @@
     .products {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
+      gap: 16px;
       align-content: start;
     }
 
@@ -461,6 +496,10 @@
       display: flex;
       flex-direction: column;
       min-height: 610px;
+      border: 1px solid #e6eaf2;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 10px 28px rgba(17, 24, 39, 0.04);
     }
 
     .product img {
@@ -468,16 +507,27 @@
     }
 
     .product-visual {
-      min-height: 222px;
-      aspect-ratio: 338 / 222;
-      padding: 56px 18px 20px;
+      min-height: 230px;
+      aspect-ratio: 338 / 230;
+      padding: 44px 18px 54px;
       display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
+      flex-direction: column;
+      justify-content: center;
       background:
-        linear-gradient(135deg, rgba(255,255,255,0.56), rgba(255,255,255,0.12)),
-        linear-gradient(135deg, #eef2f8 0%, #e7edf6 100%);
+        radial-gradient(circle at 72% 20%, rgba(255,255,255,0.9), transparent 28%),
+        linear-gradient(135deg, rgba(255,255,255,0.72), rgba(255,255,255,0.08)),
+        linear-gradient(135deg, #edf3fb 0%, #e6eef8 100%);
       color: #172033;
+    }
+
+    .visual-sku {
+      color: rgba(47, 48, 51, 0.18);
+      font-size: 43px;
+      line-height: 0.98;
+      font-weight: 900;
+      letter-spacing: 0;
+      max-width: 240px;
+      word-break: break-word;
     }
 
     .visual-panel {
@@ -525,12 +575,13 @@
     .product-media-link {
       display: block;
       background: #f5f7fb;
-      min-height: 222px;
-      aspect-ratio: 338 / 222;
+      min-height: 230px;
+      aspect-ratio: 338 / 230;
+      border-bottom: 1px solid #eef1f6;
     }
 
     .product-body {
-      padding: 18px;
+      padding: 18px 18px 20px;
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -559,9 +610,10 @@
 
     .product h3 {
       margin: 0;
-      font-size: 21px;
+      font-size: 20px;
       line-height: 1.15;
       color: #262a31;
+      letter-spacing: 0;
     }
 
     .product-title-link {
@@ -596,14 +648,14 @@
       position: absolute;
       left: 16px;
       right: 16px;
-      bottom: 12px;
+      bottom: 20px;
       z-index: 2;
       min-height: 28px;
       display: flex;
       align-items: center;
       padding: 7px 11px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.95);
+      background: rgba(255,255,255,0.96);
       border: 1px solid rgba(223,228,239,0.95);
       box-shadow: 0 8px 20px rgba(17, 24, 39, 0.08);
       color: #222a36;
@@ -635,6 +687,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
+      margin-top: 2px;
     }
 
     .spec {
@@ -668,6 +721,7 @@
       align-items: center;
       gap: 12px;
       margin-bottom: 8px;
+      min-height: 30px;
     }
 
     .qty-total {
@@ -677,6 +731,7 @@
       color: var(--muted);
       font-size: 13px;
       font-weight: 700;
+      text-align: right;
     }
 
     .qty-moq {
@@ -702,9 +757,9 @@
     }
 
     .stepper {
-      height: 44px;
+      height: 42px;
       border: 1px solid #dfe3ea;
-      border-radius: 8px;
+      border-radius: 7px;
       display: grid;
       grid-template-columns: 42px 1fr 42px;
       align-items: center;
@@ -726,10 +781,10 @@
 
     .cta {
       width: max-content;
-      min-width: 104px;
+      min-width: 98px;
       height: 50px;
       border: 0;
-      border-radius: 8px;
+      border-radius: 7px;
       background: var(--blue);
       color: #fff;
       font-size: 15px;
@@ -762,47 +817,80 @@
       color: var(--muted);
     }
 
+    .request-btn {
+      width: 100%;
+      height: 50px;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
     .summary {
       position: sticky;
       top: 82px;
-      padding: 24px;
-      min-height: 674px;
+      width: 329px;
+      min-height: 657px;
+      padding: 34px 30px 20px;
+      border: 0;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 18px 40px rgba(17, 24, 39, 0.10);
+      overflow: hidden;
     }
 
     .summary h2 {
       margin: 0;
       padding-bottom: 18px;
-      font-size: 33px;
-      line-height: 33px;
+      font-size: 30px;
+      line-height: 36px;
+      letter-spacing: 0;
+      color: #303238;
     }
 
     .summary-row {
       display: flex;
       justify-content: space-between;
       gap: 18px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--line);
-      font-size: 14px;
-      color: var(--muted);
+      width: 269px;
+      padding: 0 0 11px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #e8ebf2;
+      font-size: 16px;
+      line-height: 19px;
+      color: #6b7488;
     }
 
     .summary-row b {
       color: #252a33;
-      font-size: 15px;
+      font-size: 16px;
+      line-height: 19px;
       text-align: right;
+    }
+
+    .summary-section-label {
+      margin: 6px 0 16px;
+      color: #2f3340;
+      font-size: 16px;
+      line-height: 19px;
+      font-weight: 800;
     }
 
     .summary-list {
       display: grid;
-      gap: 10px;
-      margin: 12px 0 0;
+      gap: 26px;
+      margin: 0 0 66px;
     }
 
     .summary-item {
-      border: 1px solid #e6ebf5;
-      border-radius: 9px;
-      padding: 12px;
-      background: #fbfcff;
+      width: 275px;
+      min-height: 90px;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      background: transparent;
+      display: grid;
+      grid-template-columns: 63px 1fr 18px;
+      gap: 12px;
+      align-items: start;
     }
 
     .summary-item-head {
@@ -813,27 +901,91 @@
       margin-bottom: 8px;
     }
 
-    .summary-item-title {
+    .summary-thumb {
+      width: 63px;
+      height: 63px;
+      border-radius: 2px;
+      background: #d9d9d9;
+      margin-top: 2px;
+    }
+
+    .summary-mini-stepper {
+      display: grid;
+      grid-template-columns: 35px 1fr 35px;
+      align-items: center;
+      height: 34px;
+      margin-top: 5px;
+      border: 1px solid #e2e7f1;
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: center;
+      color: #252a33;
       font-size: 14px;
       font-weight: 800;
+      background: #fff;
+    }
+
+    .summary-mini-stepper span:first-child,
+    .summary-mini-stepper span:last-child {
+      color: var(--blue);
+      background: #fff;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .summary-item-title {
+      font-size: 16px;
+      font-weight: 800;
       color: #1f2530;
-      line-height: 1.3;
+      line-height: 18px;
+      margin-top: 4px;
     }
 
     .summary-item-meta {
       color: var(--muted);
-      font-size: 12px;
-      line-height: 1.45;
+      font-size: 13px;
+      line-height: 15px;
+      margin-top: 7px;
     }
 
     .summary-remove {
       border: 0;
       background: transparent;
-      color: #7a8191;
-      font-size: 20px;
+      color: #6d7588;
+      font-size: 0;
       line-height: 1;
       cursor: pointer;
       padding: 0;
+      width: 18px;
+      height: 18px;
+      margin-top: 5px;
+      position: relative;
+    }
+
+    .summary-remove::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 6px;
+      width: 8px;
+      height: 9px;
+      border: 1.5px solid currentColor;
+      border-top: 0;
+      border-radius: 0 0 2px 2px;
+    }
+
+    .summary-remove::after {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 3px;
+      width: 10px;
+      height: 1.5px;
+      background: currentColor;
+      box-shadow: 3px -2px 0 -0.5px currentColor;
     }
 
     .summary-empty {
@@ -844,8 +996,10 @@
 
     .summary .cta {
       width: 100%;
-      height: 46px;
-      margin-top: 12px;
+      height: 56px;
+      margin-top: 0;
+      border-radius: 12px;
+      font-size: 16px;
     }
 
     .summary p {
@@ -867,19 +1021,19 @@
 
     .submitted-link {
       width: 100%;
-      min-height: 42px;
+      min-height: 56px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 8px;
+      margin-top: 12px;
       border: 0;
-      border-radius: 8px;
-      background: #f8faff;
+      border-radius: 12px;
+      background: #f6f8fc;
       color: var(--blue);
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       padding: 12px 14px;
-      font-size: 13px;
+      font-size: 16px;
     }
 
     .modal-backdrop {
@@ -965,7 +1119,9 @@
       color: #fff;
       text-align: center;
       padding: 34px 20px 28px;
-      margin-top: 22px;
+      margin-top: -530px;
+      position: relative;
+      z-index: 2;
     }
 
     .footer .brand {
@@ -1182,19 +1338,28 @@
         </label>
         <label class="select">
           <select id="brand-filter">
-            <option value="all" selected>Brand: All</option>
-            <option value="SUNPOWER">Brand: SUNPOWER</option>
+            <option value="all" selected>Brand: SunPower</option>
+            <option value="SUNPOWER">Brand: SunPower only</option>
             <option value="TCL SOLAR">Brand: TCL SOLAR</option>
             <option value="TCL">Brand: TCL</option>
             <option value="惠州TCL">Brand: 惠州TCL</option>
             <option value="OTHER">Brand: OTHER</option>
           </select>
         </label>
-        <label class="select">
+        <label class="select is-hidden">
           <select id="category-filter">
             <option value="all" selected>Category(EN): All</option>
             <option value="PV Product">Category(EN): PV Product</option>
             <option value="BTP Product">Category(EN): BTP Product</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="type-filter">
+            <option value="all" selected>Product Type: All</option>
+            <option value="PV">Product Type: PV</option>
+            <option value="ESS">Product Type: ESS</option>
+            <option value="HP">Product Type: HP</option>
+            <option value="N/A">Product Type: N/A</option>
           </select>
         </label>
         <label class="select">
@@ -1218,15 +1383,6 @@
           </select>
         </label>
         <label class="select">
-          <select id="type-filter">
-            <option value="all" selected>Product Type: All</option>
-            <option value="PV">Product Type: PV</option>
-            <option value="ESS">Product Type: ESS</option>
-            <option value="HP">Product Type: HP</option>
-            <option value="N/A">Product Type: N/A</option>
-          </select>
-        </label>
-        <label class="select">
           <select id="backsheet-filter">
             <option value="all" selected>Backsheet: All</option>
             <option value="GLASS,White glazing">Backsheet: GLASS,White glazing</option>
@@ -1246,6 +1402,14 @@
             <option value="WHITE">Cell Color: WHITE</option>
             <option value="White">Cell Color: White</option>
             <option value="N/A">Cell Color: N/A</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="warranty-filter" aria-label="Product warranty">
+            <option selected>Product Warranty(yrs): All</option>
+            <option>Product Warranty(yrs): 25</option>
+            <option>Product Warranty(yrs): 30</option>
+            <option>Product Warranty(yrs): N/A</option>
           </select>
         </label>
         <label class="select">
@@ -1272,7 +1436,7 @@
             <option value="N/A">Module Technology: N/A</option>
           </select>
         </label>
-        <label class="select">
+        <label class="select is-hidden">
           <select id="display-filter">
             <option value="all" selected>Display: All units</option>
             <option value="kw">Display: kW only</option>
@@ -1291,184 +1455,16 @@
           <a href="#">Download SKU list ›</a>
         </div>
 
-        <div class="products" id="product-grid">
-          <article class="card product" data-sku="HSM-BD66-GR650" data-country="Spain" data-brand="TCL Solar" data-category="PV Product" data-subcategory="PV Module" data-type="PV" data-backsheet="GLASS,White glazing" data-cell-color="BLUE" data-cell-tech="BC" data-module-tech="Half-Cuts" data-unit="PC" data-display-mode="kw" data-min="36" data-step="36" data-capacity="23.4" data-pallet-qty="36" data-status="in-stock">
-            <a class="product-media-link media-frame" href="sunpower-product-detail.html">
-              <span class="brand-badge tcl">TCL Solar</span>
-              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAAGkCAIAAAAuegPJAAAoUklEQVR4nO3dd3hUZdrH8ZlkIAmEABIJRapGiiXCinRQEEERxIJgX6UsYsHyuqJiw7ZYUBFRooKyyKIIKogEAVFUFpAiIoYmJUgCJLT0Pu8Vh51MKsPMmXnu85zv5+KPaWfO3Odm8ntOHXt2bqENAAAEV0iQ5wcAAAhgAADUYA0YAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABQggAEAUIAABgBAAQIYAAAFCGAAABRwOFXMFQAAi2MNGAAABQhgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAGHjStxAAAQdKwBAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAo4+DlgAACCjzVgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAECGAAABQhgAAAUIIABAFCAAAYAQAGH06litgAAWBtrwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIACBDAAAAoQwAAAKEAAAwCgAAEMAIAt+P4fSHpdmzHxf0oAAAAASUVORK5CYII=" alt="SPR-BE54-HD500 solar module">
-            </a>
-            <div class="product-body">
-              <div class="product-head">
-                <div>
-                  <a class="product-title-link" href="sunpower-product-detail.html"><h3>HSM-BD66-GR650</h3></a>
-                  <div class="sub">C&I/Utility PV Module,HSM-BD66-GR650</div>
-                  <a class="detail-link" href="sunpower-product-detail.html">View details ›</a>
-                </div>
-                <span class="status">In Stock</span>
-              </div>
-              <div class="specs">
-                <div class="spec"><b>650 W</b><span>Billable Watts(W)</span></div>
-                <div class="spec"><b>2382×1134×30 mm</b><span>Size</span></div>
-              </div>
-              <div class="qty">
-                <div class="qty-total"><b class="qty-total-value">total: 23.4 kW</b></div>
-                <div class="qty-label">
-                  <span class="qty-value">36 PC / 1 pallet</span>
-                </div>
-                <div class="stepper">
-                  <button type="button" class="qty-minus" aria-label="Decrease quantity">-</button>
-                  <span class="qty-step-value">36 PC / 1 pallet</span>
-                  <button type="button" class="qty-plus" aria-label="Increase quantity">+</button>
-                </div>
-                <button type="button" class="cta request-btn" data-request-type="price">Get the price</button>
-                <div class="request-feedback"></div>
-              </div>
-            </div>
-          </article>
-
-          <article class="card product" data-sku="HSM-BE54-DD485" data-country="Spain" data-brand="TCL Solar" data-category="PV Product" data-subcategory="PV Module" data-type="PV" data-backsheet="Black glazing" data-cell-color="BLUE" data-cell-tech="BC" data-module-tech="Half-Cuts" data-unit="PC" data-display-mode="kw" data-min="37" data-step="37" data-capacity="17.945" data-pallet-qty="37" data-status="out-of-stock">
-            <a class="product-media-link media-frame" href="sunpower-product-detail.html">
-              <span class="brand-badge tcl">TCL Solar</span>
-              <img src="data:image/png;base64,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" alt="SPR-P7-515-BLK-P solar module">
-            </a>
-            <div class="product-body">
-              <div class="product-head">
-                <div>
-                  <a class="product-title-link" href="sunpower-product-detail.html"><h3>HSM-BE54-DD485</h3></a>
-                  <div class="sub">Res PV Module,HSM-BE54-DD485</div>
-                  <a class="detail-link" href="sunpower-product-detail.html">View details ›</a>
-                </div>
-                <span class="status out">Out of Stock</span>
-              </div>
-              <div class="specs">
-                <div class="spec"><b>485 W</b><span>Billable Watts(W)</span></div>
-                <div class="spec"><b>1800×1134×30 mm</b><span>Size</span></div>
-              </div>
-              <div class="qty">
-                <div class="qty-total"><b class="qty-total-value">total: 17.9 kW</b></div>
-                <div class="qty-label">
-                  <span class="qty-value">37 PC / 1 pallet</span>
-                </div>
-                <div class="stepper">
-                  <button type="button" class="qty-minus" aria-label="Decrease quantity">-</button>
-                  <span class="qty-step-value">37 PC / 1 pallet</span>
-                  <button type="button" class="qty-plus" aria-label="Increase quantity">+</button>
-                </div>
-                <button type="button" class="cta request-btn" data-request-type="replenishment">Ask to replenishment</button>
-                <div class="request-feedback"></div>
-              </div>
-            </div>
-          </article>
-
-          <article class="card product" data-sku="GW150K-GT-G10" data-country="Spain" data-brand="TCL" data-category="BTP Product" data-subcategory="Grid-Tied Solar Inverter" data-type="ESS" data-backsheet="N/A" data-cell-color="N/A" data-cell-tech="N/A" data-module-tech="Inverter" data-unit="PC" data-display-mode="unit" data-min="1" data-step="1" data-capacity="0" data-pallet-qty="1" data-status="in-stock">
-            <a class="product-media-link media-frame" href="sunpower-product-detail.html">
-              <span class="brand-badge tcl">TCL Solar</span>
-              <img src="data:image/png;base64,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" alt="SPR-RESERVE energy storage kit">
-            </a>
-            <div class="product-body">
-              <div class="product-head">
-                <div>
-                  <a class="product-title-link" href="sunpower-product-detail.html"><h3>GW150K-GT-G10</h3></a>
-                  <div class="sub">150kW Grid Tied inverter</div>
-                  <a class="detail-link" href="sunpower-product-detail.html">View details ›</a>
-                </div>
-                <span class="status">In Stock</span>
-              </div>
-              <div class="specs">
-                <div class="spec"><b>150 kW</b><span>Nominal output power</span></div>
-                <div class="spec"><b>995×758×358 mm</b><span>Size</span></div>
-              </div>
-              <div class="qty">
-                <div class="qty-total"><b class="qty-total-value">unit: PC</b></div>
-                <div class="qty-label">
-                  <span class="qty-value">1 PC</span>
-                </div>
-                <div class="stepper">
-                  <button type="button" class="qty-minus" aria-label="Decrease quantity">-</button>
-                  <span class="qty-step-value">1 PC</span>
-                  <button type="button" class="qty-plus" aria-label="Increase quantity">+</button>
-                </div>
-                <button type="button" class="cta request-btn" data-request-type="price">Get the price</button>
-                <div class="request-feedback"></div>
-              </div>
-            </div>
-          </article>
-
-          <article class="card product" data-sku="H4 Connector" data-country="Spain" data-brand="OTHER" data-category="PV Product" data-subcategory="PVAccessory" data-type="PV" data-backsheet="N/A" data-cell-color="N/A" data-cell-tech="N/A" data-module-tech="Connector" data-unit="PC" data-display-mode="unit" data-min="1" data-step="1" data-capacity="0" data-pallet-qty="1" data-status="in-stock">
-            <a class="product-media-link media-frame" href="sunpower-product-detail.html">
-              <span class="brand-badge">OTHER</span>
-            </a>
-            <div class="product-body">
-              <div class="product-head">
-                <div>
-                  <a class="product-title-link" href="sunpower-product-detail.html"><h3>H4 Connector</h3></a>
-                  <div class="sub">H4 Photovoltaic Connector, male&female</div>
-                  <a class="detail-link" href="sunpower-product-detail.html">View details ›</a>
-                </div>
-                <span class="status">In Stock</span>
-              </div>
-              <div class="specs">
-                <div class="spec"><b>PC</b><span>Unit of measure</span></div>
-                <div class="spec"><b>EU</b><span>Applicable market</span></div>
-              </div>
-              <div class="qty">
-                <div class="qty-total"><b class="qty-total-value">unit: PC</b></div>
-                <div class="qty-label">
-                  <span class="qty-value">1 PC</span>
-                </div>
-                <div class="stepper">
-                  <button type="button" class="qty-minus" aria-label="Decrease quantity">-</button>
-                  <span class="qty-step-value">1 PC</span>
-                  <button type="button" class="qty-plus" aria-label="Increase quantity">+</button>
-                </div>
-                <button type="button" class="cta request-btn" data-request-type="price">Get the price</button>
-                <div class="request-feedback"></div>
-              </div>
-            </div>
-          </article>
-
-          <article class="card product" data-sku="ess accessory" data-country="Spain" data-brand="SunPower" data-category="BTP Product" data-subcategory="Energy Storage Accessories" data-type="ESS" data-backsheet="N/A" data-cell-color="N/A" data-cell-tech="N/A" data-module-tech="Accessory Kit" data-unit="KIT" data-display-mode="kit" data-min="1" data-step="1" data-capacity="0" data-pallet-qty="1" data-status="out-of-stock">
-            <a class="product-media-link media-frame" href="sunpower-product-detail.html">
-              <span class="brand-badge">SunPower</span>
-            </a>
-            <div class="product-body">
-              <div class="product-head">
-                <div>
-                  <a class="product-title-link" href="sunpower-product-detail.html"><h3>ess accessory</h3></a>
-                  <div class="sub">Energy storage accessory kit</div>
-                  <a class="detail-link" href="sunpower-product-detail.html">View details ›</a>
-                </div>
-                <span class="status out">Out of Stock</span>
-              </div>
-              <div class="specs">
-                <div class="spec"><b>KIT</b><span>Unit of measure</span></div>
-                <div class="spec"><b>340×280×95 mm</b><span>Size</span></div>
-              </div>
-              <div class="qty">
-                <div class="qty-total"><b class="qty-total-value">unit: KIT</b></div>
-                <div class="qty-label">
-                  <span class="qty-value">1 KIT</span>
-                </div>
-                <div class="stepper">
-                  <button type="button" class="qty-minus" aria-label="Decrease quantity">-</button>
-                  <span class="qty-step-value">1 KIT</span>
-                  <button type="button" class="qty-plus" aria-label="Increase quantity">+</button>
-                </div>
-                <button type="button" class="cta request-btn" data-request-type="replenishment">Ask to replenishment</button>
-                <div class="request-feedback"></div>
-              </div>
-            </div>
-          </article>
-        </div>
+        <div class="products" id="product-grid"></div>
       </section>
-
       <aside class="card summary" aria-labelledby="summary-title">
-        <h2 id="summary-title">Request summary</h2>
+        <h2 id="summary-title">Request cart</h2>
         <div class="summary-row"><span>Total pallets</span><b id="summary-selected">0 pallet</b></div>
         <div class="summary-row"><span>Total PV capacity</span><b id="summary-capacity">0 kW</b></div>
         <div class="summary-row"><span>Kit quantity</span><b id="summary-kit">0 kit</b></div>
+        <div class="summary-section-label">Cart items</div>
         <div class="summary-list" id="summary-list"></div>
-        <button type="button" class="cta" id="summary-send-btn">Send price request</button>
+        <button type="button" class="cta" id="summary-send-btn">Submit request</button>
         <button type="button" class="submitted-link" id="view-requests-btn">View submitted requests</button>
         <div class="summary-note" id="summary-note">No inquiry has been added yet.</div>
       </aside>
@@ -1522,125 +1518,169 @@
 
       const skuProducts = [
         {
-          sku: 'HSM-BD66-GR650',
-          brand: 'TCL SOLAR',
+          sku: 'SPR-BE54-HD500',
+          brand: 'SUNPOWER',
           category: 'PV Product',
           subcategory: 'PV Module',
           type: 'PV',
-          description: 'C&I/Utility PV Module,HSM-BD66-GR650',
-          billableWatts: '650',
+          description: 'Maxeon 5 AC residential module for rooftop applications',
+          billableWatts: '500',
           unit: 'PC',
-          size: '2382×1134×30 mm',
+          size: '1722×1134×30 mm',
           backsheet: 'GLASS,White glazing',
           cellColor: 'BLUE',
           cellTech: 'BC',
           moduleTech: 'Half-Cuts',
-          min: 36,
-          step: 36,
-          moq: 36,
-          palletQty: 36,
-          capacity: 23.4,
-          displayMode: 'kw',
-          status: 'in-stock'
-        },
-        {
-          sku: 'HSM-BD66-GR655-CFP',
-          brand: 'TCL SOLAR',
-          category: 'PV Product',
-          subcategory: 'PV Module',
-          type: 'PV',
-          description: 'C&I/Utility PV Module,HSM-BD66-GR655-CFP',
-          billableWatts: '655',
-          unit: 'PC',
-          size: '2382×1134×30 mm',
-          backsheet: 'GLASS,White glazing',
-          cellColor: 'BLUE',
-          cellTech: 'BC',
-          moduleTech: 'Half-Cuts',
-          min: 36,
-          step: 36,
-          moq: 36,
-          palletQty: 36,
-          capacity: 23.58,
-          displayMode: 'kw',
-          status: 'in-stock'
-        },
-        {
-          sku: 'HSM-BE54-DD480',
-          brand: 'TCL SOLAR',
-          category: 'PV Product',
-          subcategory: 'PV Module',
-          type: 'PV',
-          description: 'Res PV Module,HSM-BE54-DD480',
-          billableWatts: '480',
-          unit: 'PC',
-          size: '1800×1134×30 mm',
-          backsheet: 'GLASS,Black glazing',
-          cellColor: 'BLUE',
-          cellTech: 'BC',
-          moduleTech: 'Shingle',
           min: 37,
           step: 37,
           moq: 37,
           palletQty: 37,
-          capacity: 17.76,
+          capacity: 18.5,
+          displayMode: 'kw',
+          status: 'in-stock'
+        },
+        {
+          sku: 'SPR-BE54-HD500',
+          brand: 'SUNPOWER',
+          category: 'PV Product',
+          subcategory: 'PV Module',
+          type: 'PV',
+          description: 'Maxeon 5 AC residential module for rooftop applications',
+          billableWatts: '500',
+          unit: 'PC',
+          size: '1722×1134×30 mm',
+          backsheet: 'GLASS,White glazing',
+          cellColor: 'BLUE',
+          cellTech: 'BC',
+          moduleTech: 'Half-Cuts',
+          min: 37,
+          step: 37,
+          moq: 37,
+          palletQty: 37,
+          capacity: 18.5,
+          displayMode: 'kw',
+          status: 'in-stock'
+        },
+        {
+          sku: 'SPR-BE54-HD500',
+          brand: 'SUNPOWER',
+          category: 'PV Product',
+          subcategory: 'PV Module',
+          type: 'PV',
+          description: 'Maxeon 5 AC residential module for rooftop applications',
+          billableWatts: '500',
+          unit: 'PC',
+          size: '1722×1134×30 mm',
+          backsheet: 'GLASS,White glazing',
+          cellColor: 'BLUE',
+          cellTech: 'BC',
+          moduleTech: 'Half-Cuts',
+          min: 37,
+          step: 37,
+          moq: 37,
+          palletQty: 37,
+          capacity: 18.5,
+          displayMode: 'kw',
+          status: 'in-stock'
+        },
+        {
+          sku: 'SPR-BE54-HD500',
+          brand: 'SUNPOWER',
+          category: 'PV Product',
+          subcategory: 'PV Module',
+          type: 'PV',
+          description: 'Maxeon 5 AC residential module for rooftop applications',
+          billableWatts: '500',
+          unit: 'PC',
+          size: '1722×1134×30 mm',
+          backsheet: 'GLASS,White glazing',
+          cellColor: 'BLUE',
+          cellTech: 'BC',
+          moduleTech: 'Half-Cuts',
+          min: 37,
+          step: 37,
+          moq: 37,
+          palletQty: 37,
+          capacity: 18.5,
+          displayMode: 'kw',
+          status: 'in-stock'
+        },
+        {
+          sku: 'SPR-BE54-HD500',
+          brand: 'SUNPOWER',
+          category: 'PV Product',
+          subcategory: 'PV Module',
+          type: 'PV',
+          description: 'Maxeon 5 AC residential module for rooftop applications',
+          billableWatts: '500',
+          unit: 'PC',
+          size: '1722×1134×30 mm',
+          backsheet: 'GLASS,White glazing',
+          cellColor: 'BLUE',
+          cellTech: 'BC',
+          moduleTech: 'Half-Cuts',
+          min: 37,
+          step: 37,
+          moq: 37,
+          palletQty: 37,
+          capacity: 18.5,
+          displayMode: 'kw',
+          status: 'in-stock'
+        },
+        {
+          sku: 'GW150K-GT-G10',
+          brand: 'TCL SOLAR',
+          category: 'BTP Product',
+          subcategory: 'Grid-Tied Solar Inverter',
+          type: 'ESS',
+          description: '150kW Grid Tied inverter',
+          billableWatts: '500',
+          unit: 'PC',
+          size: '1722×1134×30 mm',
+          backsheet: 'N/A',
+          cellColor: 'N/A',
+          cellTech: 'N/A',
+          moduleTech: 'Inverter',
+          min: 72,
+          step: 72,
+          moq: 72,
+          palletQty: 72,
+          capacity: 18.5,
           displayMode: 'kw',
           status: 'out-of-stock'
         },
         {
-          sku: 'SPR-BE66-GD',
+          sku: 'SPR-BE54-HD500',
           brand: 'SUNPOWER',
           category: 'PV Product',
           subcategory: 'PV Module',
           type: 'PV',
-          description: 'Res/C&I PV Module,SPR-BE66-GD595',
-          billableWatts: '595',
+          description: 'Maxeon 5 AC residential module for rooftop applications',
+          billableWatts: '500',
           unit: 'PC',
-          size: 'N/A',
+          size: '1722×1134×30 mm',
           backsheet: 'GLASS,White glazing',
           cellColor: 'BLUE',
           cellTech: 'BC',
           moduleTech: 'Half-Cuts',
-          min: 36,
-          step: 36,
-          moq: 36,
-          palletQty: 36,
-          capacity: 21.42,
+          min: 37,
+          step: 37,
+          moq: 37,
+          palletQty: 37,
+          capacity: 18.5,
           displayMode: 'kw',
           status: 'in-stock'
         },
         {
-          sku: 'SPR-BE66-GD605',
+          sku: 'SPR-BE54-HD500',
           brand: 'SUNPOWER',
           category: 'PV Product',
           subcategory: 'PV Module',
           type: 'PV',
-          description: 'Res/C&I PV Module,SPR-BE66-GD605',
-          billableWatts: '605',
+          description: 'Maxeon 5 AC residential module for rooftop applications',
+          billableWatts: '500',
           unit: 'PC',
-          size: 'N/A',
-          backsheet: 'GLASS,White glazing',
-          cellColor: 'BLUE',
-          cellTech: 'BC',
-          moduleTech: 'Half-Cuts',
-          min: 36,
-          step: 36,
-          moq: 36,
-          palletQty: 36,
-          capacity: 21.78,
-          displayMode: 'kw',
-          status: 'in-stock'
-        },
-        {
-          sku: 'SPR-BE66-GD600',
-          brand: 'SUNPOWER',
-          category: 'PV Product',
-          subcategory: 'PV Module',
-          type: 'PV',
-          description: 'Res/C&I PV Module,SPR-BE66-GD600',
-          billableWatts: '600',
-          unit: 'PC',
-          size: 'N/A',
+          size: '1722×1134×30 mm',
           backsheet: 'GLASS,White glazing',
           cellColor: 'BLUE',
           cellTech: 'BC',
@@ -1649,75 +1689,31 @@
           step: 1,
           moq: 1,
           palletQty: 0,
-          capacity: 0.6,
+          capacity: 0.5,
           displayMode: 'kw',
           status: 'in-stock'
         },
         {
-          sku: 'H4 Connector',
-          brand: 'OTHER',
-          category: 'PV Product',
-          subcategory: 'PVAccessory',
-          type: 'PV',
-          description: 'H4 Photovoltaic Connector, male&female',
-          billableWatts: '1',
-          unit: 'PC',
-          size: 'N/A',
-          backsheet: 'N/A',
-          cellColor: 'N/A',
-          cellTech: 'N/A',
-          moduleTech: 'N/A',
-          min: 1,
-          step: 1,
-          moq: 1,
-          palletQty: 0,
-          capacity: 0,
-          displayMode: 'unit',
-          status: 'in-stock'
-        },
-        {
-          sku: 'SP-SRTH-MCPV-G1',
-          brand: 'OTHER',
+          sku: 'GW150K-GT-G10',
+          brand: 'TCL SOLAR',
           category: 'BTP Product',
-          subcategory: 'Smart Meter',
+          subcategory: 'Grid-Tied Solar Inverter',
           type: 'ESS',
-          description: '3P CT PV meter',
-          billableWatts: '0',
+          description: '150kW Grid Tied inverter',
+          billableWatts: '500',
           unit: 'PC',
-          size: 'N/A',
+          size: '1722×1134×30 mm',
           backsheet: 'N/A',
           cellColor: 'N/A',
           cellTech: 'N/A',
-          moduleTech: 'N/A',
-          min: 1,
-          step: 1,
-          moq: 1,
-          palletQty: 0,
-          capacity: 0,
-          displayMode: 'unit',
-          status: 'in-stock'
-        },
-        {
-          sku: 'BlueArk W10-125K-261',
-          brand: 'TCL',
-          category: 'BTP Product',
-          subcategory: 'C&I ESS',
-          type: 'ESS',
-          description: 'BlueArk W10 C&I system cabinet 125kW/261',
-          billableWatts: '125000',
-          unit: 'PC',
-          size: '1350×1000×2400 mm',
-          backsheet: 'N/A',
-          cellColor: 'N/A',
-          cellTech: 'N/A',
-          moduleTech: 'N/A',
-          min: 1,
-          step: 1,
-          moq: 1,
-          palletQty: 0,
-          capacity: 0,
-          displayMode: 'unit',
-          status: 'in-stock'
+          moduleTech: 'Inverter',
+          min: 72,
+          step: 72,
+          moq: 72,
+          palletQty: 72,
+          capacity: 18.5,
+          displayMode: 'kw',
+          status: 'out-of-stock'
         },
         {
           sku: 'TCL-HVB-200A',
@@ -1801,6 +1797,8 @@
           moduleTech: 'N/A',
           min: 1,
           step: 1,
+          moq: 1,
+          palletQty: 0,
           capacity: 0,
           displayMode: 'unit',
           status: 'in-stock'
@@ -1863,7 +1861,8 @@
 
       function visualFor(product) {
         if (product.displayMode === 'kw') {
-          return '<div class="visual-panel"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>';
+          const visualSku = product.sku.split('-').map(escapeHtml).join('-<br>');
+          return `<div class="visual-sku">${visualSku}</div>`;
         }
         if (product.type === 'HP') return '<div class="visual-device">HP</div>';
         if (product.displayMode === 'kit') return '<div class="visual-device">KIT</div>';
@@ -1904,13 +1903,14 @@
         return `${moq} ${unit}`;
       }
 
-      productGrid.innerHTML = skuProducts.map((product) => {
+      productGrid.innerHTML = skuProducts.map((product, index) => {
         const statusText = product.status === 'out-of-stock' ? 'Out of Stock' : 'In Stock';
-        const buttonText = product.status === 'out-of-stock' ? 'Ask to replenishment' : 'Add to Chart';
+        const buttonText = 'Add to Cart';
         const requestType = product.status === 'out-of-stock' ? 'replenishment' : 'price';
         const statusClass = product.status === 'out-of-stock' ? 'status out' : 'status';
         const brandClass = product.brand === 'TCL' || product.brand === 'TCL SOLAR' ? 'brand-badge tcl' : 'brand-badge';
-        const commercialName = 'Commercial name -';
+        const commercialName = product.brand === 'SUNPOWER' ? 'PERFORMANCE 7' : 'PRODUCT NAME';
+        const newChip = index < 2 ? '<span class="status-chip">New</span>' : '';
         const moq = positiveNumber(product.moq, positiveNumber(product.min, 1));
         const step = positiveNumber(product.step, moq);
         const palletQty = positiveNumber(product.palletQty, 0);
@@ -1924,6 +1924,7 @@
           <article class="card product" data-sku="${escapeHtml(product.sku)}" data-country="Spain" data-brand="${escapeHtml(product.brand)}" data-category="${escapeHtml(product.category)}" data-subcategory="${escapeHtml(product.subcategory)}" data-type="${escapeHtml(product.type)}" data-backsheet="${escapeHtml(product.backsheet)}" data-cell-color="${escapeHtml(product.cellColor)}" data-cell-tech="${escapeHtml(product.cellTech)}" data-module-tech="${escapeHtml(product.moduleTech)}" data-unit="${escapeHtml(product.unit)}" data-display-mode="${escapeHtml(product.displayMode)}" data-min="${moq}" data-moq="${moq}" data-step="${step}" data-capacity="${product.capacity}" data-pallet-qty="${palletQty}" data-status="${escapeHtml(product.status)}">
             <a class="product-media-link media-frame" href="sunpower-product-detail.html">
               <span class="${brandClass}">${escapeHtml(displayBrand(product.brand))}</span>
+              ${newChip}
               <span class="commercial-badge">${escapeHtml(commercialName)}</span>
               <div class="product-visual">
                 ${visualFor(product)}
@@ -1996,17 +1997,45 @@
     const requestSuccessView = document.getElementById('request-success-view');
     const latestRequestRecord = document.getElementById('latest-request-record');
     const historyList = document.getElementById('history-list');
+    const requestCartStorageKey = 'sunpowerRequestCart';
+    let cartTouched = false;
+    const figmaDefaultCartItems = [
+      {
+        sku: 'HSM-G390-B302',
+        unit: 'PC',
+        displayMode: 'kw',
+        min: 18,
+        step: 18,
+        moq: 18,
+        capacity: 53.13,
+        palletQty: 54,
+        quantity: 18,
+        requestType: 'price'
+      },
+      {
+        sku: 'HSM-G390-B302',
+        unit: 'PC',
+        displayMode: 'kw',
+        min: 18,
+        step: 18,
+        moq: 18,
+        capacity: 53.13,
+        palletQty: 54,
+        quantity: 108,
+        requestType: 'price'
+      }
+    ];
     const submittedRequests = [
       {
         requestNo: 'REQ-20260625-001',
         delivery: 'within-1-month',
         note: 'Please confirm pallet MOQ and availability for Spain.',
-        items: ['SPR-BE54-HD500 · 37 PC', 'SP-SRTH-MC-G1 · 1 EA'],
+        items: ['HSM-G390-B302 · 18 PC', 'HSM-G390-B302 · 18 PC'],
         sentAt: '2026/6/25 15:30:00'
       }
     ];
 
-    const productState = products.map((card) => ({
+    const productState = products.map((card, index) => ({
       card,
       sku: card.dataset.sku,
       country: card.dataset.country,
@@ -2030,6 +2059,48 @@
       requestType: null,
       requestSent: false
     }));
+
+    function readStoredCart() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(requestCartStorageKey) || '[]');
+        return Array.isArray(stored) ? stored : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function saveStoredCart(items) {
+      const storableItems = items
+        .filter((item) => item.requestType)
+        .map((item) => ({
+          sku: item.sku,
+          unit: item.unit,
+          displayMode: item.displayMode,
+          min: item.min,
+          moq: item.moq,
+          step: item.step,
+          capacity: item.capacity,
+          palletQty: item.palletQty,
+          quantity: item.quantity,
+          requestType: item.requestType,
+          requestSent: item.requestSent
+        }));
+      localStorage.setItem(requestCartStorageKey, JSON.stringify(storableItems));
+    }
+
+    function applyStoredCart() {
+      const storedItems = readStoredCart();
+      if (!storedItems.length) return;
+      cartTouched = true;
+      storedItems.forEach((storedItem) => {
+        const match = productState.find((item) => item.sku === storedItem.sku);
+        if (!match) return;
+        match.quantity = Math.max(getMoq(match), Number(storedItem.quantity) || getMoq(match));
+        match.requestType = storedItem.requestType || 'price';
+        match.requestSent = Boolean(storedItem.requestSent);
+        updateCard(match);
+      });
+    }
 
     function formatQty(item) {
       return item.quantity + ' ' + item.unit;
@@ -2074,7 +2145,7 @@
       if (item.displayMode === 'kit') return 'unit: KIT';
       if (item.displayMode !== 'kw') return 'unit: ' + item.unit;
       const total = (item.quantity / getMoq(item)) * item.capacity;
-      return 'total: ' + total.toFixed(1).replace(/\.0$/, '.0') + ' kW';
+      return 'total: ' + total.toFixed(2).replace(/\.00$/, '').replace(/0$/, '') + ' kW';
     }
 
     function updateCard(item) {
@@ -2088,17 +2159,17 @@
 
       if (!item.requestType) {
         button.classList.remove('requested');
-        button.textContent = item.status === 'out-of-stock' ? 'Ask to replenishment' : 'Add to Chart';
+        button.textContent = 'Add to Cart';
         feedback.textContent = '';
         return;
       }
 
       button.classList.add('requested');
       if (item.requestSent) {
-        button.textContent = 'Added to Chart';
+        button.textContent = 'Added to Cart';
         feedback.textContent = 'Submitted to Rep_sales under the company account.';
       } else {
-        button.textContent = 'Added to Chart';
+        button.textContent = 'Added to Cart';
         feedback.textContent = 'Added to the request summary.';
       }
     }
@@ -2111,14 +2182,17 @@
 
       summaryList.innerHTML = requestedItems.map((item) => `
         <div class="summary-item">
-          <div class="summary-item-head">
-            <div>
-              <div class="summary-item-title">${item.sku}</div>
-              <div class="summary-item-meta">${item.brand} · ${formatStepperQty(item)}${item.requestType === 'replenishment' ? ' · replenishment request' : ' · pricing request'}</div>
+          <div class="summary-thumb" aria-hidden="true"></div>
+          <div>
+            <div class="summary-item-title">${item.sku}</div>
+            <div class="summary-item-meta">${formatTotalCapacity(item).replace('total: ', 'Total: ')}</div>
+            <div class="summary-mini-stepper">
+              <span>-</span>
+              <strong>${formatStepperQty(item)}</strong>
+              <span>+</span>
             </div>
-            <button type="button" class="summary-remove" data-remove-sku="${item.sku}" aria-label="Remove request">×</button>
           </div>
-          <div class="summary-item-meta">${item.requestSent ? 'Sent to Rep_sales. You can submit again after changing quantity or keeping this line.' : 'Ready to send.'}</div>
+          <button type="button" class="summary-remove" data-remove-sku="${item.sku}" aria-label="Remove request">×</button>
         </div>
       `).join('');
     }
@@ -2194,8 +2268,10 @@
     }
 
     function updateSummary() {
-      const requestedItems = productState.filter((item) => item.requestType);
-      const totalSelected = requestedItems.reduce((sum, item) => sum + getPalletCount(item), 0);
+      const requestedItems = cartTouched ? productState.filter((item) => item.requestType) : figmaDefaultCartItems;
+      const totalSelected = requestedItems.reduce((sum, item) => {
+        return sum + getPalletCount(item);
+      }, 0);
       const totalCapacity = requestedItems
         .filter((item) => item.displayMode === 'kw')
         .reduce((sum, item) => sum + (item.quantity / getMoq(item)) * item.capacity, 0);
@@ -2210,7 +2286,14 @@
 
       if (!requestedItems.length) {
         summaryNote.textContent = 'No inquiry has been added yet.';
-        summarySendBtn.textContent = 'Send price request';
+        summarySendBtn.textContent = 'Submit request';
+        summarySendBtn.classList.remove('requested');
+        return;
+      }
+
+      if (!cartTouched) {
+        summaryNote.textContent = '';
+        summarySendBtn.textContent = 'Submit request';
         summarySendBtn.classList.remove('requested');
         return;
       }
@@ -2222,28 +2305,34 @@
       });
 
       summaryNote.textContent = 'Current inquiry: ' + labels.join('; ');
-      summarySendBtn.textContent = 'Send ' + requestedItems.length + ' request' + (requestedItems.length > 1 ? 's' : '');
+      summarySendBtn.textContent = 'Submit request';
+      saveStoredCart(requestedItems);
     }
 
     productState.forEach((item) => {
       updateCard(item);
 
       item.card.querySelector('.qty-plus').addEventListener('click', () => {
+        cartTouched = true;
         item.quantity += getStep(item);
         if (item.requestType) item.requestSent = false;
         updateCard(item);
         updateSummary();
+        saveStoredCart(productState);
       });
 
       item.card.querySelector('.qty-minus').addEventListener('click', () => {
+        cartTouched = true;
         if (item.quantity <= getMoq(item)) return;
         item.quantity = Math.max(getMoq(item), item.quantity - getStep(item));
         if (item.requestType) item.requestSent = false;
         updateCard(item);
         updateSummary();
+        saveStoredCart(productState);
       });
 
       item.card.querySelector('.request-btn').addEventListener('click', (event) => {
+        cartTouched = true;
         const type = event.currentTarget.dataset.requestType;
         item.requestType = type;
         item.requestSent = false;
@@ -2253,6 +2342,7 @@
         event.currentTarget.classList.add('requested');
         updateCard(item);
         updateSummary();
+        saveStoredCart(productState);
       });
     });
 
@@ -2269,16 +2359,18 @@
     summaryList.addEventListener('click', (event) => {
       const removeButton = event.target.closest('[data-remove-sku]');
       if (!removeButton) return;
+      cartTouched = true;
       const item = productState.find((entry) => entry.sku === removeButton.dataset.removeSku);
       if (!item) return;
       item.requestType = null;
       item.requestSent = false;
       resetCardButton(item);
       updateSummary();
+      saveStoredCart(productState);
     });
 
     summarySendBtn.addEventListener('click', () => {
-      const requestedItems = productState.filter((item) => item.requestType);
+      const requestedItems = cartTouched ? productState.filter((item) => item.requestType) : figmaDefaultCartItems;
       if (!requestedItems.length) {
         summaryNote.textContent = 'Select at least one product inquiry before sending.';
         return;
@@ -2301,7 +2393,7 @@
     requestModal.querySelector('.modal-close-success').addEventListener('click', closeRequestModal);
 
     document.getElementById('confirm-send-btn').addEventListener('click', () => {
-      const requestedItems = productState.filter((item) => item.requestType);
+      const requestedItems = cartTouched ? productState.filter((item) => item.requestType) : figmaDefaultCartItems;
       if (!deliveryPeriod.value || (deliveryPeriod.value === 'date' && !deliveryDate.value)) {
         modalError.textContent = 'Select an expected delivery period or date.';
         return;
@@ -2316,7 +2408,8 @@
       const record = { requestNo, delivery, note: inquiryNote.value.trim(), items: requestedItems.map((item) => `${item.sku} · ${formatQty(item)}`), sentAt: new Date().toLocaleString() };
       submittedRequests.unshift(record);
 
-      requestedItems.forEach((item) => { item.requestSent = true; updateCard(item); });
+      if (cartTouched) requestedItems.forEach((item) => { item.requestSent = true; updateCard(item); });
+      saveStoredCart(productState);
       summarySendBtn.textContent = 'Submit again';
       summarySendBtn.classList.add('requested');
       summaryNote.textContent = 'Inquiry email and Excel attachment sent to Rep_sales. Request ID: ' + requestNo;
@@ -2333,6 +2426,7 @@
     document.getElementById('success-view-history').addEventListener('click', () => { closeRequestModal(); openHistory(); });
     historyModal.querySelector('.history-close').addEventListener('click', () => historyModal.classList.remove('open'));
 
+    applyStoredCart();
     applyFilters();
     updateSummary();
     renderHistoryList();

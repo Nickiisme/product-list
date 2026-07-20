@@ -679,6 +679,19 @@
       font-weight: 700;
     }
 
+    .qty-moq {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 6px;
+      background: #f3f6fb;
+      color: #4f596a;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
     .qty-label {
       display: block;
       margin-bottom: 8px;
@@ -1451,7 +1464,7 @@
 
       <aside class="card summary" aria-labelledby="summary-title">
         <h2 id="summary-title">Request summary</h2>
-        <div class="summary-row"><span>Selected products</span><b id="summary-selected">0</b></div>
+        <div class="summary-row"><span>Total pallets</span><b id="summary-selected">0 pallet</b></div>
         <div class="summary-row"><span>Total PV capacity</span><b id="summary-capacity">0 kW</b></div>
         <div class="summary-row"><span>Kit quantity</span><b id="summary-kit">0 kit</b></div>
         <div class="summary-list" id="summary-list"></div>
@@ -1524,6 +1537,8 @@
           moduleTech: 'Half-Cuts',
           min: 36,
           step: 36,
+          moq: 36,
+          palletQty: 36,
           capacity: 23.4,
           displayMode: 'kw',
           status: 'in-stock'
@@ -1544,6 +1559,8 @@
           moduleTech: 'Half-Cuts',
           min: 36,
           step: 36,
+          moq: 36,
+          palletQty: 36,
           capacity: 23.58,
           displayMode: 'kw',
           status: 'in-stock'
@@ -1564,6 +1581,8 @@
           moduleTech: 'Shingle',
           min: 37,
           step: 37,
+          moq: 37,
+          palletQty: 37,
           capacity: 17.76,
           displayMode: 'kw',
           status: 'out-of-stock'
@@ -1584,6 +1603,8 @@
           moduleTech: 'Half-Cuts',
           min: 36,
           step: 36,
+          moq: 36,
+          palletQty: 36,
           capacity: 21.42,
           displayMode: 'kw',
           status: 'in-stock'
@@ -1604,6 +1625,8 @@
           moduleTech: 'Half-Cuts',
           min: 36,
           step: 36,
+          moq: 36,
+          palletQty: 36,
           capacity: 21.78,
           displayMode: 'kw',
           status: 'in-stock'
@@ -1622,9 +1645,11 @@
           cellColor: 'BLUE',
           cellTech: 'BC',
           moduleTech: 'Half-Cuts',
-          min: 36,
-          step: 36,
-          capacity: 21.6,
+          min: 1,
+          step: 1,
+          moq: 1,
+          palletQty: 0,
+          capacity: 0.6,
           displayMode: 'kw',
           status: 'in-stock'
         },
@@ -1644,6 +1669,8 @@
           moduleTech: 'N/A',
           min: 1,
           step: 1,
+          moq: 1,
+          palletQty: 0,
           capacity: 0,
           displayMode: 'unit',
           status: 'in-stock'
@@ -1664,6 +1691,8 @@
           moduleTech: 'N/A',
           min: 1,
           step: 1,
+          moq: 1,
+          palletQty: 0,
           capacity: 0,
           displayMode: 'unit',
           status: 'in-stock'
@@ -1684,6 +1713,8 @@
           moduleTech: 'N/A',
           min: 1,
           step: 1,
+          moq: 1,
+          palletQty: 0,
           capacity: 0,
           displayMode: 'unit',
           status: 'in-stock'
@@ -1704,6 +1735,8 @@
           moduleTech: 'N/A',
           min: 1,
           step: 1,
+          moq: 1,
+          palletQty: 0,
           capacity: 0,
           displayMode: 'unit',
           status: 'in-stock'
@@ -1724,6 +1757,8 @@
           moduleTech: 'N/A',
           min: 1,
           step: 1,
+          moq: 1,
+          palletQty: 0,
           capacity: 0,
           displayMode: 'unit',
           status: 'in-stock'
@@ -1744,6 +1779,8 @@
           moduleTech: 'N/A',
           min: 1,
           step: 1,
+          moq: 1,
+          palletQty: 0,
           capacity: 0,
           displayMode: 'unit',
           status: 'in-stock'
@@ -1784,6 +1821,8 @@
           moduleTech: 'N/A',
           min: 1,
           step: 1,
+          moq: 1,
+          palletQty: 0,
           capacity: 0,
           displayMode: 'kit',
           status: 'out-of-stock'
@@ -1804,6 +1843,8 @@
           moduleTech: 'N/A',
           min: 1,
           step: 1,
+          moq: 1,
+          palletQty: 0,
           capacity: 0,
           displayMode: 'unit',
           status: 'in-stock'
@@ -1836,6 +1877,33 @@
         return brand;
       }
 
+      function positiveNumber(value, fallback = 0) {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+      }
+
+      function palletCountFor(quantity, palletQty) {
+        const normalizedPalletQty = positiveNumber(palletQty, 0);
+        return normalizedPalletQty > 0 ? Math.ceil(quantity / normalizedPalletQty) : 0;
+      }
+
+      function formatCardUnit(unit) {
+        if (unit === 'PC') return 'pcs';
+        if (unit === 'KIT') return 'kit';
+        if (unit === 'EA') return 'ea';
+        return String(unit).toLowerCase();
+      }
+
+      function formatInitialQty(product) {
+        const moq = positiveNumber(product.moq, positiveNumber(product.min, 1));
+        const palletQty = positiveNumber(product.palletQty, 0);
+        const unit = formatCardUnit(product.unit);
+        if (product.displayMode === 'kw') {
+          return `${moq} ${unit} / ${palletCountFor(moq, palletQty)} pallet`;
+        }
+        return `${moq} ${unit}`;
+      }
+
       productGrid.innerHTML = skuProducts.map((product) => {
         const statusText = product.status === 'out-of-stock' ? 'Out of Stock' : 'In Stock';
         const buttonText = product.status === 'out-of-stock' ? 'Ask to replenishment' : 'Add to Chart';
@@ -1843,15 +1911,17 @@
         const statusClass = product.status === 'out-of-stock' ? 'status out' : 'status';
         const brandClass = product.brand === 'TCL' || product.brand === 'TCL SOLAR' ? 'brand-badge tcl' : 'brand-badge';
         const commercialName = 'Commercial name -';
-        const qtyText = product.displayMode === 'kw'
-          ? `${product.min} ${product.unit} / 1 pallet`
-          : `${product.min} ${product.unit}`;
+        const moq = positiveNumber(product.moq, positiveNumber(product.min, 1));
+        const step = positiveNumber(product.step, moq);
+        const palletQty = positiveNumber(product.palletQty, 0);
+        const qtyText = formatInitialQty(product);
+        const moqText = `MOQ: ${moq} ${product.unit}`;
         const totalText = product.displayMode === 'kw'
           ? `total: ${product.capacity.toFixed(2).replace(/\.?0+$/, '')} kW`
           : `unit: ${product.unit}`;
 
         return `
-          <article class="card product" data-sku="${escapeHtml(product.sku)}" data-country="Spain" data-brand="${escapeHtml(product.brand)}" data-category="${escapeHtml(product.category)}" data-subcategory="${escapeHtml(product.subcategory)}" data-type="${escapeHtml(product.type)}" data-backsheet="${escapeHtml(product.backsheet)}" data-cell-color="${escapeHtml(product.cellColor)}" data-cell-tech="${escapeHtml(product.cellTech)}" data-module-tech="${escapeHtml(product.moduleTech)}" data-unit="${escapeHtml(product.unit)}" data-display-mode="${escapeHtml(product.displayMode)}" data-min="${product.min}" data-step="${product.step}" data-capacity="${product.capacity}" data-pallet-qty="${product.min}" data-status="${escapeHtml(product.status)}">
+          <article class="card product" data-sku="${escapeHtml(product.sku)}" data-country="Spain" data-brand="${escapeHtml(product.brand)}" data-category="${escapeHtml(product.category)}" data-subcategory="${escapeHtml(product.subcategory)}" data-type="${escapeHtml(product.type)}" data-backsheet="${escapeHtml(product.backsheet)}" data-cell-color="${escapeHtml(product.cellColor)}" data-cell-tech="${escapeHtml(product.cellTech)}" data-module-tech="${escapeHtml(product.moduleTech)}" data-unit="${escapeHtml(product.unit)}" data-display-mode="${escapeHtml(product.displayMode)}" data-min="${moq}" data-moq="${moq}" data-step="${step}" data-capacity="${product.capacity}" data-pallet-qty="${palletQty}" data-status="${escapeHtml(product.status)}">
             <a class="product-media-link media-frame" href="sunpower-product-detail.html">
               <span class="${brandClass}">${escapeHtml(displayBrand(product.brand))}</span>
               <span class="commercial-badge">${escapeHtml(commercialName)}</span>
@@ -1877,6 +1947,7 @@
               <div class="qty">
                 <div class="qty-meta-row">
                   <span class="${statusClass}">${statusText}</span>
+                  <span class="qty-moq">${escapeHtml(moqText)}</span>
                   <div class="qty-total"><b class="qty-total-value">${escapeHtml(totalText)}</b></div>
                 </div>
                 <div class="stepper">
@@ -1950,9 +2021,10 @@
       unit: card.dataset.unit,
       displayMode: card.dataset.displayMode || (card.dataset.unit === 'KIT' ? 'kit' : 'unit'),
       min: Number(card.dataset.min),
+      moq: Number(card.dataset.moq || card.dataset.min),
       step: Number(card.dataset.step),
       capacity: Number(card.dataset.capacity),
-      palletQty: Number(card.dataset.palletQty || card.dataset.min),
+      palletQty: Number(card.dataset.palletQty),
       status: card.dataset.status,
       quantity: Number(card.dataset.min),
       requestType: null,
@@ -1970,17 +2042,38 @@
       return unit.toLowerCase();
     }
 
+    function positiveNumber(value, fallback = 0) {
+      const parsed = Number(value);
+      return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+    }
+
+    function getMoq(item) {
+      return positiveNumber(item.moq, positiveNumber(item.min, 1));
+    }
+
+    function getStep(item) {
+      return positiveNumber(item.step, getMoq(item));
+    }
+
+    function getPalletQty(item) {
+      return positiveNumber(item.palletQty, 0);
+    }
+
+    function getPalletCount(item) {
+      const palletQty = getPalletQty(item);
+      return palletQty > 0 ? Math.ceil(item.quantity / palletQty) : 0;
+    }
+
     function formatStepperQty(item) {
       const cardUnit = formatCardUnit(item.unit);
       if (item.displayMode !== 'kw') return item.quantity + ' ' + cardUnit;
-      const palletCount = Math.max(1, Math.round(item.quantity / item.palletQty));
-      return item.quantity + ' ' + cardUnit + ' / ' + palletCount + ' pallet';
+      return item.quantity + ' ' + cardUnit + ' / ' + getPalletCount(item) + ' pallet';
     }
 
     function formatTotalCapacity(item) {
       if (item.displayMode === 'kit') return 'unit: KIT';
       if (item.displayMode !== 'kw') return 'unit: ' + item.unit;
-      const total = (item.quantity / item.min) * item.capacity;
+      const total = (item.quantity / getMoq(item)) * item.capacity;
       return 'total: ' + total.toFixed(1).replace(/\.0$/, '.0') + ' kW';
     }
 
@@ -1989,7 +2082,7 @@
       if (qtyValue) qtyValue.textContent = formatStepperQty(item);
       item.card.querySelector('.qty-step-value').textContent = formatStepperQty(item);
       item.card.querySelector('.qty-total-value').textContent = formatTotalCapacity(item);
-      item.card.querySelector('.qty-minus').disabled = item.quantity <= item.min;
+      item.card.querySelector('.qty-minus').disabled = item.quantity <= getMoq(item);
       const button = item.card.querySelector('.request-btn');
       const feedback = item.card.querySelector('.request-feedback');
 
@@ -2021,7 +2114,7 @@
           <div class="summary-item-head">
             <div>
               <div class="summary-item-title">${item.sku}</div>
-              <div class="summary-item-meta">${item.brand} · ${formatQty(item)}${item.requestType === 'replenishment' ? ' · replenishment request' : ' · pricing request'}</div>
+              <div class="summary-item-meta">${item.brand} · ${formatStepperQty(item)}${item.requestType === 'replenishment' ? ' · replenishment request' : ' · pricing request'}</div>
             </div>
             <button type="button" class="summary-remove" data-remove-sku="${item.sku}" aria-label="Remove request">×</button>
           </div>
@@ -2102,15 +2195,15 @@
 
     function updateSummary() {
       const requestedItems = productState.filter((item) => item.requestType);
-      const totalSelected = requestedItems.length;
+      const totalSelected = requestedItems.reduce((sum, item) => sum + getPalletCount(item), 0);
       const totalCapacity = requestedItems
         .filter((item) => item.displayMode === 'kw')
-        .reduce((sum, item) => sum + (item.quantity / item.min) * item.capacity, 0);
+        .reduce((sum, item) => sum + (item.quantity / getMoq(item)) * item.capacity, 0);
       const totalKit = requestedItems
         .filter((item) => item.displayMode === 'kit')
         .reduce((sum, item) => sum + item.quantity, 0);
 
-      summarySelected.textContent = String(totalSelected);
+      summarySelected.textContent = totalSelected + ' pallet' + (totalSelected === 1 ? '' : 's');
       summaryCapacity.textContent = totalCapacity.toFixed(2).replace(/\.00$/, '') + ' kW';
       summaryKit.textContent = totalKit + ' kit';
       renderSummaryList(requestedItems);
@@ -2136,15 +2229,15 @@
       updateCard(item);
 
       item.card.querySelector('.qty-plus').addEventListener('click', () => {
-        item.quantity += item.step;
+        item.quantity += getStep(item);
         if (item.requestType) item.requestSent = false;
         updateCard(item);
         updateSummary();
       });
 
       item.card.querySelector('.qty-minus').addEventListener('click', () => {
-        if (item.quantity <= item.min) return;
-        item.quantity -= item.step;
+        if (item.quantity <= getMoq(item)) return;
+        item.quantity = Math.max(getMoq(item), item.quantity - getStep(item));
         if (item.requestType) item.requestSent = false;
         updateCard(item);
         updateSummary();
