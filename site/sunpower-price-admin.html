@@ -1,0 +1,2255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SKU Pricing Configuration</title>
+  <style>
+    :root {
+      --page: #f7f9fd;
+      --header: #eff1f6;
+      --panel: #ffffff;
+      --line: #edf1f8;
+      --line-strong: #d6deef;
+      --text: #2f3440;
+      --muted: #697184;
+      --muted-2: #8b94a8;
+      --blue: #3562ff;
+      --blue-dark: #14249b;
+      --blue-soft: #eef3ff;
+      --green: #99c52d;
+      --green-soft: #f3f8e7;
+      --orange: #ff8a00;
+      --orange-soft: #fff4e4;
+      --red: #ef4d4d;
+      --shadow: 0 2px 8px rgba(54, 72, 122, .07);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 1240px;
+      background: var(--page);
+      color: var(--text);
+      font-family: "Roboto", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 13px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: default; }
+
+    .topbar {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--header);
+      box-shadow: 0 1px 2px rgba(0, 21, 41, .08);
+      padding: 0 12px 0 16px;
+    }
+
+    .left-head,
+    .logo,
+    .rings,
+    .menu,
+    .top-actions,
+    .feedback {
+      display: flex;
+      align-items: center;
+    }
+
+    .left-head { min-width: 0; gap: 20px; }
+    .logo { width: 160px; gap: 8px; flex: 0 0 auto; }
+    .tcl { color: #f42727; font-size: 22px; line-height: 1; font-weight: 900; letter-spacing: .02em; }
+    .ark {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #e51f2f;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .ark-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #e51f2f;
+      position: relative;
+    }
+    .ark-dot::before {
+      content: "";
+      position: absolute;
+      inset: 4px 3px 3px;
+      border-radius: 50% 50% 45% 45%;
+      background: #fff;
+    }
+    .rings { position: relative; width: 52px; height: 20px; }
+    .ring {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 2px solid;
+      border-radius: 50%;
+    }
+    .ring:nth-child(1) { left: 0; top: 0; border-color: #2f7ef8; }
+    .ring:nth-child(2) { left: 13px; top: 0; border-color: #2f2f2f; }
+    .ring:nth-child(3) { left: 26px; top: 0; border-color: #ff5959; }
+    .ring:nth-child(4) { left: 7px; top: 8px; border-color: #efc330; }
+    .ring:nth-child(5) { left: 20px; top: 8px; border-color: #3bab62; }
+
+    .menu {
+      height: 48px;
+      gap: 34px;
+      overflow: hidden;
+      white-space: nowrap;
+      color: #333;
+      font-size: 14px;
+    }
+    .menu a {
+      height: 48px;
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+    }
+    .menu a.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      border-radius: 2px 2px 0 0;
+      background: var(--blue);
+    }
+
+    .top-actions { gap: 18px; flex: 0 0 auto; }
+    .feedback {
+      height: 24px;
+      min-width: 96px;
+      justify-content: center;
+      gap: 6px;
+      border: 0;
+      border-radius: 3px;
+      background: linear-gradient(90deg, rgba(90,175,255,.3), rgba(90,93,255,.3));
+      color: #143475;
+      font-weight: 800;
+      font-size: 14px;
+    }
+    .feedback::before {
+      content: "?";
+      width: 16px;
+      height: 16px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: #234b9b;
+      border-radius: 2px;
+    }
+    .icon-button {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      color: #1f2532;
+      font-size: 17px;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .crumbbar {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 16px;
+      background: var(--page);
+    }
+    .crumb {
+      min-height: 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 8px;
+      border: 1px solid #f2f2f2;
+      border-radius: 8px;
+      background: var(--page);
+      color: #333;
+    }
+    .crumb.active {
+      background: rgba(53, 98, 255, .2);
+      border-color: transparent;
+    }
+
+    .main { padding: 0 16px 36px; }
+
+    .tabs {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      color: #999;
+      font-size: 16px;
+    }
+    .tab {
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      font-weight: 700;
+    }
+    .tab.active { color: var(--blue); }
+    .tab.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 3px;
+      border-radius: 3px;
+      background: var(--blue);
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .filter-card {
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .filter-head,
+    .toolbar,
+    .section-head,
+    .price-title,
+    .mode-row,
+    .version-row,
+    .summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+    h1 { font-size: 20px; color: var(--text); }
+    h2 { font-size: 16px; color: var(--text); }
+    h3 { font-size: 14px; color: var(--text); }
+    .sub { color: var(--muted); font-size: 12px; line-height: 1.45; }
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1.2fr .9fr .9fr .9fr .9fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .field { min-width: 0; }
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .control {
+      width: 100%;
+      height: 36px;
+      border: 1px solid #dfe5f1;
+      border-radius: 7px;
+      background: #fff;
+      color: #333;
+      padding: 0 10px;
+      outline: 0;
+    }
+    .control:focus,
+    .price-input:focus,
+    .tier-input:focus,
+    .note-area:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(53, 98, 255, .1);
+    }
+    .select { appearance: auto; }
+
+    .btn {
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--blue);
+      border-radius: 7px;
+      background: #fff;
+      color: var(--blue);
+      padding: 0 14px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .btn.primary {
+      color: #fff;
+      background: var(--blue);
+    }
+    .btn.soft {
+      background: var(--blue-soft);
+      border-color: #dbe4ff;
+    }
+    .btn.danger {
+      color: var(--red);
+      border-color: #ffd4d4;
+      background: #fff8f8;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .sku-panel {
+      padding: 14px;
+      position: sticky;
+      top: 12px;
+    }
+    .sku-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .sku-card {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 58px 1fr;
+      gap: 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      padding: 10px;
+      color: inherit;
+      text-align: left;
+    }
+    .sku-card.active {
+      border-color: var(--blue);
+      background: var(--blue-soft);
+      box-shadow: inset 3px 0 0 var(--blue);
+    }
+    .thumb {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: #eef2fb;
+      overflow: hidden;
+      color: #6f7c96;
+      font-size: 11px;
+      font-weight: 900;
+    }
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .sku-meta {
+      min-width: 0;
+      display: grid;
+      gap: 5px;
+    }
+    .sku-id {
+      overflow: hidden;
+      color: #1f2532;
+      font-size: 14px;
+      font-weight: 900;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .mini-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fbfcff;
+      padding: 10px;
+    }
+    .metric strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 16px;
+    }
+
+    .price-card { overflow: hidden; }
+    .price-top {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 14px;
+      padding: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    .title-stack { display: grid; gap: 8px; }
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .sku-title {
+      color: var(--blue-dark);
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: .01em;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 24px;
+      border-radius: 999px;
+      padding: 0 9px;
+      color: #50607a;
+      background: #f1f4fb;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .badge.green {
+      color: #557c00;
+      background: var(--green-soft);
+    }
+    .badge.blue {
+      color: var(--blue);
+      background: var(--blue-soft);
+    }
+    .spec-strip {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .spec {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcff;
+      padding: 9px;
+      min-height: 58px;
+    }
+    .spec b {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+      color: #252a33;
+    }
+
+    .version-box {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfcff;
+      padding: 12px;
+    }
+    .version-row + .version-row { margin-top: 8px; }
+    .version-label { color: var(--muted); font-weight: 700; }
+    .version-value { font-weight: 900; color: #252a33; }
+
+    .price-body {
+      display: grid;
+      gap: 14px;
+      padding: 16px;
+    }
+    .config-grid {
+      display: grid;
+      grid-template-columns: 1.12fr 1fr 1fr 1fr;
+      gap: 12px;
+    }
+    .mode-card {
+      display: grid;
+      gap: 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfcff;
+      padding: 12px;
+    }
+    .mode-options {
+      display: inline-flex;
+      align-items: center;
+      width: 100%;
+      padding: 3px;
+      border: 1px solid #dfe5f1;
+      border-radius: 8px;
+      background: #fff;
+    }
+    .mode-option {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 30px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 800;
+    }
+    .mode-option.active {
+      color: #fff;
+      background: var(--blue);
+    }
+    .mode-option.disabled {
+      color: var(--muted-2);
+      background: #f3f5fa;
+      cursor: not-allowed;
+    }
+
+    .matrix-wrap {
+      border: 1px solid var(--line-strong);
+      border-radius: 10px;
+      overflow: auto;
+      background: #fff;
+    }
+    .price-matrix {
+      width: 100%;
+      min-width: 620px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    .price-matrix th,
+    .price-matrix td {
+      border: 1px solid #dfe4ef;
+      padding: 8px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .price-matrix thead th {
+      background: var(--blue-dark);
+      color: #fff;
+      font-weight: 900;
+    }
+    .price-matrix thead .partner {
+      color: #a8d72c;
+      border-top-color: #fff;
+    }
+    .price-matrix thead .tier {
+      color: #a8d72c;
+      font-size: 12px;
+    }
+    .price-matrix .row-head {
+      width: 150px;
+      background: #f3f6fb;
+      color: #252a33;
+      font-weight: 900;
+      text-align: left;
+    }
+    .price-input {
+      width: 86px;
+      height: 32px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      background: #f7f9fd;
+      color: #1f2532;
+      text-align: center;
+      font-weight: 800;
+      outline: 0;
+    }
+    .tier-input {
+      width: 54px;
+      height: 28px;
+      border: 1px solid #dfe5f1;
+      border-radius: 6px;
+      background: #fff;
+      text-align: center;
+      color: #252a33;
+      outline: 0;
+    }
+    .tier-range {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      color: #fff;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .rule-layout {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 12px;
+      align-items: start;
+    }
+    .rule-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfcff;
+      padding: 12px;
+    }
+    .rule-card h3 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .definition-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .tier-rule-list {
+      display: grid;
+      gap: 10px;
+    }
+    .tier-rule-card {
+      border: 1px solid #dfe5f1;
+      border-radius: 10px;
+      background: #fff;
+      padding: 12px;
+    }
+    .tier-rule-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .tier-rule-grid {
+      display: grid;
+      grid-template-columns: .7fr .7fr 1fr 1fr;
+      gap: 8px;
+    }
+    .tier-rule-grid .tier-input {
+      width: 100%;
+      height: 36px;
+      color: #252a33;
+      font-size: 13px;
+    }
+    .dev-rule-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 12px;
+    }
+    .dev-rule-table th,
+    .dev-rule-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 9px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .dev-rule-table th {
+      color: var(--muted);
+      background: #fff;
+      font-weight: 900;
+    }
+    .discount-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 12px;
+    }
+    .discount-table th,
+    .discount-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 9px 8px;
+      text-align: left;
+    }
+    .discount-table th {
+      color: var(--muted);
+      background: #fbfcff;
+      font-weight: 900;
+    }
+    .discount-rate {
+      color: var(--blue);
+      font-weight: 900;
+    }
+    .country-rule-panel {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfcff;
+      padding: 12px;
+    }
+    .country-rule-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .country-rule {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      min-height: 74px;
+      border: 1px solid #dfe5f1;
+      border-radius: 8px;
+      background: #fff;
+      padding: 10px;
+      color: #2f3440;
+      font-weight: 800;
+      text-align: left;
+    }
+    .country-rule.active,
+    .country-rule:has(input:checked) {
+      border-color: #bfcaff;
+      background: var(--blue-soft);
+      color: var(--blue);
+    }
+    .country-rule small {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .country-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .contact-panel {
+      display: none;
+      border: 1px solid #f2d5a8;
+      border-radius: 10px;
+      background: #fffaf1;
+      padding: 14px;
+    }
+    .contact-panel.show { display: grid; gap: 10px; }
+    .fixed-panel {
+      display: none;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfcff;
+      padding: 14px;
+    }
+    .fixed-panel.show { display: grid; gap: 12px; }
+    .fixed-price-grid {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr .9fr .9fr;
+      gap: 12px;
+    }
+    .rule-note {
+      border: 1px solid #dfe5f1;
+      border-radius: 9px;
+      background: #fff;
+      padding: 11px;
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.45;
+    }
+    .rule-alert {
+      display: grid;
+      gap: 5px;
+      border: 1px solid #c8d5ff;
+      border-radius: 10px;
+      background: var(--blue-soft);
+      padding: 12px;
+      color: #20336f;
+      line-height: 1.45;
+    }
+    .rule-alert strong {
+      color: var(--blue-dark);
+      font-size: 14px;
+    }
+    .field-hint {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted-2);
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    .note-area {
+      min-height: 82px;
+      width: 100%;
+      resize: vertical;
+      border: 1px solid #dfe5f1;
+      border-radius: 8px;
+      padding: 10px;
+      outline: 0;
+      color: #2f3440;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .summary-tile {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfcff;
+      padding: 12px;
+    }
+    .summary-tile span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .summary-tile strong {
+      display: block;
+      margin-top: 5px;
+      color: #1f2532;
+      font-size: 18px;
+    }
+
+    .history-card {
+      padding: 14px;
+    }
+    .history-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      margin-top: 10px;
+    }
+    .history-table th,
+    .history-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .history-table th {
+      color: var(--muted);
+      font-size: 12px;
+      background: #fbfcff;
+    }
+    .status-text {
+      color: #557c00;
+      font-weight: 900;
+    }
+
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      display: none;
+      min-width: 260px;
+      border: 1px solid #c8d5ff;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 14px 40px rgba(21, 35, 80, .16);
+      padding: 12px 14px;
+      color: #1f2532;
+      font-weight: 800;
+      z-index: 20;
+    }
+    .toast.show { display: block; }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(19, 28, 52, .42);
+      z-index: 30;
+    }
+    .modal-backdrop.open { display: flex; }
+    .import-modal {
+      width: min(1120px, 100%);
+      max-height: calc(100vh - 48px);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      overflow: hidden;
+      border: 1px solid #dfe6f5;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 24px 70px rgba(15, 25, 58, .26);
+    }
+    .modal-head,
+    .modal-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .modal-foot {
+      border-top: 1px solid var(--line);
+      border-bottom: 0;
+      background: #fbfcff;
+    }
+    .modal-title-stack { display: grid; gap: 5px; }
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #dfe5f1;
+      border-radius: 8px;
+      background: #fff;
+      color: #566074;
+      font-size: 20px;
+      line-height: 1;
+    }
+    .modal-body {
+      overflow: auto;
+      padding: 16px 18px 18px;
+    }
+    .import-steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .step-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfcff;
+      padding: 11px;
+    }
+    .step-card.active {
+      border-color: #bfcaff;
+      background: var(--blue-soft);
+    }
+    .step-no {
+      display: inline-grid;
+      width: 22px;
+      height: 22px;
+      place-items: center;
+      margin-right: 6px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 900;
+      font-size: 12px;
+    }
+    .import-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .import-section {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      padding: 14px;
+    }
+    .import-section.full { grid-column: 1 / -1; }
+    .import-section h3 {
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+    .scope-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .upload-box {
+      min-height: 150px;
+      display: grid;
+      place-items: center;
+      border: 1px dashed #aebcf4;
+      border-radius: 12px;
+      background: #f8faff;
+      color: #566074;
+      text-align: center;
+      padding: 18px;
+    }
+    .upload-box strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #1f2532;
+      font-size: 16px;
+    }
+    .file-summary {
+      display: none;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .file-summary.show { display: grid; }
+    .file-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid #dfe5f1;
+      border-radius: 9px;
+      background: #fff;
+      padding: 10px;
+    }
+    .validation-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .validation-tile {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfcff;
+      padding: 11px;
+    }
+    .validation-tile strong {
+      display: block;
+      margin-bottom: 3px;
+      color: #1f2532;
+      font-size: 20px;
+    }
+    .validation-tile.error strong { color: var(--red); }
+    .validation-tile.warn strong { color: var(--orange); }
+    .preview-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 12px;
+    }
+    .preview-table th,
+    .preview-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    .preview-table th {
+      color: var(--muted);
+      background: #fbfcff;
+      font-weight: 900;
+    }
+    .delta.up { color: #0c8a43; font-weight: 900; }
+    .delta.down { color: var(--red); font-weight: 900; }
+    .error-list { display: grid; gap: 8px; }
+    .error-row {
+      display: grid;
+      grid-template-columns: 70px 120px 1fr 1.2fr;
+      gap: 8px;
+      border: 1px solid #ffd8d8;
+      border-radius: 9px;
+      background: #fff8f8;
+      padding: 9px;
+      color: #7b3030;
+    }
+    .import-hint {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    @media (max-width: 900px) {
+      body { min-width: 0; }
+      .menu { display: none; }
+      .main { padding: 0 10px 24px; }
+      .filters,
+      .workspace,
+      .price-top,
+      .config-grid,
+      .spec-strip,
+      .summary-grid,
+      .import-grid,
+      .import-steps,
+      .scope-grid,
+      .validation-grid,
+      .country-rule-grid {
+        grid-template-columns: 1fr;
+      }
+      .sku-panel { position: static; }
+      .toolbar,
+      .filter-head {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="left-head">
+      <div class="logo" aria-label="TCL Ark">
+        <span class="tcl">TCL</span>
+        <span class="rings" aria-hidden="true">
+          <span class="ring"></span><span class="ring"></span><span class="ring"></span><span class="ring"></span><span class="ring"></span>
+        </span>
+        <span class="ark"><span class="ark-dot"></span>Ark</span>
+      </div>
+      <nav class="menu" aria-label="Main navigation">
+        <a href="#">HOME</a>
+        <a href="#">Order</a>
+        <a href="#">Planning</a>
+        <a href="#">Customer</a>
+        <a href="#">Opportunity Center</a>
+        <a class="active" href="#">Partner Portal</a>
+        <a href="#">Purchase</a>
+        <a href="#">Inventory</a>
+        <a href="#">Settlement</a>
+      </nav>
+    </div>
+    <div class="top-actions" aria-label="Header actions">
+      <button class="feedback" type="button">Feedback</button>
+      <button class="icon-button" type="button" aria-label="Search">S</button>
+      <button class="icon-button" type="button" aria-label="Language">G</button>
+      <button class="icon-button" type="button" aria-label="Notifications">N</button>
+    </div>
+  </header>
+
+  <nav class="crumbbar" aria-label="Breadcrumb">
+    <a class="crumb" href="index.html">Home</a>
+    <a class="crumb" href="sunpower-product-admin.html">Product Management</a>
+    <span class="crumb active">SKU Pricing</span>
+  </nav>
+
+  <main class="main">
+    <div class="tabs" role="tablist" aria-label="Product management views">
+      <a class="tab" href="sunpower-product-admin.html" role="tab" aria-selected="false">Product Overview</a>
+      <span class="tab active" role="tab" aria-selected="true">SKU Pricing</span>
+      <span class="tab" role="tab" aria-selected="false">Price Import History</span>
+    </div>
+
+    <section class="card filter-card" aria-label="Pricing filters">
+      <div class="filter-head">
+        <div>
+          <h1>SKU Pricing Configuration</h1>
+          <p class="sub">Maintain country prices by product type: PV uses pallet-tier pricing, while Kit and Battery use fixed country prices.</p>
+        </div>
+        <div class="toolbar">
+          <button class="btn" type="button" id="resetBtn">Reset</button>
+          <button class="btn soft" type="button" id="importPriceBtn">Import price list</button>
+          <button class="btn soft" type="button">Export template</button>
+          <button class="btn primary" type="button" id="publishBtn">Publish pricing</button>
+        </div>
+      </div>
+      <div class="filters">
+        <div class="field">
+          <label>SKU / Product</label>
+          <input class="control" id="skuSearch" value="" placeholder="Search SKU or product">
+        </div>
+        <div class="field">
+          <label>Jump to country config</label>
+          <select class="control select" id="countrySelect">
+            <option>Italy</option>
+            <option>Spain</option>
+            <option>France</option>
+            <option>Germany</option>
+            <option>Netherlands</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Product type</label>
+          <select class="control select">
+            <option>All product types</option>
+            <option>PV module</option>
+            <option>Kit</option>
+            <option>Battery</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Pricing status</label>
+          <select class="control select" id="statusFilter">
+            <option>All statuses</option>
+            <option>Active</option>
+            <option>Draft</option>
+            <option>Contact sales</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Valid from</label>
+          <input class="control" type="date" value="2026-07-15">
+        </div>
+        <div class="field">
+          <label>Price unit</label>
+          <select class="control select" id="unitSelect">
+            <option>EUR / W</option>
+            <option>EUR / pc</option>
+            <option>EUR / kit</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <aside class="card sku-panel" aria-label="SKU list">
+        <div class="section-head">
+          <div>
+            <h2>SKU List</h2>
+            <p class="sub">PV has pallet tiers. Kit and Battery have one fixed price per country.</p>
+          </div>
+          <span class="badge blue">6 SKU</span>
+        </div>
+        <div class="sku-list" id="skuList">
+          <button class="sku-card active" type="button" data-sku="M-Class-495">
+            <span class="thumb"><img src="product-tab-assets/module-500.png" alt="M-Class module"></span>
+            <span class="sku-meta">
+              <span class="sku-id">M-Class-495</span>
+              <span class="sub">495 W Back Contact module</span>
+              <span><span class="badge green">PV</span> <span class="badge">36 pcs / pallet</span></span>
+            </span>
+          </button>
+          <button class="sku-card" type="button" data-sku="M-Class-490">
+            <span class="thumb"><img src="product-tab-assets/module-500.png" alt="M-Class module"></span>
+            <span class="sku-meta">
+              <span class="sku-id">M-Class-490</span>
+              <span class="sub">490 W Back Contact module</span>
+              <span><span class="badge green">PV</span> <span class="badge">36 pcs / pallet</span></span>
+            </span>
+          </button>
+          <button class="sku-card" type="button" data-sku="P7-515-BLK">
+            <span class="thumb"><img src="product-tab-assets/module-515.png" alt="P7 module"></span>
+            <span class="sku-meta">
+              <span class="sku-id">P7-515-BLK</span>
+              <span class="sub">515 W Shingled black module</span>
+              <span><span class="badge green">PV</span> <span class="badge">36 pcs / pallet</span></span>
+            </span>
+          </button>
+          <button class="sku-card" type="button" data-sku="P7-560-COM-S-BF">
+            <span class="thumb"><img src="product-tab-assets/module-515.png" alt="Commercial module"></span>
+            <span class="sku-meta">
+              <span class="sku-id">P7-560-COM-S-BF</span>
+              <span class="sub">560 W commercial module</span>
+              <span><span class="badge green">PV</span> <span class="badge">Contact sales</span></span>
+            </span>
+          </button>
+          <button class="sku-card" type="button" data-sku="SP-KIT-6KW">
+            <span class="thumb">KIT</span>
+            <span class="sku-meta">
+              <span class="sku-id">SP-KIT-6KW</span>
+              <span class="sub">Residential PV kit bundle</span>
+              <span><span class="badge blue">Kit</span> <span class="badge">Fixed / kit</span></span>
+            </span>
+          </button>
+          <button class="sku-card" type="button" data-sku="BAT-HV-10">
+            <span class="thumb">BAT</span>
+            <span class="sku-meta">
+              <span class="sku-id">BAT-HV-10</span>
+              <span class="sub">High voltage battery 10 kWh</span>
+              <span><span class="badge blue">Battery</span> <span class="badge">Fixed / pc</span></span>
+            </span>
+          </button>
+        </div>
+
+        <div class="mini-grid">
+          <div class="metric">
+            <strong id="lowestPrice">0.325</strong>
+            <span class="sub">Lowest active EUR/W</span>
+          </div>
+          <div class="metric">
+            <strong id="highestPrice">0.340</strong>
+            <span class="sub">Highest active EUR/W</span>
+          </div>
+          <div class="metric">
+            <strong id="editableCount">3</strong>
+            <span class="sub">Editable price fields</span>
+          </div>
+          <div class="metric">
+            <strong id="changedCount">0</strong>
+            <span class="sub">Unsaved changes</span>
+          </div>
+        </div>
+      </aside>
+
+      <section class="card price-card" aria-label="Price matrix editor">
+        <div class="price-top">
+          <div class="title-stack">
+            <div class="title-row">
+              <h1 class="sku-title" id="activeSkuTitle">M-Class-495</h1>
+              <span class="badge green" id="activeStatus">Active</span>
+              <span class="badge blue" id="activeMarket">Italy</span>
+              <span class="badge" id="activeType">PV module</span>
+            </div>
+            <p class="sub" id="activeDesc">SunPower Italy price list, valid from 15 July 2026 until a new version is published.</p>
+            <div class="spec-strip">
+              <div class="spec"><b id="specPower">495 W</b><span class="sub">Nominal power</span></div>
+              <div class="spec"><b id="specPallet">36</b><span class="sub" id="specPalletLabel">Modules per pallet</span></div>
+              <div class="spec"><b id="specEfficiency">24.3%</b><span class="sub">Panel efficiency</span></div>
+              <div class="spec"><b id="specColor">NERO / NERO</b><span class="sub">Frame / Backsheet</span></div>
+              <div class="spec"><b id="specSize">1800x1134x30</b><span class="sub">Dimensions mm</span></div>
+              <div class="spec"><b id="specWarranty">40 yrs</b><span class="sub">Warranty</span></div>
+            </div>
+          </div>
+          <div class="version-box">
+            <div class="version-row"><span class="version-label">Version</span><span class="version-value">IT-2026-07-v1</span></div>
+            <div class="version-row"><span class="version-label">Valid from</span><span class="version-value">2026-07-15</span></div>
+            <div class="version-row"><span class="version-label">Valid until</span><span class="version-value">New version</span></div>
+            <div class="version-row"><span class="version-label">Currency</span><span class="version-value" id="currencyLabel">EUR / W</span></div>
+          </div>
+        </div>
+
+        <div class="price-body">
+          <div class="config-grid">
+            <div class="field">
+              <label>Pricing mode</label>
+              <div class="mode-options" role="group" aria-label="Pricing mode">
+                <button class="mode-option active" type="button" data-mode="matrix">PV tiers</button>
+                <button class="mode-option" type="button" data-mode="fixed">Fixed price</button>
+                <button class="mode-option" type="button" data-mode="contact">Contact sales</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>Minimum order basis</label>
+              <select class="control select" id="orderBasisSelect">
+                <option>Full pallet only</option>
+                <option>MOQ quantity</option>
+                <option>Any quantity</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Rounding rule</label>
+              <select class="control select" id="roundingSelect">
+                <option>Use requested pallet count</option>
+                <option>Round up to pallet</option>
+                <option>Manual approval</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Frontend visibility</label>
+              <select class="control select">
+                <option>Show calculated price to eligible partner</option>
+                <option>Hide price, request only</option>
+                <option>Show price after sales approval</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="country-rule-panel" aria-label="Country price configurations">
+            <div class="section-head">
+              <div>
+                <h2>Country price configurations</h2>
+                <p class="sub" id="countryRuleHint">PV SKUs own separate pallet-tier prices per country. Kit and Battery SKUs own one fixed price per country.</p>
+              </div>
+              <span class="badge blue" id="countryCount">5 country configs</span>
+            </div>
+            <div class="country-rule-grid">
+              <button class="country-rule active" type="button" data-country="Italy"><span>Italy</span><small>2 to 8 pallets: 0.330 EUR/W</small></button>
+              <button class="country-rule" type="button" data-country="Spain"><span>Spain</span><small>2 to 8 pallets: 0.335 EUR/W</small></button>
+              <button class="country-rule" type="button" data-country="France"><span>France</span><small>2 to 8 pallets: 0.342 EUR/W</small></button>
+              <button class="country-rule" type="button" data-country="Germany"><span>Germany</span><small>2 to 8 pallets: 0.338 EUR/W</small></button>
+              <button class="country-rule" type="button" data-country="Netherlands"><span>Netherlands</span><small>2 to 8 pallets: 0.331 EUR/W</small></button>
+            </div>
+            <div class="country-summary" id="countrySummary">
+              <span class="badge blue">Editing Italy</span>
+              <span class="badge">5 configs under this SKU</span>
+            </div>
+          </div>
+
+          <div class="mode-card" id="matrixPanel">
+            <div class="section-head">
+              <div>
+                <h2 id="countryPriceTitle">Italy Standard Price</h2>
+                <p class="sub">PV-only pricing model. Define how cart pallet count maps to a country standard price.</p>
+              </div>
+              <div class="toolbar">
+                <button class="btn soft" type="button" id="addTierBtn">Add tier rule</button>
+                <button class="btn" type="button" id="copyTierBtn">Copy standard price</button>
+                <button class="btn primary" type="button" id="saveBtn">Save draft</button>
+              </div>
+            </div>
+            <div class="rule-alert">
+              <strong>PV tier matching rule</strong>
+              <span>Display labels should read "Only 1 pallet", "2 to 8 pallets", and "Above 8 pallets". Backend still saves Above 8 pallets as tierMin = 9 and tierMax = empty. Kit and Battery skip this rule and use fixed country price.</span>
+            </div>
+            <div class="rule-layout">
+              <div class="rule-card">
+                <h3>PV price model definition <span class="badge blue">PV only</span></h3>
+                <div class="definition-grid">
+                  <div class="field">
+                    <label>Product type</label>
+                    <input class="control" value="PV module" disabled>
+                  </div>
+                  <div class="field">
+                    <label>Price basis</label>
+                    <input class="control" value="Pallet count tier" disabled>
+                  </div>
+                  <div class="field">
+                    <label>Price unit</label>
+                    <input class="control" id="matrixUnitInput" value="EUR/W" disabled>
+                  </div>
+                  <div class="field">
+                    <label>Cart matching</label>
+                    <input class="control" value="Use requested pallet count" disabled>
+                  </div>
+                </div>
+                <div class="rule-note" style="margin-top:10px">Backend rule: if productType = PV, resolve standardPrice by the first tier where palletCount >= tierMin and tierMax is empty or palletCount <= tierMax.</div>
+              </div>
+              <div class="rule-card">
+                <h3>Developer field contract <span class="badge">Required</span></h3>
+                <table class="dev-rule-table" aria-label="PV tier developer field contract">
+                  <thead>
+                    <tr><th>Field</th><th>Rule</th><th>Example</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>tierMin</td><td>Required integer</td><td>1</td></tr>
+                    <tr><td>tierMax</td><td>Inclusive integer, empty means no upper limit</td><td>8 / empty</td></tr>
+                    <tr><td>price</td><td>Required decimal, unit follows SKU</td><td>0.330</td></tr>
+                    <tr><td>partnerPrice</td><td>Calculated only, not saved manually</td><td>price x discount</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="tier-rule-list" aria-label="PV tier rule list">
+              <div class="tier-rule-card">
+                <div class="tier-rule-head"><strong>Tier 1</strong><span class="badge green">Only 1 pallet</span></div>
+                <div class="tier-rule-grid">
+                  <div class="field"><label>Min pallet</label><input class="control tier-input" value="1"><span class="field-hint">Inclusive</span></div>
+                  <div class="field"><label>Max pallet</label><input class="control tier-input" value="1"><span class="field-hint">Inclusive</span></div>
+                  <div class="field"><label>Display label</label><input class="control" value="Only 1 pallet"><span class="field-hint">Show when pallet count = 1</span></div>
+                  <div class="field"><label>Standard price</label><input class="control price-input" value="0.340"><span class="field-hint">Before partner discount</span></div>
+                </div>
+              </div>
+              <div class="tier-rule-card">
+                <div class="tier-rule-head"><strong>Tier 2</strong><span class="badge green">2 to 8 pallets</span></div>
+                <div class="tier-rule-grid">
+                  <div class="field"><label>Min pallet</label><input class="control tier-input" value="2"><span class="field-hint">Inclusive</span></div>
+                  <div class="field"><label>Max pallet</label><input class="control tier-input" value="8"><span class="field-hint">Inclusive</span></div>
+                  <div class="field"><label>Display label</label><input class="control" value="2 to 8 pallets"><span class="field-hint">Covers 2, 3 ... 8 pallets</span></div>
+                  <div class="field"><label>Standard price</label><input class="control price-input" value="0.330"><span class="field-hint">Before partner discount</span></div>
+                </div>
+              </div>
+              <div class="tier-rule-card">
+                <div class="tier-rule-head"><strong>Tier 3</strong><span class="badge green">Above 8 pallets</span></div>
+                <div class="tier-rule-grid">
+                  <div class="field"><label>Min pallet</label><input class="control tier-input" value="9"><span class="field-hint">Because 8 is included in Tier 2</span></div>
+                  <div class="field"><label>Max pallet</label><input class="control tier-input" value=""><span class="field-hint">Empty = no upper limit</span></div>
+                  <div class="field"><label>Display label</label><input class="control" value="Above 8 pallets"><span class="field-hint">Shown instead of 8+ to avoid ambiguity</span></div>
+                  <div class="field"><label>Standard price</label><input class="control price-input" value="0.325"><span class="field-hint">Before partner discount</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="summary-grid" aria-label="Partner discount rules" style="margin-top:12px">
+              <div class="summary-tile"><span>Elite Partner discount</span><strong>95%</strong></div>
+              <div class="summary-tile"><span>Premier Partner discount</span><strong>92%</strong></div>
+              <div class="summary-tile"><span>Authorised Partner discount</span><strong>90%</strong></div>
+              <div class="summary-tile"><span>Editable price fields</span><strong>3</strong></div>
+            </div>
+            <div class="matrix-wrap" style="margin-top:12px">
+              <table class="discount-table" aria-label="Calculated partner price preview">
+                <thead>
+                  <tr>
+                    <th>Partner tier</th>
+                    <th>Discount</th>
+                    <th>Only 1 pallet</th>
+                    <th>2 to 8 pallets</th>
+                    <th>Above 8 pallets</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Elite Partner</td>
+                    <td><span class="discount-rate">95%</span></td>
+                    <td id="eliteOne">0.323 EUR/W</td>
+                    <td id="eliteMid">0.314 EUR/W</td>
+                    <td id="eliteHigh">0.309 EUR/W</td>
+                  </tr>
+                  <tr>
+                    <td>Premier Partner</td>
+                    <td><span class="discount-rate">92%</span></td>
+                    <td id="premierOne">0.313 EUR/W</td>
+                    <td id="premierMid">0.304 EUR/W</td>
+                    <td id="premierHigh">0.299 EUR/W</td>
+                  </tr>
+                  <tr>
+                    <td>Authorised Partner</td>
+                    <td><span class="discount-rate">90%</span></td>
+                    <td id="authOne">0.306 EUR/W</td>
+                    <td id="authMid">0.297 EUR/W</td>
+                    <td id="authHigh">0.293 EUR/W</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="fixed-panel" id="fixedPanel">
+            <div class="section-head">
+              <div>
+                <h2 id="fixedPriceTitle">Italy Fixed Price</h2>
+                <p class="sub">Kit and Battery prices do not use pallet tiers. Maintain one standard price per country and product unit.</p>
+              </div>
+              <div class="toolbar">
+                <button class="btn" type="button" id="copyFixedBtn">Copy country price</button>
+                <button class="btn primary" type="button" id="saveFixedBtn">Save draft</button>
+              </div>
+            </div>
+            <div class="fixed-price-grid">
+              <div class="field">
+                <label>Standard price</label>
+                <input class="control" id="fixedPriceInput" value="4,880">
+              </div>
+              <div class="field">
+                <label>Price unit</label>
+                <select class="control select" id="fixedUnitSelect">
+                  <option>EUR / kit</option>
+                  <option>EUR / pc</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Minimum order quantity</label>
+                <input class="control" id="fixedMoqInput" value="1">
+              </div>
+              <div class="field">
+                <label>Frontend display</label>
+                <select class="control select">
+                  <option>Show fixed price to eligible partner</option>
+                  <option>Hide price, request only</option>
+                </select>
+              </div>
+            </div>
+            <div class="summary-grid" aria-label="Fixed price partner discount preview">
+              <div class="summary-tile"><span>Elite fixed price</span><strong id="fixedElite">4,636 EUR / kit</strong></div>
+              <div class="summary-tile"><span>Premier fixed price</span><strong id="fixedPremier">4,490 EUR / kit</strong></div>
+              <div class="summary-tile"><span>Authorised fixed price</span><strong id="fixedAuth">4,392 EUR / kit</strong></div>
+              <div class="summary-tile"><span>Editable price fields</span><strong>1</strong></div>
+            </div>
+            <div class="rule-note" id="fixedRuleNote">Fixed price SKUs skip pallet matching. Cart uses quantity x country fixed unit price.</div>
+          </div>
+
+          <div class="contact-panel" id="contactPanel">
+            <div>
+              <h2>Contact Sales Configuration</h2>
+              <p class="sub">Use this mode when the SKU should not expose a fixed matrix price.</p>
+            </div>
+            <div class="config-grid">
+              <div class="field">
+                <label>Displayed frontend message</label>
+                <select class="control select">
+                  <option>Contact Regional Sales Manager</option>
+                  <option>Price upon request</option>
+                  <option>Not available for online request</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Owner role</label>
+                <select class="control select">
+                  <option>Regional Sales Manager</option>
+                  <option>Partner Success Representative</option>
+                  <option>Country Admin</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Approval required</label>
+                <select class="control select">
+                  <option>Yes</option>
+                  <option>No</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Fallback visibility</label>
+                <select class="control select">
+                  <option>Allow add to cart</option>
+                  <option>Disable add to cart</option>
+                </select>
+              </div>
+            </div>
+            <textarea class="note-area">Please contact your Regional Sales Manager for availability and price. Modules can be ordered only through the RSM or PSR reference.</textarea>
+          </div>
+
+          <div class="summary-grid" aria-label="Pricing rule summary">
+            <div class="summary-tile"><span>Cart matching rule</span><strong id="matchRule">2 pallets -> 2 to 8 pallets</strong></div>
+            <div class="summary-tile"><span>Standard price</span><strong id="standardPreview">0.330 EUR/W</strong></div>
+            <div class="summary-tile"><span>Elite price</span><strong id="elitePreview">0.314 EUR/W</strong></div>
+            <div class="summary-tile"><span>Authorised price</span><strong id="authPreview">0.297 EUR/W</strong></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card history-card" aria-label="Version history">
+      <div class="section-head">
+        <div>
+          <h2>Version History</h2>
+          <p class="sub">Recent SKU pricing changes for Italy.</p>
+        </div>
+        <button class="btn" type="button">View all</button>
+      </div>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Version</th>
+            <th>SKU</th>
+            <th>Market</th>
+            <th>Change summary</th>
+            <th>Status</th>
+            <th>Updated by</th>
+            <th>Updated time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>IT-2026-07-v1</td>
+            <td>M-Class-495</td>
+            <td>Italy</td>
+            <td>Initial July PV pallet-tier price by country. Partner tiers use discount rules.</td>
+            <td><span class="status-text">Published</span></td>
+            <td>Pricing Admin</td>
+            <td>2026-07-15 09:20</td>
+          </tr>
+          <tr>
+            <td>IT-2026-07-draft</td>
+            <td>P7-560-COM-S-BF</td>
+            <td>Italy</td>
+            <td>Switched to contact sales mode for commercial project pricing.</td>
+            <td>Draft</td>
+            <td>RSM Italy</td>
+            <td>2026-07-18 16:05</td>
+          </tr>
+          <tr>
+            <td>IT-2026-07-fixed</td>
+            <td>SP-KIT-6KW</td>
+            <td>Italy</td>
+            <td>Added fixed country price for Kit SKU. No pallet-tier matching.</td>
+            <td>Draft</td>
+            <td>Pricing Admin</td>
+            <td>2026-07-20 11:30</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="importModal" aria-hidden="true">
+    <section class="import-modal" role="dialog" aria-modal="true" aria-labelledby="importModalTitle">
+      <div class="modal-head">
+        <div class="modal-title-stack">
+          <h2 id="importModalTitle">Import price list</h2>
+          <p class="sub">Upload an Excel price list, validate it, preview changes, then import as a pricing draft.</p>
+        </div>
+        <button class="modal-close" type="button" id="importCloseBtn" aria-label="Close import modal">x</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="import-steps" aria-label="Import steps">
+          <div class="step-card active"><span class="step-no">1</span><strong>Scope</strong><p class="sub">Choose market and version.</p></div>
+          <div class="step-card active"><span class="step-no">2</span><strong>Upload</strong><p class="sub">Use the controlled Excel template.</p></div>
+          <div class="step-card active"><span class="step-no">3</span><strong>Validate</strong><p class="sub">Check SKU and price quality.</p></div>
+          <div class="step-card"><span class="step-no">4</span><strong>Draft</strong><p class="sub">Confirm import before publish.</p></div>
+        </div>
+
+        <div class="import-grid">
+          <section class="import-section">
+            <h3>Import scope</h3>
+            <div class="scope-grid">
+              <div class="field">
+                <label>Country scope</label>
+                <select class="control select"><option>All 5 countries</option><option>Italy</option><option>Spain</option><option>France</option><option>Germany</option><option>Netherlands</option></select>
+              </div>
+              <div class="field">
+                <label>Currency</label>
+                <select class="control select"><option>EUR</option><option>USD</option></select>
+              </div>
+              <div class="field">
+                <label>Price unit</label>
+                <select class="control select"><option>EUR / W</option><option>EUR / pc</option><option>EUR / kit</option></select>
+              </div>
+              <div class="field">
+                <label>Effective from</label>
+                <input class="control" type="date" value="2026-07-15">
+              </div>
+              <div class="field">
+                <label>Effective until</label>
+                <select class="control select"><option>Until new version</option><option>Fixed end date</option></select>
+              </div>
+              <div class="field">
+                <label>Import mode</label>
+                <select class="control select"><option>Create new draft version</option><option>Update existing draft</option></select>
+              </div>
+            </div>
+          </section>
+
+          <section class="import-section">
+            <h3>Template & upload</h3>
+            <button class="upload-box" type="button" id="uploadBox">
+              <span>
+                <strong>Drop Excel file here or click to upload</strong>
+                Supports .xlsx with SKU, product type, country, pricing model, standard price, optional PV pallet tier, and contact sales message.
+              </span>
+            </button>
+            <input id="priceFileInput" type="file" accept=".xlsx,.xls" hidden>
+            <div class="file-summary" id="fileSummary">
+              <div class="file-chip"><span><strong id="fileName">SunPower_EU_Price_Rules_2026.xlsx</strong><br><span class="sub">65 rows detected: PV tier rows plus Kit/Battery fixed country prices</span></span><span class="badge green">Parsed</span></div>
+            </div>
+          </section>
+
+          <section class="import-section full">
+            <h3>Validation result</h3>
+            <div class="validation-grid">
+              <div class="validation-tile"><strong>22</strong><span class="sub">SKU-country rows matched</span></div>
+              <div class="validation-tile warn"><strong>2</strong><span class="sub">New SKU-country records</span></div>
+              <div class="validation-tile"><strong>65</strong><span class="sub">Price cells validated</span></div>
+              <div class="validation-tile error"><strong>1</strong><span class="sub">Blocking error</span></div>
+            </div>
+          </section>
+
+          <section class="import-section">
+            <h3>Errors to fix</h3>
+            <div class="error-list">
+              <div class="error-row">
+                <strong>Row 16</strong>
+                <span>P7-555-COM-S-BF</span>
+                <span>PV Above 8 pallets standard price</span>
+                <span>PV tier price is empty while pricing model is PV tiers.</span>
+              </div>
+              <div class="error-row">
+                <strong>Row 21</strong>
+                <span>SP-UNKNOWN</span>
+                <span>SKU</span>
+                <span>SKU does not exist. Import will create draft relation if allowed.</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="import-section">
+            <h3>Template columns</h3>
+            <p class="sub">Country, SKU, Product Name, Product Type, Pricing Model, Currency, Price Unit, Effective From, Effective Until, Pallet Tier Min, Pallet Tier Max, Pallet Tier Label, Standard Price, MOQ, Contact Sales Message, Remark. Pallet tier columns are required only when Product Type is PV.</p>
+            <div style="margin-top:12px">
+              <button class="btn soft" type="button" id="downloadTemplateBtn">Download Excel template</button>
+            </div>
+          </section>
+
+          <section class="import-section full">
+            <h3>Preview changes</h3>
+            <table class="preview-table" aria-label="Import preview changes">
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>Country</th>
+                  <th>Price model</th>
+                  <th>Old standard price</th>
+                  <th>New standard price</th>
+                  <th>Change</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>M-Class-495</td>
+                  <td>Spain</td>
+                  <td>PV tiers: 2 to 8 pallets</td>
+                  <td>0.330 EUR/W</td>
+                  <td>0.328 EUR/W</td>
+                  <td><span class="delta down">-0.7%</span></td>
+                  <td><span class="badge blue">Changed</span></td>
+                </tr>
+                <tr>
+                  <td>M-Class-490</td>
+                  <td>Italy</td>
+                  <td>PV tiers: Above 8 pallets</td>
+                  <td>0.325 EUR/W</td>
+                  <td>0.327 EUR/W</td>
+                  <td><span class="delta up">+0.6%</span></td>
+                  <td><span class="badge blue">Changed</span></td>
+                </tr>
+                <tr>
+                  <td>P7-560-COM-S-BF</td>
+                  <td>Germany</td>
+                  <td>Contact sales</td>
+                  <td>Contact sales</td>
+                  <td>Contact sales</td>
+                  <td>0%</td>
+                  <td><span class="badge">No change</span></td>
+                </tr>
+                <tr>
+                  <td>SP-KIT-6KW</td>
+                  <td>Italy</td>
+                  <td>Fixed price</td>
+                  <td>4,880 EUR/kit</td>
+                  <td>4,920 EUR/kit</td>
+                  <td><span class="delta up">+0.8%</span></td>
+                  <td><span class="badge blue">Changed</span></td>
+                </tr>
+                <tr>
+                  <td>BAT-HV-10</td>
+                  <td>France</td>
+                  <td>Fixed price</td>
+                  <td>3,180 EUR/pc</td>
+                  <td>3,150 EUR/pc</td>
+                  <td><span class="delta down">-0.9%</span></td>
+                  <td><span class="badge blue">Changed</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </div>
+
+      <div class="modal-foot">
+        <div class="import-hint">Import is saved as draft first. Publishing remains a separate approval action.</div>
+        <div class="toolbar">
+          <button class="btn" type="button" id="cancelImportBtn">Cancel</button>
+          <button class="btn danger" type="button" id="downloadErrorsBtn">Download error report</button>
+          <button class="btn primary" type="button" id="confirmImportBtn">Import as draft</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast">Pricing draft saved.</div>
+
+  <script>
+    const skuData = {
+      "M-Class-495": {
+        type: "PV module",
+        pricingModel: "matrix",
+        unit: "EUR/W",
+        desc: "PV module price list from the Italy PDF: pallet-tier prices are managed per country.",
+        status: "Active",
+        power: "495 W",
+        pallet: "36",
+        efficiency: "24.3%",
+        color: "NERO / NERO",
+        size: "1800x1134x30",
+        warranty: "40 yrs",
+        countryPrices: {
+          Italy: { prices: ["0.340", "0.330", "0.325"], mode: "matrix" },
+          Spain: { prices: ["0.345", "0.335", "0.330"], mode: "matrix" },
+          France: { prices: ["0.352", "0.342", "0.337"], mode: "matrix" },
+          Germany: { prices: ["0.348", "0.338", "0.333"], mode: "matrix" },
+          Netherlands: { prices: ["0.341", "0.331", "0.326"], mode: "matrix" }
+        }
+      },
+      "M-Class-490": {
+        type: "PV module",
+        pricingModel: "matrix",
+        unit: "EUR/W",
+        desc: "Back Contact residential module country standard prices.",
+        status: "Active",
+        power: "490 W",
+        pallet: "36",
+        efficiency: "24.0%",
+        color: "NERO / NERO",
+        size: "1800x1134x30",
+        warranty: "40 yrs",
+        countryPrices: {
+          Italy: { prices: ["0.335", "0.325", "0.320"], mode: "matrix" },
+          Spain: { prices: ["0.337", "0.327", "0.322"], mode: "matrix" },
+          France: { prices: ["0.344", "0.334", "0.329"], mode: "matrix" },
+          Germany: { prices: ["0.340", "0.330", "0.325"], mode: "matrix" },
+          Netherlands: { prices: ["0.336", "0.326", "0.321"], mode: "matrix" }
+        }
+      },
+      "P7-515-BLK": {
+        type: "PV module",
+        pricingModel: "matrix",
+        unit: "EUR/W",
+        desc: "Shingled Performance 7 black module country standard prices.",
+        status: "Active",
+        power: "515 W",
+        pallet: "36",
+        efficiency: "22.8%",
+        color: "NERO / NERO",
+        size: "1996x1134x30",
+        warranty: "30 yrs",
+        countryPrices: {
+          Italy: { prices: ["0.260", "0.240", "0.230"], mode: "matrix" },
+          Spain: { prices: ["0.265", "0.245", "0.235"], mode: "matrix" },
+          France: { prices: ["0.268", "0.248", "0.238"], mode: "matrix" },
+          Germany: { prices: ["0.266", "0.246", "0.236"], mode: "matrix" },
+          Netherlands: { prices: ["0.263", "0.243", "0.233"], mode: "matrix" }
+        }
+      },
+      "P7-560-COM-S-BF": {
+        type: "PV module",
+        pricingModel: "contact",
+        unit: "EUR/W",
+        desc: "Commercial PV module. Price is managed by regional sales.",
+        status: "Contact sales",
+        power: "560 W",
+        pallet: "33",
+        efficiency: "22.9%",
+        color: "ARGENTO / TRASP.",
+        size: "2156x1134x35",
+        warranty: "30 yrs",
+        countryPrices: {
+          Italy: { prices: ["", "", ""], mode: "contact" },
+          Spain: { prices: ["", "", ""], mode: "contact" },
+          France: { prices: ["", "", ""], mode: "contact" },
+          Germany: { prices: ["", "", ""], mode: "contact" },
+          Netherlands: { prices: ["", "", ""], mode: "contact" }
+        }
+      },
+      "SP-KIT-6KW": {
+        type: "Kit",
+        pricingModel: "fixed",
+        unit: "EUR/kit",
+        desc: "Residential kit bundle. Kit pricing is a fixed country price and does not use pallet tiers.",
+        status: "Active",
+        power: "6 kW kit",
+        pallet: "N/A",
+        efficiency: "Bundle",
+        color: "Mixed",
+        size: "Configured kit",
+        warranty: "25 yrs",
+        countryPrices: {
+          Italy: { price: "4880", moq: "1", mode: "fixed" },
+          Spain: { price: "4920", moq: "1", mode: "fixed" },
+          France: { price: "5060", moq: "1", mode: "fixed" },
+          Germany: { price: "4990", moq: "1", mode: "fixed" },
+          Netherlands: { price: "4895", moq: "1", mode: "fixed" }
+        }
+      },
+      "BAT-HV-10": {
+        type: "Battery",
+        pricingModel: "fixed",
+        unit: "EUR/pc",
+        desc: "Battery SKU. Battery pricing is one fixed country price per unit and skips pallet-tier matching.",
+        status: "Active",
+        power: "10 kWh",
+        pallet: "N/A",
+        efficiency: "Storage",
+        color: "White",
+        size: "Battery pack",
+        warranty: "10 yrs",
+        countryPrices: {
+          Italy: { price: "3180", moq: "1", mode: "fixed" },
+          Spain: { price: "3210", moq: "1", mode: "fixed" },
+          France: { price: "3150", moq: "1", mode: "fixed" },
+          Germany: { price: "3260", moq: "1", mode: "fixed" },
+          Netherlands: { price: "3190", moq: "1", mode: "fixed" }
+        }
+      }
+    };
+
+    const countryNames = ["Italy", "Spain", "France", "Germany", "Netherlands"];
+    const cards = Array.from(document.querySelectorAll(".sku-card"));
+    const priceInputs = Array.from(document.querySelectorAll(".price-input"));
+    const countryRuleButtons = Array.from(document.querySelectorAll(".country-rule"));
+    const modeButtons = Array.from(document.querySelectorAll(".mode-option"));
+    const matrixPanel = document.getElementById("matrixPanel");
+    const fixedPanel = document.getElementById("fixedPanel");
+    const contactPanel = document.getElementById("contactPanel");
+    const fixedPriceInput = document.getElementById("fixedPriceInput");
+    const fixedMoqInput = document.getElementById("fixedMoqInput");
+    const fixedUnitSelect = document.getElementById("fixedUnitSelect");
+    const toast = document.getElementById("toast");
+    const changedCount = document.getElementById("changedCount");
+    const importModal = document.getElementById("importModal");
+    const fileSummary = document.getElementById("fileSummary");
+    const priceFileInput = document.getElementById("priceFileInput");
+    let changeTotal = 0;
+    let activeSku = "M-Class-495";
+    let activeCountry = "Italy";
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = value;
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    function setImportModalOpen(isOpen) {
+      importModal.classList.toggle("open", isOpen);
+      importModal.setAttribute("aria-hidden", String(!isOpen));
+      document.body.style.overflow = isOpen ? "hidden" : "";
+    }
+
+    function setMode(mode) {
+      const data = skuData[activeSku];
+      const allowedMode = data.pricingModel;
+      modeButtons.forEach((button) => {
+        const isActive = button.dataset.mode === mode;
+        const isDisabled =
+          (allowedMode === "matrix" && button.dataset.mode === "fixed") ||
+          (allowedMode === "fixed" && button.dataset.mode === "matrix") ||
+          (allowedMode === "contact" && button.dataset.mode !== "contact");
+        button.classList.toggle("active", isActive);
+        button.classList.toggle("disabled", isDisabled);
+        button.disabled = isDisabled;
+      });
+      matrixPanel.style.display = mode === "matrix" ? "grid" : "none";
+      fixedPanel.classList.toggle("show", mode === "fixed");
+      contactPanel.classList.toggle("show", mode === "contact");
+    }
+
+    function currentCountryConfig() {
+      const sku = skuData[activeSku];
+      if (!sku.countryPrices[activeCountry]) {
+        sku.countryPrices[activeCountry] = sku.pricingModel === "fixed"
+          ? { price: "", moq: "1", mode: "fixed" }
+          : { prices: ["", "", ""], mode: sku.pricingModel };
+      }
+      return sku.countryPrices[activeCountry];
+    }
+
+    function formatCountryCardPrice(config) {
+      if (!config || config.mode === "contact") return "Contact sales";
+      const data = skuData[activeSku];
+      if (config.mode === "fixed") return (formatFixedAmount(config.price) || "-") + " " + data.unit;
+      return "2 to 8 pallets: " + (config.prices[1] || "-") + " " + data.unit;
+    }
+
+    function parseFixedAmount(value) {
+      return Number(String(value || "").replace(/,/g, ""));
+    }
+
+    function formatFixedAmount(value) {
+      const number = parseFixedAmount(value);
+      if (!Number.isFinite(number) || number <= 0) return "";
+      return number.toLocaleString("en-US", { maximumFractionDigits: 0 });
+    }
+
+    function formatUnitPrice(value, unit) {
+      return Number.isFinite(value) && value > 0 ? value.toFixed(3) + " " + unit : "- " + unit;
+    }
+
+    function formatFixedPrice(value, unit) {
+      const number = Number(value);
+      return Number.isFinite(number) && number > 0 ? number.toLocaleString("en-US", { maximumFractionDigits: 0 }) + " " + unit : "- " + unit;
+    }
+
+    function updateCountryCards() {
+      const sku = skuData[activeSku];
+      countryRuleButtons.forEach((button) => {
+        const country = button.dataset.country;
+        const config = sku.countryPrices[country];
+        button.classList.toggle("active", country === activeCountry);
+        const helper = button.querySelector("small");
+        if (helper) helper.textContent = formatCountryCardPrice(config);
+      });
+      document.getElementById("countrySummary").innerHTML =
+        '<span class="badge blue">Editing ' + activeCountry + '</span>' +
+        '<span class="badge">' + countryNames.length + ' country configs under this SKU</span>';
+      setText("activeMarket", activeCountry);
+      setText("countryCount", countryNames.length + " country configs");
+      setText("countryPriceTitle", activeCountry + " PV Tier Price");
+      setText("fixedPriceTitle", activeCountry + " Fixed Price");
+      document.getElementById("countrySelect").value = activeCountry;
+    }
+
+    function loadCountry(country) {
+      activeCountry = country;
+      const config = currentCountryConfig();
+      const data = skuData[activeSku];
+      if (data.pricingModel === "fixed") {
+        fixedPriceInput.value = formatFixedAmount(config.price);
+        fixedMoqInput.value = config.moq || "1";
+        fixedUnitSelect.value = data.unit === "EUR/pc" ? "EUR / pc" : "EUR / kit";
+      } else {
+        priceInputs.forEach((input, index) => {
+          input.value = (config.prices && config.prices[index]) || "";
+        });
+      }
+      setMode(config.mode || data.pricingModel || "matrix");
+      updateCountryCards();
+      refreshPreviews();
+    }
+
+    function refreshPreviews() {
+      const data = skuData[activeSku];
+      if (data.pricingModel === "fixed") {
+        const standard = parseFixedAmount(fixedPriceInput.value);
+        const unit = data.unit.replace("/", " / ");
+        setText("standardPreview", formatFixedPrice(standard, unit));
+        setText("elitePreview", formatFixedPrice(standard * 0.95, unit));
+        setText("authPreview", formatFixedPrice(standard * 0.90, unit));
+        setText("fixedElite", formatFixedPrice(standard * 0.95, unit));
+        setText("fixedPremier", formatFixedPrice(standard * 0.92, unit));
+        setText("fixedAuth", formatFixedPrice(standard * 0.90, unit));
+        setText("matchRule", "Quantity x fixed unit price");
+        setText("lowestPrice", formatFixedAmount(standard));
+        setText("highestPrice", formatFixedAmount(standard));
+        setText("editableCount", "1");
+        return;
+      }
+      const standardPrices = priceInputs.map((input) => Number(input.value));
+      const discounted = (index, rate) => Number.isFinite(standardPrices[index]) ? standardPrices[index] * rate : NaN;
+      setText("standardPreview", formatUnitPrice(standardPrices[1], data.unit));
+      setText("elitePreview", formatUnitPrice(discounted(1, 0.95), data.unit));
+      setText("authPreview", formatUnitPrice(discounted(1, 0.90), data.unit));
+      setText("eliteOne", formatUnitPrice(discounted(0, 0.95), data.unit));
+      setText("eliteMid", formatUnitPrice(discounted(1, 0.95), data.unit));
+      setText("eliteHigh", formatUnitPrice(discounted(2, 0.95), data.unit));
+      setText("premierOne", formatUnitPrice(discounted(0, 0.92), data.unit));
+      setText("premierMid", formatUnitPrice(discounted(1, 0.92), data.unit));
+      setText("premierHigh", formatUnitPrice(discounted(2, 0.92), data.unit));
+      setText("authOne", formatUnitPrice(discounted(0, 0.90), data.unit));
+      setText("authMid", formatUnitPrice(discounted(1, 0.90), data.unit));
+      setText("authHigh", formatUnitPrice(discounted(2, 0.90), data.unit));
+      setText("matchRule", data.pricingModel === "contact" ? "Contact sales approval" : "2 pallets -> 2 to 8 pallets");
+      const numeric = priceInputs.map((input) => Number(input.value)).filter((value) => Number.isFinite(value) && value > 0);
+      setText("lowestPrice", numeric.length ? Math.min(...numeric).toFixed(3) : "-");
+      setText("highestPrice", numeric.length ? Math.max(...numeric).toFixed(3) : "-");
+      setText("editableCount", data.pricingModel === "contact" ? "0" : "3");
+    }
+
+    function loadSku(sku) {
+      const data = skuData[sku];
+      if (!data) return;
+      activeSku = sku;
+      cards.forEach((card) => card.classList.toggle("active", card.dataset.sku === sku));
+      setText("activeSkuTitle", sku);
+      setText("activeDesc", data.desc);
+      setText("activeStatus", data.status);
+      setText("activeType", data.type);
+      setText("specPower", data.power);
+      setText("specPallet", data.pallet);
+      setText("specPalletLabel", data.pricingModel === "matrix" || data.pricingModel === "contact" ? "Modules per pallet" : "Pallet tier");
+      setText("specEfficiency", data.efficiency);
+      setText("specColor", data.color);
+      setText("specSize", data.size);
+      setText("specWarranty", data.warranty);
+      setText("currencyLabel", data.unit.replace("/", " / "));
+      document.getElementById("matrixUnitInput").value = data.unit;
+      document.getElementById("unitSelect").value = data.unit.replace("/", " / ");
+      document.getElementById("countryRuleHint").textContent = data.pricingModel === "matrix"
+        ? "PV SKUs use separate pallet-tier standard prices per country."
+        : data.pricingModel === "fixed"
+          ? "Kit and Battery SKUs use one fixed standard price per country, with no pallet tiers."
+          : "This PV SKU is configured as contact sales for every country.";
+      document.getElementById("orderBasisSelect").value = data.pricingModel === "matrix" ? "Full pallet only" : "Any quantity";
+      document.getElementById("roundingSelect").value = data.pricingModel === "matrix" ? "Use requested pallet count" : "Manual approval";
+      activeCountry = countryNames.includes(activeCountry) ? activeCountry : countryNames[0];
+      loadCountry(activeCountry);
+    }
+
+    cards.forEach((card) => {
+      card.addEventListener("click", () => loadSku(card.dataset.sku));
+    });
+
+    modeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (button.disabled) return;
+        const config = currentCountryConfig();
+        config.mode = button.dataset.mode;
+        setMode(config.mode);
+        updateCountryCards();
+        refreshPreviews();
+      });
+    });
+
+    priceInputs.forEach((input) => {
+      input.addEventListener("input", () => {
+        const config = currentCountryConfig();
+        if (skuData[activeSku].pricingModel !== "matrix") return;
+        config.prices = priceInputs.map((priceInput) => priceInput.value);
+        changeTotal += 1;
+        changedCount.textContent = String(changeTotal);
+        updateCountryCards();
+        refreshPreviews();
+      });
+    });
+
+    fixedPriceInput.addEventListener("input", () => {
+      const config = currentCountryConfig();
+      if (skuData[activeSku].pricingModel !== "fixed") return;
+      config.price = fixedPriceInput.value;
+      changeTotal += 1;
+      changedCount.textContent = String(changeTotal);
+      updateCountryCards();
+      refreshPreviews();
+    });
+
+    fixedMoqInput.addEventListener("input", () => {
+      const config = currentCountryConfig();
+      if (skuData[activeSku].pricingModel !== "fixed") return;
+      config.moq = fixedMoqInput.value;
+      changeTotal += 1;
+      changedCount.textContent = String(changeTotal);
+    });
+
+    countryRuleButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        loadCountry(button.dataset.country);
+      });
+    });
+
+    document.getElementById("countrySelect").addEventListener("change", (event) => {
+      loadCountry(event.target.value);
+    });
+
+    document.getElementById("unitSelect").addEventListener("change", (event) => {
+      const unit = event.target.value;
+      setText("currencyLabel", unit);
+      document.getElementById("matrixUnitInput").value = unit.replace(" / ", "/");
+    });
+
+    document.getElementById("saveBtn").addEventListener("click", () => {
+      changeTotal = 0;
+      changedCount.textContent = "0";
+      showToast("Pricing draft saved.");
+    });
+
+    document.getElementById("saveFixedBtn").addEventListener("click", () => {
+      changeTotal = 0;
+      changedCount.textContent = "0";
+      showToast("Fixed country price saved.");
+    });
+
+    document.getElementById("publishBtn").addEventListener("click", () => {
+      showToast("Pricing version published to eligible partners.");
+    });
+
+    document.getElementById("copyTierBtn").addEventListener("click", () => {
+      const source = skuData["M-Class-490"].countryPrices[activeCountry] || skuData["M-Class-490"].countryPrices.Italy;
+      const config = currentCountryConfig();
+      priceInputs.forEach((input, index) => {
+        input.value = source.prices[index] || "";
+      });
+      config.prices = priceInputs.map((input) => input.value);
+      refreshPreviews();
+      updateCountryCards();
+      showToast("Copied " + activeCountry + " standard prices from M-Class-490.");
+    });
+
+    document.getElementById("copyFixedBtn").addEventListener("click", () => {
+      const data = skuData[activeSku];
+      const sourceCountry = countryNames.find((country) => country !== activeCountry && data.countryPrices[country] && data.countryPrices[country].price);
+      if (!sourceCountry) {
+        showToast("No fixed country price available to copy.");
+        return;
+      }
+      const source = data.countryPrices[sourceCountry];
+      const config = currentCountryConfig();
+      config.price = source.price;
+      config.moq = source.moq || "1";
+      fixedPriceInput.value = formatFixedAmount(config.price);
+      fixedMoqInput.value = config.moq;
+      updateCountryCards();
+      refreshPreviews();
+      showToast("Copied fixed price from " + sourceCountry + ".");
+    });
+
+    document.getElementById("addTierBtn").addEventListener("click", () => {
+      showToast("Add tier opens a controlled workflow in production.");
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      document.getElementById("skuSearch").value = "";
+      document.getElementById("statusFilter").value = "All statuses";
+      showToast("Filters reset.");
+    });
+
+    document.getElementById("importPriceBtn").addEventListener("click", () => {
+      setImportModalOpen(true);
+      fileSummary.classList.remove("show");
+    });
+
+    document.getElementById("importCloseBtn").addEventListener("click", () => setImportModalOpen(false));
+    document.getElementById("cancelImportBtn").addEventListener("click", () => setImportModalOpen(false));
+    importModal.addEventListener("click", (event) => {
+      if (event.target === importModal) setImportModalOpen(false);
+    });
+
+    document.getElementById("uploadBox").addEventListener("click", () => {
+      priceFileInput.click();
+      fileSummary.classList.add("show");
+      showToast("Excel file parsed for validation.");
+    });
+
+    priceFileInput.addEventListener("change", () => {
+      const selectedFile = priceFileInput.files && priceFileInput.files[0];
+      if (selectedFile) document.getElementById("fileName").textContent = selectedFile.name;
+      fileSummary.classList.add("show");
+    });
+
+    document.getElementById("downloadTemplateBtn").addEventListener("click", () => {
+      showToast("Template download started.");
+    });
+
+    document.getElementById("downloadErrorsBtn").addEventListener("click", () => {
+      showToast("Error report download started.");
+    });
+
+    document.getElementById("confirmImportBtn").addEventListener("click", () => {
+      setImportModalOpen(false);
+      changedCount.textContent = "65";
+      showToast("Price list imported as draft.");
+    });
+
+    loadSku(activeSku);
+  </script>
+</body>
+</html>
