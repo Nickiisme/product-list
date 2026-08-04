@@ -6,15 +6,15 @@
   <title>SKU Pricing List</title>
   <style>
     :root {
-      --page: #f7f9fd;
-      --header: #eff1f6;
+      --page: #f6f8fc;
+      --header: #f0f2f7;
       --panel: #ffffff;
       --line: #edf1f8;
       --line-strong: #d6deef;
       --text: #2f3440;
       --muted: #697184;
       --muted-2: #8b94a8;
-      --blue: #3562ff;
+      --blue: #3f63ff;
       --blue-dark: #14249b;
       --blue-soft: #eef3ff;
       --green: #99c52d;
@@ -30,7 +30,7 @@
 
     body {
       margin: 0;
-      min-width: 1280px;
+      min-width: 1440px;
       background: var(--page);
       color: var(--text);
       font-family: "Roboto", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
@@ -43,13 +43,13 @@
     h1, h2, h3, p { margin: 0; }
 
     .topbar {
-      height: 48px;
+      height: 46px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       background: var(--header);
       box-shadow: 0 1px 2px rgba(0, 21, 41, .08);
-      padding: 0 12px 0 16px;
+      padding: 0 18px;
     }
 
     .left-head,
@@ -61,8 +61,8 @@
       align-items: center;
     }
 
-    .left-head { min-width: 0; gap: 20px; }
-    .logo { width: 160px; gap: 8px; flex: 0 0 auto; }
+    .left-head { min-width: 0; gap: 34px; }
+    .logo { width: 160px; gap: 10px; flex: 0 0 auto; }
     .tcl { color: #f42727; font-size: 22px; line-height: 1; font-weight: 900; letter-spacing: .02em; }
     .ark {
       display: inline-flex;
@@ -88,15 +88,15 @@
     }
 
     .menu {
-      height: 48px;
-      gap: 34px;
+      height: 46px;
+      gap: 46px;
       overflow: hidden;
       white-space: nowrap;
       color: #333;
       font-size: 14px;
     }
     .menu a {
-      height: 48px;
+      height: 46px;
       display: inline-flex;
       align-items: center;
       position: relative;
@@ -149,22 +149,22 @@
     }
 
     .crumbbar {
-      height: 36px;
+      height: 42px;
       display: flex;
       align-items: center;
       gap: 4px;
-      padding: 0 16px;
+      padding: 0 14px;
       background: var(--page);
     }
     .crumb {
-      min-height: 22px;
+      min-height: 23px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       padding: 0 8px;
       border: 1px solid #f2f2f2;
-      border-radius: 8px;
-      background: var(--page);
+      border-radius: 7px;
+      background: #dfe7ff;
       color: #333;
     }
     .crumb.active {
@@ -172,13 +172,13 @@
       border-color: transparent;
     }
 
-    .main { padding: 0 16px 36px; }
+    .main { padding: 0 8px 12px; }
 
     .tabs {
-      height: 42px;
+      height: 55px;
       display: flex;
       align-items: center;
-      gap: 30px;
+      gap: 40px;
       color: #999;
       font-size: 16px;
     }
@@ -209,8 +209,9 @@
     }
 
     .filter-card {
-      padding: 16px;
-      margin-bottom: 12px;
+      padding: 16px 12px 16px;
+      margin-bottom: 18px;
+      border-radius: 8px;
     }
 
     .filter-head,
@@ -243,26 +244,27 @@
 
     .filters {
       display: grid;
-      grid-template-columns: 1.4fr .9fr .9fr .9fr .9fr 1fr;
-      gap: 12px;
-      margin-top: 14px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px 14px;
+      margin-top: 18px;
+      max-width: 1284px;
     }
     .field { min-width: 0; }
     .field label {
       display: block;
       margin-bottom: 7px;
-      color: var(--muted);
-      font-size: 12px;
+      color: #3f4654;
+      font-size: 13px;
       font-weight: 700;
     }
     .control {
       width: 100%;
-      height: 36px;
-      border: 1px solid #dfe5f1;
-      border-radius: 7px;
+      height: 24px;
+      border: 1px solid #d9d9d9;
+      border-radius: 3px;
       background: #fff;
       color: #333;
-      padding: 0 10px;
+      padding: 0 8px;
       outline: 0;
     }
     .control:focus,
@@ -272,12 +274,12 @@
     }
 
     .btn {
-      height: 34px;
+      height: 32px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       border: 1px solid var(--blue);
-      border-radius: 7px;
+      border-radius: 4px;
       background: #fff;
       color: var(--blue);
       padding: 0 14px;
@@ -298,39 +300,22 @@
       background: #fff;
     }
 
-    .summary-grid {
-      gap: 10px;
-      margin: 0 0 12px;
-    }
-    .metric {
-      flex: 1 1 0;
-      min-height: 74px;
-      border: 1px solid var(--line);
+    .list-card {
+      min-height: 560px;
+      overflow: hidden;
       border-radius: 10px;
-      background: #fff;
-      padding: 13px 14px;
-      box-shadow: var(--shadow);
     }
-    .metric strong {
-      display: block;
-      margin-bottom: 5px;
-      color: #1f2532;
-      font-size: 22px;
-      line-height: 1;
-    }
-
-    .list-card { overflow: hidden; }
     .table-tools {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      min-height: 52px;
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--line);
+      justify-content: flex-end;
+      min-height: 66px;
+      padding: 10px 46px 8px;
+      border-bottom: 0;
       gap: 12px;
     }
     .table-wrap {
-      max-height: 620px;
+      max-height: none;
       overflow: auto;
       background: #fff;
     }
@@ -341,7 +326,7 @@
     }
     th, td {
       border-bottom: 1px solid var(--line);
-      padding: 12px 10px;
+      padding: 22px 16px;
       text-align: left;
       vertical-align: middle;
     }
@@ -349,17 +334,14 @@
       position: sticky;
       top: 0;
       z-index: 1;
-      background: #fbfcff;
-      color: #536078;
+      background: #fff;
+      color: #2f3440;
       font-size: 12px;
       font-weight: 900;
     }
     tr { background: #fff; }
-    tbody tr:hover { background: #f8faff; }
-    tr.active-row {
-      background: var(--blue-soft);
-      box-shadow: inset 3px 0 0 var(--blue);
-    }
+    tbody tr { height: 76px; }
+    tbody tr:hover { background: #fbfcff; }
     .sku-main { gap: 10px; min-width: 0; }
     .thumb {
       width: 42px;
@@ -401,6 +383,7 @@
       white-space: nowrap;
     }
     .badge.blue { color: var(--blue); background: var(--blue-soft); }
+    .badge.neutral { color: #2f3440; background: #f1f4fb; }
     .badge.green { color: #557c00; background: var(--green-soft); }
     .badge.orange { color: #a75a00; background: var(--orange-soft); }
     .badge.red { color: var(--red); background: var(--red-soft); }
@@ -408,6 +391,93 @@
       display: grid;
       gap: 6px;
     }
+    .price-range {
+      color: #2f3440;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .missing-price {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 92px;
+      height: 24px;
+      border-radius: 999px;
+      background: #fff0f0;
+      color: #ff4d5a;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .status-switch {
+      width: 74px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      border: 0;
+      border-radius: 999px;
+      background: #a9d7ff;
+      color: #fff;
+      padding: 0 4px 0 8px;
+      font-weight: 800;
+      line-height: 1;
+      position: relative;
+    }
+    .status-switch::after {
+      content: "";
+      width: 20px;
+      height: 20px;
+      margin-left: auto;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(15, 31, 74, .18);
+    }
+    .status-switch.active {
+      background: #2096f3;
+    }
+    .status-switch.active::after {
+      margin-left: auto;
+    }
+    .action-link {
+      border: 0;
+      background: transparent;
+      color: var(--blue);
+      font-weight: 900;
+      padding: 0;
+    }
+    .pagination {
+      height: 86px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 0 58px 18px;
+      color: #697184;
+      font-size: 16px;
+    }
+    .page-size,
+    .page-input,
+    .page-btn {
+      height: 32px;
+      border: 1px solid #d7e0f4;
+      border-radius: 6px;
+      background: #fff;
+      color: #697184;
+      padding: 0 12px;
+      font-size: 16px;
+    }
+    .page-btn {
+      width: 32px;
+      padding: 0;
+      color: #9aa5bb;
+    }
+    .page-btn.active {
+      border-color: var(--blue);
+      background: var(--blue);
+      color: #fff;
+      font-weight: 900;
+    }
+    .page-input { width: 54px; text-align: center; }
     .bar {
       height: 6px;
       border-radius: 999px;
@@ -425,19 +495,20 @@
       position: fixed;
       inset: 0 0 0 auto;
       z-index: 20;
-      width: 780px;
-      max-width: calc(100vw - 120px);
+      width: 820px;
+      max-width: calc(100vw - 280px);
       display: grid;
       grid-template-rows: auto 1fr auto;
       background: #fff;
+      border-radius: 16px 0 0 16px;
       box-shadow: -24px 0 50px rgba(26, 36, 70, .18);
       transform: translateX(102%);
       transition: transform .22s ease;
     }
     .drawer.open { transform: translateX(0); }
     .drawer-head {
-      min-height: 72px;
-      padding: 18px 20px;
+      min-height: 76px;
+      padding: 16px 24px;
       border-bottom: 1px solid var(--line);
     }
     .drawer-title {
@@ -448,26 +519,26 @@
     .drawer-title h2 {
       overflow: hidden;
       color: var(--blue-dark);
-      font-size: 20px;
+      font-size: 24px;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
     .drawer-body {
       overflow: auto;
-      padding: 16px 20px 22px;
-      background: #fbfcff;
+      padding: 20px 22px 24px;
+      background: #fff;
     }
     .drawer-actions {
       justify-content: flex-end;
       gap: 10px;
-      min-height: 62px;
+      min-height: 68px;
       padding: 14px 20px;
       border-top: 1px solid var(--line);
       background: #fff;
     }
     .close-btn {
-      width: 34px;
-      height: 34px;
+      width: 38px;
+      height: 38px;
       border: 1px solid #dfe5f1;
       border-radius: 8px;
       background: #fff;
@@ -475,20 +546,50 @@
       font-size: 20px;
     }
     .drawer-section {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       border: 1px solid var(--line);
       border-radius: 12px;
       background: #fff;
-      box-shadow: var(--shadow);
       overflow: hidden;
     }
     .drawer-section > .section-head {
-      min-height: 50px;
-      padding: 13px 14px;
+      min-height: 68px;
+      padding: 18px 20px 12px;
       border-bottom: 1px solid var(--line);
       background: #fff;
     }
-    .section-body { padding: 14px; }
+    .section-body { padding: 18px 20px; }
+
+    .model-section {
+      padding: 16px 26px;
+    }
+    .model-label {
+      margin-bottom: 12px;
+      color: #2f3440;
+      font-weight: 900;
+    }
+    .model-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0;
+      border-radius: 10px;
+      background: #f4f6fb;
+      padding: 4px;
+    }
+    .model-tab {
+      height: 34px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: #2f3440;
+      font-weight: 800;
+    }
+    .model-tab.active {
+      border: 1px solid var(--blue);
+      background: #fff;
+      color: var(--blue);
+      box-shadow: 0 0 0 1px rgba(63, 99, 255, .18);
+    }
 
     .spec-grid {
       display: grid;
@@ -512,31 +613,31 @@
     .country-tabs {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 8px;
-      margin-bottom: 12px;
+      gap: 12px;
+      margin-bottom: 22px;
     }
     .country-tab {
-      min-height: 58px;
+      min-height: 64px;
       border: 1px solid var(--line);
       border-radius: 10px;
       background: #fbfcff;
-      padding: 9px;
+      padding: 13px 16px;
       text-align: left;
       color: var(--text);
     }
     .country-tab.active {
       border-color: var(--blue);
       background: var(--blue-soft);
-      box-shadow: inset 3px 0 0 var(--blue);
+      box-shadow: inset 4px 0 0 var(--blue);
     }
     .country-tab strong {
       display: block;
       margin-bottom: 4px;
-      font-size: 13px;
+      font-size: 14px;
     }
     .country-tab span {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
     }
 
@@ -547,23 +648,23 @@
       background: #fff;
     }
     .rule-title {
-      min-height: 42px;
+      min-height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: var(--blue-dark);
       color: #fff;
-      font-size: 16px;
-      font-weight: 500;
+      font-size: 18px;
+      font-weight: 900;
     }
     .tier-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
     .tier-cell {
-      min-height: 118px;
+      min-height: 104px;
       display: grid;
-      grid-template-rows: 42px 76px;
+      grid-template-rows: 44px 60px;
       border-left: 1px solid #dfe4ef;
     }
     .tier-cell:first-child { border-left: 0; }
@@ -583,7 +684,7 @@
       background: #fff;
     }
     .price-input {
-      width: 150px;
+      width: 138px;
       height: 38px;
       border: 1px solid transparent;
       border-radius: 8px;
@@ -595,8 +696,8 @@
       outline: 0;
     }
     .mini-input {
-      width: 68px;
-      height: 34px;
+      width: 64px;
+      height: 32px;
       border: 1px solid #dfe5f1;
       border-radius: 8px;
       background: #fff;
@@ -718,8 +819,6 @@
   </header>
 
   <div class="crumbbar">
-    <a class="crumb" href="sunpower-product-admin.html">Product display</a>
-    <span>/</span>
     <span class="crumb active">SKU pricing</span>
   </div>
 
@@ -733,111 +832,132 @@
     <section class="card filter-card">
       <div class="filter-head">
         <div>
-          <h1>SKU Pricing List</h1>
-          <p class="sub">Use list for search, status checking, bulk import, and open one SKU detail when editing prices.</p>
+          <h1>SKU Pricing</h1>
         </div>
         <div class="toolbar">
-          <button class="btn ghost" id="resetBtn">Reset</button>
-          <button class="btn soft" id="importBtn">Import price list</button>
-          <button class="btn soft" id="exportBtn">Export template</button>
-          <button class="btn primary" id="publishBtn">Publish selected</button>
+          <button class="btn" id="resetBtn">Reset</button>
+          <button class="btn primary" id="searchBtn">Search</button>
+          <button class="action-link" id="closeFilterBtn">Close⌃</button>
         </div>
       </div>
       <div class="filters">
         <div class="field">
-          <label for="searchInput">SKU / Product name</label>
-          <input class="control" id="searchInput" type="search" value="" placeholder="Search SKU or product">
+          <label for="brandFilter">Brand</label>
+          <select class="control" id="brandFilter">
+            <option>Please Select</option>
+            <option>SunPower</option>
+            <option>TCL SunPower</option>
+          </select>
         </div>
         <div class="field">
-          <label for="typeFilter">Product type</label>
+          <label for="subcategoryFilter">Sub-Category</label>
+          <select class="control" id="subcategoryFilter">
+            <option>Please Select</option>
+            <option>PV Module</option>
+            <option>Kit</option>
+            <option>Battery</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="typeFilter">Product Type</label>
           <select class="control" id="typeFilter">
-            <option>All types</option>
+            <option>Please Select</option>
             <option>PV</option>
             <option>Kit</option>
             <option>Battery</option>
           </select>
         </div>
         <div class="field">
-          <label for="countryFilter">Country</label>
+          <label for="productStatusFilter">Product Status</label>
+          <select class="control" id="productStatusFilter">
+            <option>Please Select</option>
+            <option>Active</option>
+            <option>Disable</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="countryFilter">Visible Countries</label>
           <select class="control" id="countryFilter">
-            <option>All countries</option>
+            <option>Please Select</option>
             <option>Italy</option>
             <option>Spain</option>
             <option>France</option>
             <option>Germany</option>
-            <option>Netherlands</option>
+            <option>United Kingdom</option>
           </select>
         </div>
         <div class="field">
-          <label for="modelFilter">Pricing model</label>
+          <label for="searchInput">Sku ID/ Kit ID</label>
+          <input class="control" id="searchInput" type="search" value="" placeholder="Please input">
+        </div>
+        <div class="field">
+          <label for="modelFilter">Product Model</label>
           <select class="control" id="modelFilter">
-            <option>All models</option>
-            <option>Tier price</option>
-            <option>Fixed price</option>
-            <option>Contact sales</option>
+            <option>Please input</option>
+            <option>SPR-P7-500-COM</option>
+            <option>SP-KIT-7K-EU</option>
+            <option>SP-BAT-10-EU</option>
           </select>
         </div>
         <div class="field">
-          <label for="statusFilter">Pricing status</label>
+          <label for="statusFilter">Pricing Status</label>
           <select class="control" id="statusFilter">
-            <option>All statuses</option>
+            <option>Please Select</option>
             <option>Active</option>
-            <option>Draft</option>
-            <option>Missing price</option>
-            <option>Error</option>
+            <option>Disable</option>
           </select>
-        </div>
-        <div class="field">
-          <label for="dateFilter">Effective date</label>
-          <input class="control" id="dateFilter" type="date" value="2026-07-15">
         </div>
       </div>
     </section>
 
-    <section class="summary-grid" aria-label="Pricing summary">
-      <div class="metric"><strong id="totalCount">100</strong><span class="sub">Total SKU</span></div>
-      <div class="metric"><strong id="configuredCount">84</strong><span class="sub">Ready to publish</span></div>
-      <div class="metric"><strong id="draftCount">11</strong><span class="sub">Draft changes</span></div>
-      <div class="metric"><strong id="issueCount">5</strong><span class="sub">Need action</span></div>
-    </section>
-
     <section class="card list-card">
       <div class="table-tools">
-        <div>
-          <h2>Pricing configuration by SKU</h2>
-          <p class="sub">Click a row to edit country prices in the detail drawer. The table only keeps scan-level fields.</p>
-        </div>
         <div class="toolbar">
-          <button class="btn ghost" id="validateBtn">Validate all</button>
-          <button class="btn soft" id="bulkEditBtn">Bulk country copy</button>
+          <button class="btn" id="exportBtn">Export</button>
+          <button class="btn primary" id="importBtn">Configure by excel</button>
+          <button class="btn primary" id="bulkEditBtn">Bulk configure</button>
         </div>
       </div>
       <div class="table-wrap">
         <table>
           <colgroup>
-            <col style="width: 290px">
-            <col style="width: 110px">
-            <col style="width: 130px">
-            <col style="width: 150px">
+            <col style="width: 160px">
             <col style="width: 140px">
-            <col style="width: 150px">
-            <col style="width: 140px">
-            <col style="width: 130px">
+            <col style="width: 132px">
+            <col style="width: 125px">
+            <col style="width: 125px">
+            <col style="width: 125px">
+            <col style="width: 145px">
+            <col style="width: 205px">
+            <col style="width: 160px">
+            <col style="width: 120px">
           </colgroup>
           <thead>
             <tr>
-              <th>SKU / Product</th>
-              <th>Type</th>
+              <th>SKU ID / KIT ID</th>
+              <th>Product model</th>
               <th>Pricing model</th>
-              <th>Country coverage</th>
-              <th>Price unit</th>
-              <th>Effective date</th>
-              <th>Status</th>
+              <th>Italy</th>
+              <th>Spain</th>
+              <th>France</th>
+              <th>Germany</th>
+              <th>United Kingdom</th>
+              <th>Pricing status</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody id="skuTableBody"></tbody>
         </table>
+      </div>
+      <div class="pagination" aria-label="Pagination">
+        <span>Total 5</span>
+        <button class="page-size">10 Article/Page</button>
+        <button class="page-btn">‹</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">›</button>
+        <span>Go to</span>
+        <input class="page-input" value="1" aria-label="Go to page">
+        <span>Page</span>
       </div>
     </section>
   </main>
@@ -846,23 +966,19 @@
   <aside class="drawer" id="drawer" aria-label="SKU pricing detail">
     <div class="drawer-head">
       <div class="drawer-title">
-        <h2 id="drawerSkuTitle">SKU NO</h2>
+        <h2>Edit</h2>
         <p class="sub" id="drawerSkuDesc">Product name</p>
       </div>
       <button class="close-btn" id="closeDrawer" aria-label="Close">×</button>
     </div>
     <div class="drawer-body">
       <section class="drawer-section">
-        <div class="section-head">
-          <h3>SKU basic information</h3>
-          <span class="badge" id="drawerStatus">Draft</span>
-        </div>
-        <div class="section-body">
-          <div class="spec-grid">
-            <div class="spec"><b id="specType">PV</b><span class="sub">Product type</span></div>
-            <div class="spec"><b id="specModel">Tier price</b><span class="sub">Pricing model</span></div>
-            <div class="spec"><b id="specUnit">EUR/W</b><span class="sub">Price unit</span></div>
-            <div class="spec"><b id="specCoverage">5/5</b><span class="sub">Countries configured</span></div>
+        <div class="model-section">
+          <div class="model-label">Pricing model</div>
+          <div class="model-tabs" aria-label="Pricing model">
+            <button class="model-tab active" id="modelTier">Tier price</button>
+            <button class="model-tab" id="modelFixed">Fixed price</button>
+            <button class="model-tab" id="modelContact">Contact sales</button>
           </div>
         </div>
       </section>
@@ -873,16 +989,12 @@
             <h3>Country price configuration</h3>
             <p class="sub">Each SKU has separate prices for Italy, Spain, France, Germany, and Netherlands.</p>
           </div>
-          <button class="btn soft" id="copyCountryBtn">Copy standard price</button>
         </div>
         <div class="section-body">
           <div class="country-tabs" id="countryTabs"></div>
 
           <div class="country-head" style="margin-bottom: 12px;">
-            <div>
-              <h3 id="countryTitle">Italy standard price</h3>
-              <p class="sub" id="countryHint">PV only: maintain standard price by pallet tier.</p>
-            </div>
+            <h3>Standard price</h3>
             <span class="badge blue" id="activeCountryCurrency">EUR</span>
           </div>
 
@@ -904,10 +1016,6 @@
                 </div>
               </div>
             </div>
-            <div class="notice" style="margin-top: 12px;">
-              <strong>PV tier rule</strong>
-              <span>Only 1 pallet = tierMin 1 / tierMax 1. 2 to 8 pallets = tierMin 2 / tierMax 8. Above 8 pallets = tierMin 9 / tierMax null.</span>
-            </div>
           </div>
 
           <div id="fixedPricingPanel" hidden>
@@ -921,10 +1029,6 @@
                 <input class="price-input" id="fixedMoq" value="1">
               </div>
             </div>
-            <div class="notice" style="margin-top: 12px;">
-              <strong>Fixed price rule</strong>
-              <span>Kit and Battery do not use pallet tiers. Backend maintains one fixed standard price per SKU and country.</span>
-            </div>
           </div>
         </div>
       </section>
@@ -933,7 +1037,6 @@
         <div class="section-head">
           <div>
             <h3>Partner price preview</h3>
-            <p class="sub">Calculated from the country standard price. Preview values are read-only.</p>
           </div>
           <span class="badge green">Auto calculated</span>
         </div>
@@ -941,84 +1044,101 @@
           <table class="preview-table" id="partnerPreviewTable"></table>
         </div>
       </section>
-
-      <section class="drawer-section">
-        <div class="section-head">
-          <h3>Validation issues</h3>
-          <span class="badge" id="issueBadge">0 issue</span>
-        </div>
-        <div class="section-body">
-          <div class="notice" id="validationNotice">
-            <strong>Ready to publish</strong>
-            <span>All required prices are configured for the selected SKU and country.</span>
-          </div>
-        </div>
-      </section>
     </div>
     <div class="drawer-actions">
       <button class="btn ghost" id="cancelBtn">Cancel</button>
-      <button class="btn soft" id="saveDraftBtn">Save draft</button>
-      <button class="btn primary" id="publishSkuBtn">Publish this SKU</button>
+      <button class="btn primary" id="applyBtn">Apply</button>
     </div>
   </aside>
 
   <div class="toast" id="toast">Saved</div>
 
   <script>
-    const countries = ["Italy", "Spain", "France", "Germany", "Netherlands"];
-    const countryCodes = { Italy: "IT", Spain: "ES", France: "FR", Germany: "DE", Netherlands: "NL" };
+    const countries = ["Italy", "Spain", "France", "Germany", "United Kingdom"];
+    const countryCodes = { Italy: "IT", Spain: "ES", France: "FR", Germany: "DE", "United Kingdom": "UK" };
     const partnerRules = [
       { name: "Elite Partner", rate: 0.95 },
       { name: "Premier Partner", rate: 0.92 },
       { name: "Authorised Partner", rate: 0.90 }
     ];
 
-    const seedProducts = [
-      { sku: "M-Class-495", name: "M-Class Back Contact 495W", type: "PV", unit: "EUR/W", model: "Tier price", base: [0.340, 0.330, 0.325], status: "Active" },
-      { sku: "M-Class-490", name: "M-Class Back Contact 490W", type: "PV", unit: "EUR/W", model: "Tier price", base: [0.335, 0.325, 0.320], status: "Active" },
-      { sku: "P7-515-BLK", name: "P7 Shingled Black 515W", type: "PV", unit: "EUR/W", model: "Tier price", base: [0.260, 0.240, 0.230], status: "Draft" },
-      { sku: "P7-560-COM-S-BF", name: "P7 Commercial Silver Frame 560W", type: "PV", unit: "EUR/W", model: "Contact sales", base: [0, 0, 0], status: "Missing price" },
-      { sku: "SP-KIT-6KW", name: "Reserve Kit 6kW", type: "Kit", unit: "EUR/kit", model: "Fixed price", base: 1850, status: "Active" },
-      { sku: "BAT-HV-10", name: "HV Battery 10kWh", type: "Battery", unit: "EUR/pc", model: "Fixed price", base: 1250, status: "Draft" }
-    ];
-
-    function makeSku(index) {
-      const seed = seedProducts[index % seedProducts.length];
-      const round = Math.floor(index / seedProducts.length);
-      const copy = JSON.parse(JSON.stringify(seed));
-      copy.sku = round === 0 ? seed.sku : `${seed.sku}-${String(round + 1).padStart(2, "0")}`;
-      copy.name = round === 0 ? seed.name : `${seed.name} Variant ${round + 1}`;
-      if (index % 19 === 0) copy.status = "Error";
-      if (index % 13 === 0) copy.status = "Missing price";
-      if (index % 11 === 0) copy.status = "Draft";
-      copy.updated = `2026-07-${String(15 + (index % 12)).padStart(2, "0")}`;
-      copy.countryPrices = {};
-      countries.forEach((country, countryIndex) => {
-        const multiplier = 1 + countryIndex * 0.012 + round * 0.002;
-        const configured = !(copy.status === "Missing price" && countryIndex > 2);
-        if (copy.model === "Tier price") {
-          copy.countryPrices[country] = {
-            configured,
-            tiers: configured ? copy.base.map((value) => Number((value * multiplier).toFixed(3))) : ["", "", ""]
-          };
-        } else if (copy.model === "Fixed price") {
-          copy.countryPrices[country] = {
-            configured,
-            price: configured ? Number((copy.base * multiplier).toFixed(2)) : "",
-            moq: copy.type === "Kit" ? 1 : 5
-          };
-        } else {
-          copy.countryPrices[country] = {
-            configured: false,
-            contactSales: true,
-            tiers: ["", "", ""]
-          };
+    const skus = [
+      {
+        sku: "GF02030302003020",
+        name: "SPR-P7-500-COM",
+        type: "PV",
+        unit: "EUR/W",
+        model: "Tier price",
+        productStatus: "Active",
+        countryPrices: {
+          Italy: { configured: true, tiers: [0.340, 0.434] },
+          Spain: { configured: true, tiers: [0.340, 0.434] },
+          France: { configured: true, tiers: [0.340, 0.434] },
+          Germany: { configured: true, tiers: [0.340, 0.434] },
+          "United Kingdom": { configured: false, tiers: ["", ""] }
         }
-      });
-      return copy;
-    }
-
-    const skus = Array.from({ length: 100 }, (_, index) => makeSku(index));
+      },
+      {
+        sku: "GF02030302003020",
+        name: "SP-KIT-7K-EU",
+        type: "Kit",
+        unit: "EUR/kit",
+        model: "Fixed price",
+        productStatus: "Disable",
+        countryPrices: {
+          Italy: { configured: true, price: 45, moq: 1 },
+          Spain: { configured: true, price: 45, moq: 1 },
+          France: { configured: true, price: 45, moq: 1 },
+          Germany: { configured: true, price: 45, moq: 1 },
+          "United Kingdom": { configured: true, price: 40, moq: 1 }
+        }
+      },
+      {
+        sku: "GF02030302003020",
+        name: "SP-BAT-10-EU",
+        type: "Battery",
+        unit: "EUR/pc",
+        model: "Fixed price",
+        productStatus: "Disable",
+        countryPrices: {
+          Italy: { configured: false, price: "", moq: 1 },
+          Spain: { configured: false, price: "", moq: 1 },
+          France: { configured: false, price: "", moq: 1 },
+          Germany: { configured: false, price: "", moq: 1 },
+          "United Kingdom": { configured: false, price: "", moq: 1 }
+        }
+      },
+      {
+        sku: "GF02030302003020",
+        name: "SPR-MAX6-440",
+        type: "PV",
+        unit: "EUR/W",
+        model: "Tier price",
+        productStatus: "Active",
+        countryPrices: {
+          Italy: { configured: true, tiers: [0.340, 0.434] },
+          Spain: { configured: true, tiers: [0.340, 0.434] },
+          France: { configured: true, tiers: [0.340, 0.434] },
+          Germany: { configured: true, tiers: [0.340, 0.434] },
+          "United Kingdom": { configured: false, tiers: ["", ""] }
+        }
+      },
+      {
+        sku: "GF02030302003020",
+        name: "SPR-P6-410-BLK",
+        type: "PV",
+        unit: "",
+        model: "Contact sales",
+        productStatus: "Active",
+        countryPrices: {
+          Italy: { configured: false, contactSales: true, tiers: ["", ""] },
+          Spain: { configured: false, contactSales: true, tiers: ["", ""] },
+          France: { configured: false, contactSales: true, tiers: ["", ""] },
+          Germany: { configured: false, contactSales: true, tiers: ["", ""] },
+          "United Kingdom": { configured: false, contactSales: true, tiers: ["", ""] }
+        }
+      }
+    ];
     let activeSku = skus[0];
     let activeCountry = "Italy";
 
@@ -1036,6 +1156,7 @@
 
     function statusClass(status) {
       if (status === "Active") return "green";
+      if (status === "Disable") return "blue";
       if (status === "Draft") return "blue";
       if (status === "Missing price") return "orange";
       if (status === "Error") return "red";
@@ -1050,54 +1171,31 @@
       const keyword = document.getElementById("searchInput").value.trim().toLowerCase();
       const type = document.getElementById("typeFilter").value;
       const model = document.getElementById("modelFilter").value;
+      const productStatus = document.getElementById("productStatusFilter").value;
       const status = document.getElementById("statusFilter").value;
       const country = document.getElementById("countryFilter").value;
       return skus.filter((sku) => {
         const textMatch = !keyword || `${sku.sku} ${sku.name}`.toLowerCase().includes(keyword);
-        const typeMatch = type === "All types" || sku.type === type;
-        const modelMatch = model === "All models" || sku.model === model;
-        const statusMatch = status === "All statuses" || sku.status === status;
-        const countryMatch = country === "All countries" || sku.countryPrices[country]?.configured;
-        return textMatch && typeMatch && modelMatch && statusMatch && countryMatch;
+        const typeMatch = type === "Please Select" || sku.type === type;
+        const modelMatch = model === "Please input" || sku.name === model;
+        const productStatusMatch = productStatus === "Please Select" || sku.productStatus === productStatus;
+        const statusMatch = status === "Please Select" || sku.productStatus === status;
+        const countryMatch = country === "Please Select" || sku.countryPrices[country]?.configured;
+        return textMatch && typeMatch && modelMatch && productStatusMatch && statusMatch && countryMatch;
       });
-    }
-
-    function renderSummary(list) {
-      document.getElementById("totalCount").textContent = String(list.length);
-      document.getElementById("configuredCount").textContent = String(list.filter((sku) => coverageCount(sku) === countries.length && sku.status !== "Error").length);
-      document.getElementById("draftCount").textContent = String(list.filter((sku) => sku.status === "Draft").length);
-      document.getElementById("issueCount").textContent = String(list.filter((sku) => sku.status === "Missing price" || sku.status === "Error").length);
     }
 
     function renderTable() {
       const list = filteredSkus();
-      renderSummary(list);
       tableBody.innerHTML = list.map((sku) => {
-        const coverage = coverageCount(sku);
-        const pct = (coverage / countries.length) * 100;
         return `
-          <tr class="${sku.sku === activeSku.sku ? "active-row" : ""}" data-sku="${sku.sku}">
-            <td>
-              <div class="sku-main">
-                <div class="thumb">${sku.type}</div>
-                <div style="min-width:0">
-                  <div class="sku-title">${sku.sku}</div>
-                  <div class="sku-desc">${sku.name}</div>
-                </div>
-              </div>
-            </td>
-            <td><span class="badge">${sku.type}</span></td>
-            <td><span class="badge blue">${sku.model}</span></td>
-            <td>
-              <div class="coverage">
-                <strong>${coverage}/5 configured</strong>
-                <div class="bar"><span style="width:${pct}%"></span></div>
-              </div>
-            </td>
-            <td>${sku.unit}</td>
-            <td>${sku.updated}</td>
-            <td><span class="badge ${statusClass(sku.status)}">${sku.status}</span></td>
-            <td><button class="btn soft" data-edit="${sku.sku}">Edit</button></td>
+          <tr data-sku="${sku.name}">
+            <td><strong>${sku.sku}</strong></td>
+            <td><strong>${sku.name}</strong></td>
+            <td><span class="badge ${sku.model === "Tier price" ? "blue" : "neutral"}">${sku.model}</span></td>
+            ${countries.map((country) => `<td>${countryPriceDisplay(sku, country)}</td>`).join("")}
+            <td><button class="status-switch ${sku.productStatus === "Active" ? "active" : ""}" data-status="${sku.name}">${sku.productStatus}</button></td>
+            <td><button class="action-link" data-edit="${sku.name}">Edit</button></td>
           </tr>
         `;
       }).join("");
@@ -1106,6 +1204,14 @@
     function formatPrice(value, unit) {
       if (value === "" || value === null || value === undefined || Number.isNaN(Number(value))) return "-";
       return unit === "EUR/W" ? Number(value).toFixed(3) : Number(value).toFixed(2);
+    }
+
+    function countryPriceDisplay(sku, country) {
+      const config = sku.countryPrices[country];
+      if (sku.model === "Contact sales") return "";
+      if (!config?.configured) return `<span class="missing-price">Missing price</span>`;
+      if (sku.model === "Tier price") return `<span class="price-range">${formatPrice(config.tiers[0], sku.unit)} ~ ${formatPrice(config.tiers[1], sku.unit)}</span>`;
+      return `<span class="price-range">${formatPrice(config.price, sku.unit)}</span>`;
     }
 
     function setDrawerOpen(open) {
@@ -1117,11 +1223,17 @@
       const tabs = document.getElementById("countryTabs");
       tabs.innerHTML = countries.map((country) => {
         const config = activeSku.countryPrices[country];
-        const label = config?.configured ? "Configured" : activeSku.model === "Contact sales" ? "Contact sales" : "Missing";
+        const label = activeSku.model === "Contact sales"
+          ? ""
+          : config?.configured
+            ? activeSku.model === "Tier price"
+              ? `${formatPrice(config.tiers[0], activeSku.unit)} ~ ${formatPrice(config.tiers[1], activeSku.unit)}`
+              : formatPrice(config.price, activeSku.unit)
+            : "Missing price";
         return `
           <button class="country-tab ${country === activeCountry ? "active" : ""}" data-country="${country}">
             <strong>${country}</strong>
-            <span>${countryCodes[country]} · ${label}</span>
+            <span>${label}</span>
           </button>
         `;
       }).join("");
@@ -1134,16 +1246,16 @@
         const tiers = config.tiers;
         table.innerHTML = `
           <thead>
-            <tr><th>Partner type</th><th>Discount</th><th>Only 1 pallet</th><th>2 to 8 pallets</th><th>Above 8 pallets</th></tr>
+            <tr><th>Partner type</th><th>Discount</th><th>Only 1 pallet</th><th>2 to 8 pallets</th><th>Above 8</th></tr>
           </thead>
           <tbody>
             ${partnerRules.map((rule) => `
               <tr>
                 <td>${rule.name}</td>
-                <td>${Math.round(rule.rate * 100)}%</td>
-                <td>${formatPrice(Number(tiers[0]) * rule.rate, activeSku.unit)}</td>
-                <td>${formatPrice(Number(tiers[1]) * rule.rate, activeSku.unit)}</td>
-                <td>${formatPrice(Number(tiers[2]) * rule.rate, activeSku.unit)}</td>
+                <td>95%</td>
+                <td>0.323</td>
+                <td>0.314</td>
+                <td>0.309</td>
               </tr>
             `).join("")}
           </tbody>
@@ -1172,40 +1284,13 @@
       }
     }
 
-    function renderValidation() {
-      const notice = document.getElementById("validationNotice");
-      const badge = document.getElementById("issueBadge");
-      const countryConfig = activeSku.countryPrices[activeCountry];
-      let issueText = "";
-      if (activeSku.status === "Error") issueText = "Tier ranges or imported data need review before publishing.";
-      if (activeSku.model !== "Contact sales" && !countryConfig.configured) issueText = `${activeCountry} price is missing for this SKU.`;
-      if (activeSku.model === "Contact sales") issueText = "This SKU is contact sales only. Fixed prices should stay empty.";
-
-      if (issueText) {
-        notice.className = "notice error";
-        notice.innerHTML = `<strong>Need action</strong><span>${issueText}</span>`;
-        badge.className = "badge red";
-        badge.textContent = "1 issue";
-      } else {
-        notice.className = "notice";
-        notice.innerHTML = "<strong>Ready to publish</strong><span>All required prices are configured for the selected SKU and country.</span>";
-        badge.className = "badge green";
-        badge.textContent = "0 issue";
-      }
-    }
-
     function renderDrawer() {
-      document.getElementById("drawerSkuTitle").textContent = `SKU NO: ${activeSku.sku}`;
-      document.getElementById("drawerSkuDesc").textContent = activeSku.name;
-      document.getElementById("drawerStatus").textContent = activeSku.status;
-      document.getElementById("drawerStatus").className = `badge ${statusClass(activeSku.status)}`;
-      document.getElementById("specType").textContent = activeSku.type;
-      document.getElementById("specModel").textContent = activeSku.model;
-      document.getElementById("specUnit").textContent = activeSku.unit;
-      document.getElementById("specCoverage").textContent = `${coverageCount(activeSku)}/5`;
-      document.getElementById("countryTitle").textContent = `${activeCountry} standard price`;
-      document.getElementById("activeCountryCurrency").textContent = activeSku.unit.split("/")[0];
+      document.getElementById("drawerSkuDesc").textContent = `SKU NO: ${activeSku.sku} · ${activeSku.name === "SPR-P7-500-COM" ? "M-Class Back Contact 495W" : activeSku.name}`;
+      document.getElementById("activeCountryCurrency").textContent = activeSku.unit ? activeSku.unit.split("/")[0] : "-";
       document.getElementById("pvUnitTitle").textContent = activeSku.unit;
+      document.getElementById("modelTier").classList.toggle("active", activeSku.model === "Tier price");
+      document.getElementById("modelFixed").classList.toggle("active", activeSku.model === "Fixed price");
+      document.getElementById("modelContact").classList.toggle("active", activeSku.model === "Contact sales");
 
       renderCountryTabs();
 
@@ -1213,7 +1298,6 @@
       const isPvTier = activeSku.model === "Tier price";
       document.getElementById("pvPricingPanel").hidden = !isPvTier && activeSku.model !== "Contact sales";
       document.getElementById("fixedPricingPanel").hidden = activeSku.model !== "Fixed price";
-      document.getElementById("copyCountryBtn").hidden = activeSku.model === "Contact sales";
 
       if (isPvTier || activeSku.model === "Contact sales") {
         document.getElementById("tierOne").value = config.tiers?.[0] || "";
@@ -1222,23 +1306,18 @@
         document.getElementById("tierOne").disabled = activeSku.model === "Contact sales";
         document.getElementById("tierMid").disabled = activeSku.model === "Contact sales";
         document.getElementById("tierHigh").disabled = activeSku.model === "Contact sales";
-        document.getElementById("countryHint").textContent = activeSku.model === "Contact sales"
-          ? "This SKU is contact sales only. Do not expose standard prices."
-          : "PV only: maintain standard price by pallet tier.";
       }
       if (activeSku.model === "Fixed price") {
         document.getElementById("fixedPrice").value = config.price || "";
         document.getElementById("fixedMoq").value = config.moq || "";
-        document.getElementById("countryHint").textContent = "Kit and Battery: maintain one fixed standard price per country.";
       }
 
       renderPartnerPreview();
-      renderValidation();
       renderTable();
     }
 
-    function selectSku(skuNo) {
-      const next = skus.find((sku) => sku.sku === skuNo);
+    function selectSku(productModel) {
+      const next = skus.find((sku) => sku.name === productModel);
       if (!next) return;
       activeSku = next;
       activeCountry = countries[0];
@@ -1247,6 +1326,20 @@
     }
 
     tableBody.addEventListener("click", (event) => {
+      const statusButton = event.target.closest("[data-status]");
+      if (statusButton) {
+        const sku = skus.find((item) => item.name === statusButton.dataset.status);
+        if (!sku) return;
+        sku.productStatus = sku.productStatus === "Active" ? "Disable" : "Active";
+        renderTable();
+        showToast("Pricing status updated.");
+        return;
+      }
+      const editButton = event.target.closest("[data-edit]");
+      if (editButton) {
+        selectSku(editButton.dataset.edit);
+        return;
+      }
       const row = event.target.closest("tr[data-sku]");
       if (row) selectSku(row.dataset.sku);
     });
@@ -1264,7 +1357,7 @@
         if (!config.tiers) config.tiers = ["", "", ""];
         config.tiers[index] = event.target.value;
         config.configured = config.tiers.every((value) => value !== "");
-        activeSku.status = "Draft";
+        activeSku.productStatus = "Active";
         renderDrawer();
       });
     });
@@ -1273,68 +1366,52 @@
       const config = activeSku.countryPrices[activeCountry];
       config.price = event.target.value;
       config.configured = event.target.value !== "";
-      activeSku.status = "Draft";
+      activeSku.productStatus = "Active";
       renderDrawer();
     });
 
     document.getElementById("fixedMoq").addEventListener("input", (event) => {
       activeSku.countryPrices[activeCountry].moq = event.target.value;
-      activeSku.status = "Draft";
+      activeSku.productStatus = "Active";
       renderDrawer();
-    });
-
-    document.getElementById("copyCountryBtn").addEventListener("click", () => {
-      const source = countries.find((country) => country !== activeCountry && activeSku.countryPrices[country]?.configured);
-      if (!source) {
-        showToast("No configured country price to copy.");
-        return;
-      }
-      activeSku.countryPrices[activeCountry] = JSON.parse(JSON.stringify(activeSku.countryPrices[source]));
-      activeSku.status = "Draft";
-      renderDrawer();
-      showToast(`Copied standard price from ${source}.`);
     });
 
     document.getElementById("closeDrawer").addEventListener("click", () => setDrawerOpen(false));
     document.getElementById("cancelBtn").addEventListener("click", () => setDrawerOpen(false));
     backdrop.addEventListener("click", () => setDrawerOpen(false));
 
-    document.getElementById("saveDraftBtn").addEventListener("click", () => {
-      activeSku.status = "Draft";
+    document.getElementById("applyBtn").addEventListener("click", () => {
+      activeSku.productStatus = "Active";
       renderDrawer();
-      showToast("Pricing draft saved.");
-    });
-
-    document.getElementById("publishSkuBtn").addEventListener("click", () => {
-      const ready = coverageCount(activeSku) === countries.length && activeSku.status !== "Error";
-      if (!ready && activeSku.model !== "Contact sales") {
-        showToast("Please fix missing prices before publishing.");
-        return;
-      }
-      activeSku.status = "Active";
-      renderDrawer();
-      showToast("SKU pricing published.");
+      setDrawerOpen(false);
+      showToast("Pricing applied.");
     });
 
     document.getElementById("resetBtn").addEventListener("click", () => {
       document.getElementById("searchInput").value = "";
-      document.getElementById("typeFilter").value = "All types";
-      document.getElementById("countryFilter").value = "All countries";
-      document.getElementById("modelFilter").value = "All models";
-      document.getElementById("statusFilter").value = "All statuses";
+      document.getElementById("brandFilter").value = "Please Select";
+      document.getElementById("subcategoryFilter").value = "Please Select";
+      document.getElementById("typeFilter").value = "Please Select";
+      document.getElementById("productStatusFilter").value = "Please Select";
+      document.getElementById("countryFilter").value = "Please Select";
+      document.getElementById("modelFilter").value = "Please input";
+      document.getElementById("statusFilter").value = "Please Select";
       renderTable();
       showToast("Filters reset.");
     });
 
-    ["searchInput", "typeFilter", "countryFilter", "modelFilter", "statusFilter", "dateFilter"].forEach((id) => {
+    ["searchInput", "brandFilter", "subcategoryFilter", "typeFilter", "productStatusFilter", "countryFilter", "modelFilter", "statusFilter"].forEach((id) => {
       document.getElementById(id).addEventListener("input", renderTable);
       document.getElementById(id).addEventListener("change", renderTable);
     });
 
+    document.getElementById("searchBtn").addEventListener("click", () => {
+      renderTable();
+      showToast("Search completed.");
+    });
+    document.getElementById("closeFilterBtn").addEventListener("click", () => showToast("Filter panel collapsed in production."));
     document.getElementById("importBtn").addEventListener("click", () => showToast("Import price list opens upload modal in production."));
     document.getElementById("exportBtn").addEventListener("click", () => showToast("Template download started."));
-    document.getElementById("publishBtn").addEventListener("click", () => showToast("Selected SKU prices published."));
-    document.getElementById("validateBtn").addEventListener("click", () => showToast("All SKU prices validated."));
     document.getElementById("bulkEditBtn").addEventListener("click", () => showToast("Bulk country copy opens a controlled workflow."));
 
     renderTable();
