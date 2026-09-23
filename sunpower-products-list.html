@@ -318,7 +318,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 348px;
+      grid-template-columns: minmax(0, 1fr) 350px;
       gap: 16px;
       margin-top: 12px;
       align-items: start;
@@ -709,6 +709,48 @@
       font-size: 12px;
     }
 
+    .price-panel {
+      display: grid;
+      gap: 8px;
+      padding: 11px;
+      border: 1px solid #dfe7ff;
+      border-radius: 8px;
+      background: #f6f8ff;
+    }
+
+    .price-main {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .price-main strong {
+      color: var(--blue);
+      font-size: 19px;
+      line-height: 1;
+    }
+
+    .price-main span,
+    .price-meta {
+      color: #667085;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .price-tier-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: #344054;
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .price-tier-line b {
+      color: #111827;
+    }
+
     .qty {
       border-top: 0;
       padding-top: 0;
@@ -827,94 +869,160 @@
     .summary {
       position: sticky;
       top: 82px;
-      width: 329px;
-      min-height: 657px;
-      padding: 34px 30px 20px;
+      width: 350px;
+      min-height: 600px;
+      max-height: calc(100vh - 100px);
+      padding: 26px 24px 20px;
       border: 0;
       border-radius: 16px;
       background: #fff;
       box-shadow: 0 18px 40px rgba(17, 24, 39, 0.10);
-      overflow: hidden;
+      overflow: auto;
     }
 
     .summary h2 {
       margin: 0;
-      padding-bottom: 18px;
-      font-size: 30px;
+      padding-bottom: 14px;
+      font-size: 31px;
       line-height: 36px;
       letter-spacing: 0;
       color: #303238;
     }
 
-    .summary-row {
+    .summary-metrics {
       display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      width: 269px;
-      padding: 0 0 11px;
-      margin-bottom: 10px;
-      border-bottom: 1px solid #e8ebf2;
-      font-size: 16px;
-      line-height: 19px;
-      color: #6b7488;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 16px;
+    }
+
+    .summary-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      width: auto;
+      padding: 0;
+      margin: 0;
+      border: 0;
+      color: #667085;
+      font-size: 13px;
+      line-height: 18px;
+    }
+
+    .summary-row:not(.is-hidden) + .summary-row:not(.is-hidden)::before {
+      content: "·";
+      margin-right: 2px;
+      color: #98a2b3;
+    }
+
+    .summary-row.is-hidden {
+      display: none;
     }
 
     .summary-row b {
-      color: #252a33;
-      font-size: 16px;
-      line-height: 19px;
-      text-align: right;
+      color: #344054;
+      font-size: 13px;
+      line-height: 18px;
+    }
+
+    .summary-price-summary {
+      margin: 0 0 18px;
+      padding: 14px 0 0;
+      border-top: 1px solid #e8ebf2;
+    }
+
+    .summary-partner-price {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      color: #263142;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .summary-partner-price b {
+      color: var(--blue);
+      font-size: 25px;
+      line-height: 1;
+    }
+
+    .summary-price-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 7px;
+      color: #7a8497;
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    .summary-price-meta .standard-total {
+      text-decoration: line-through;
+    }
+
+    .summary-price-meta .partner-discount {
+      color: #14804a;
+      font-weight: 800;
     }
 
     .summary-section-label {
-      margin: 6px 0 16px;
+      margin: 2px 0 12px;
       color: #2f3340;
-      font-size: 16px;
-      line-height: 19px;
+      font-size: 18px;
+      line-height: 22px;
       font-weight: 800;
     }
 
     .summary-list {
       display: grid;
-      gap: 26px;
-      margin: 0 0 66px;
+      gap: 10px;
+      max-height: 300px;
+      margin: 0 0 14px;
+      padding-right: 3px;
+      overflow: auto;
     }
 
     .summary-item {
-      width: 275px;
-      min-height: 90px;
+      width: 100%;
+      min-height: 86px;
       border: 0;
+      border-bottom: 1px solid #e7ebf4;
       border-radius: 0;
-      padding: 0;
-      background: transparent;
+      padding: 6px 0 11px;
+      background: #fff;
       display: grid;
-      grid-template-columns: 63px 1fr 18px;
-      gap: 12px;
+      grid-template-columns: 48px minmax(0, 1fr) 18px;
+      gap: 10px;
       align-items: start;
-    }
-
-    .summary-item-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: start;
-      margin-bottom: 8px;
     }
 
     .summary-thumb {
-      width: 63px;
-      height: 63px;
-      border-radius: 2px;
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
       background: #d9d9d9;
       margin-top: 2px;
     }
 
+    .summary-item-main {
+      min-width: 0;
+    }
+
+    .summary-item-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: start;
+    }
+
     .summary-mini-stepper {
       display: grid;
-      grid-template-columns: 35px 1fr 35px;
+      grid-template-columns: 30px 1fr 30px;
       align-items: center;
-      height: 34px;
-      margin-top: 5px;
+      height: 32px;
+      margin-top: 7px;
       border: 1px solid #e2e7f1;
       border-radius: 8px;
       overflow: hidden;
@@ -925,8 +1033,15 @@
       background: #fff;
     }
 
-    .summary-mini-stepper span:first-child,
-    .summary-mini-stepper span:last-child {
+    .summary-mini-stepper strong {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .summary-mini-stepper button {
+      border: 0;
       color: var(--blue);
       background: #fff;
       height: 100%;
@@ -934,21 +1049,50 @@
       place-items: center;
       font-size: 15px;
       font-weight: 900;
+      cursor: pointer;
     }
 
     .summary-item-title {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
       color: #1f2530;
       line-height: 18px;
-      margin-top: 4px;
+      margin-top: 2px;
+      overflow-wrap: anywhere;
     }
 
     .summary-item-meta {
       color: var(--muted);
       font-size: 13px;
       line-height: 15px;
-      margin-top: 7px;
+      margin-top: 5px;
+    }
+
+    .summary-line-price {
+      color: #252a33;
+      font-size: 14px;
+      line-height: 18px;
+      font-weight: 900;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .summary-benefit {
+      display: none;
+    }
+
+    .summary-benefit span {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .summary-benefit strong {
+      color: var(--blue);
+      font-size: 14px;
+    }
+
+    .summary-benefit.is-hidden {
+      display: none;
     }
 
     .summary-remove {
@@ -1274,6 +1418,7 @@
       <a href="#">Academy</a>
       <a href="#">Live training</a>
       <a href="#">Monitoring</a>
+      <a href="sunpower-my-orders.html">My Orders</a>
       <a class="active" href="#">Products</a>
     </nav>
     <div class="actions">
@@ -1332,8 +1477,16 @@
         <label class="select">
           <select id="country-filter">
             <option value="Spain" selected>Country: Spain</option>
+            <option value="United Kingdom">Country: United Kingdom</option>
             <option value="Portugal">Country: Portugal</option>
             <option value="France">Country: France</option>
+          </select>
+        </label>
+        <label class="select">
+          <select id="tier-filter">
+            <option value="elite" selected>Tier: Elite</option>
+            <option value="premier">Tier: Premier</option>
+            <option value="authorized">Tier: Authorized</option>
           </select>
         </label>
         <label class="select">
@@ -1459,11 +1612,15 @@
       </section>
       <aside class="card summary" aria-labelledby="summary-title">
         <h2 id="summary-title">Request cart</h2>
-        <div class="summary-row"><span>Total pallets</span><b id="summary-selected">0 pallet</b></div>
-        <div class="summary-row"><span>Total PV capacity</span><b id="summary-capacity">0 kW</b></div>
-        <div class="summary-row"><span>Kit quantity</span><b id="summary-kit">0 kit</b></div>
+        <div class="summary-metrics">
+          <div class="summary-row" id="summary-pallet-row"><span>Total pallets</span><b id="summary-selected">0 pallet</b></div>
+          <div class="summary-row" id="summary-capacity-row"><span>Total PV capacity</span><b id="summary-capacity">0 kW</b></div>
+          <div class="summary-row" id="summary-kit-row"><span>Kit quantity</span><b id="summary-kit">0 kit</b></div>
+          <div class="summary-row total" id="summary-price-row"><span>Estimated total</span><b id="summary-price">€0</b></div>
+        </div>
         <div class="summary-section-label">Cart items</div>
         <div class="summary-list" id="summary-list"></div>
+        <div class="summary-benefit" id="summary-benefit"><span>Partner benefit</span><strong>Elite pricing</strong></div>
         <button type="button" class="cta" id="summary-send-btn">Submit request</button>
         <button type="button" class="submitted-link" id="view-requests-btn">View submitted requests</button>
         <div class="summary-note" id="summary-note">No inquiry has been added yet.</div>
@@ -1804,15 +1961,15 @@
           status: 'in-stock'
         },
         {
-          sku: 'ess accessory',
+          sku: 'SP-ARSH-5kW-10kWh-G1',
           brand: 'SUNPOWER',
           category: 'BTP Product',
-          subcategory: 'Energy Storage Accessories',
+          subcategory: 'Residential all-in-one ESS sales kit',
           type: 'ESS',
-          description: 'ess accessory',
+          description: 'Residential all-in-one ESS kit with inverter, battery and accessories',
           billableWatts: '0',
           unit: 'KIT',
-          size: '340×280×95 mm',
+          size: 'Includes 3 component types',
           backsheet: 'N/A',
           cellColor: 'N/A',
           cellTech: 'N/A',
@@ -1823,7 +1980,7 @@
           palletQty: 0,
           capacity: 0,
           displayMode: 'kit',
-          status: 'out-of-stock'
+          status: 'in-stock'
         },
         {
           sku: 'SP-SRTH-MC-G1',
@@ -1919,6 +2076,15 @@
         const totalText = product.displayMode === 'kw'
           ? `total: ${product.capacity.toFixed(2).replace(/\.?0+$/, '')} kW`
           : `unit: ${product.unit}`;
+        const specsHtml = product.displayMode === 'kit'
+          ? `
+              <div class="spec"><b>1 inverter + 1 battery</b><span>Kit includes</span></div>
+              <div class="spec"><b>KIT</b><span>Unit of measure</span></div>
+            `
+          : `
+              <div class="spec"><b>${escapeHtml(product.billableWatts)} W</b><span>Power</span></div>
+              <div class="spec"><b>${escapeHtml(product.size)}</b><span>Size</span></div>
+            `;
 
         return `
           <article class="card product" data-sku="${escapeHtml(product.sku)}" data-country="Spain" data-brand="${escapeHtml(product.brand)}" data-category="${escapeHtml(product.category)}" data-subcategory="${escapeHtml(product.subcategory)}" data-type="${escapeHtml(product.type)}" data-backsheet="${escapeHtml(product.backsheet)}" data-cell-color="${escapeHtml(product.cellColor)}" data-cell-tech="${escapeHtml(product.cellTech)}" data-module-tech="${escapeHtml(product.moduleTech)}" data-unit="${escapeHtml(product.unit)}" data-display-mode="${escapeHtml(product.displayMode)}" data-min="${moq}" data-moq="${moq}" data-step="${step}" data-capacity="${product.capacity}" data-pallet-qty="${palletQty}" data-status="${escapeHtml(product.status)}">
@@ -1942,8 +2108,12 @@
                 </div>
               </div>
               <div class="specs">
-                <div class="spec"><b>${escapeHtml(product.billableWatts)} W</b><span>Power</span></div>
-                <div class="spec"><b>${escapeHtml(product.size)}</b><span>Size</span></div>
+                ${specsHtml}
+              </div>
+              <div class="price-panel" aria-label="Price by tier and quantity">
+                <div class="price-main"><strong class="price-value">-</strong><span class="price-currency">Tier price</span></div>
+                <div class="price-tier-line"><span class="price-tier">Elite</span><b class="price-break">1 pallet</b></div>
+                <div class="price-meta">Price updates with country, user tier and selected quantity.</div>
               </div>
               <div class="qty">
                 <div class="qty-meta-row">
@@ -1969,6 +2139,7 @@
     const products = Array.from(document.querySelectorAll('.product'));
     const searchFilter = document.getElementById('search-filter');
     const countryFilter = document.getElementById('country-filter');
+    const tierFilter = document.getElementById('tier-filter');
     const brandFilter = document.getElementById('brand-filter');
     const categoryFilter = document.getElementById('category-filter');
     const subcategoryFilter = document.getElementById('subcategory-filter');
@@ -1982,8 +2153,14 @@
     const summarySelected = document.getElementById('summary-selected');
     const summaryCapacity = document.getElementById('summary-capacity');
     const summaryKit = document.getElementById('summary-kit');
+    const summaryPrice = document.getElementById('summary-price');
+    const summaryPalletRow = document.getElementById('summary-pallet-row');
+    const summaryCapacityRow = document.getElementById('summary-capacity-row');
+    const summaryKitRow = document.getElementById('summary-kit-row');
+    const summaryPriceRow = document.getElementById('summary-price-row');
     const summaryNote = document.getElementById('summary-note');
     const summaryList = document.getElementById('summary-list');
+    const summaryBenefit = document.getElementById('summary-benefit');
     const summarySendBtn = document.getElementById('summary-send-btn');
     const requestModal = document.getElementById('request-modal');
     const historyModal = document.getElementById('history-modal');
@@ -1999,6 +2176,16 @@
     const historyList = document.getElementById('history-list');
     const requestCartStorageKey = 'sunpowerRequestCart';
     let cartTouched = false;
+    const defaultPriceMatrix = {
+      elite: { pallet1: 0.082, pallet2to8: 0.078, pallet8plus: 0.074 },
+      premier: { pallet1: 0.086, pallet2to8: 0.082, pallet8plus: 0.078 },
+      authorized: { pallet1: 0.09, pallet2to8: 0.086, pallet8plus: 0.082 }
+    };
+    const kitPriceMatrix = {
+      elite: { kit1: 4200, kit2to8: 3980, kit8plus: 3760 },
+      premier: { kit1: 4450, kit2to8: 4200, kit8plus: 3990 },
+      authorized: { kit1: 4680, kit2to8: 4460, kit8plus: 4240 }
+    };
     const figmaDefaultCartItems = [
       {
         sku: 'HSM-G390-B302',
@@ -2010,7 +2197,9 @@
         capacity: 53.13,
         palletQty: 54,
         quantity: 18,
-        requestType: 'price'
+        requestType: 'price',
+        priceMode: 'watt',
+        priceMatrix: defaultPriceMatrix
       },
       {
         sku: 'HSM-G390-B302',
@@ -2022,7 +2211,9 @@
         capacity: 53.13,
         palletQty: 54,
         quantity: 108,
-        requestType: 'price'
+        requestType: 'price',
+        priceMode: 'watt',
+        priceMatrix: defaultPriceMatrix
       }
     ];
     const submittedRequests = [
@@ -2055,6 +2246,8 @@
       capacity: Number(card.dataset.capacity),
       palletQty: Number(card.dataset.palletQty),
       status: card.dataset.status,
+      priceMode: card.dataset.displayMode === 'kit' ? 'kit' : (card.dataset.displayMode === 'kw' ? 'watt' : 'unit'),
+      priceMatrix: card.dataset.displayMode === 'kit' ? kitPriceMatrix : defaultPriceMatrix,
       quantity: Number(card.dataset.min),
       requestType: null,
       requestSent: false
@@ -2135,6 +2328,79 @@
       return palletQty > 0 ? Math.ceil(item.quantity / palletQty) : 0;
     }
 
+    function getSelectedTier() {
+      return tierFilter?.value || 'elite';
+    }
+
+    function getSelectedCurrency() {
+      return countryFilter?.value === 'United Kingdom'
+        ? { code: 'GBP', symbol: '£' }
+        : { code: 'EUR', symbol: '€' };
+    }
+
+    function getTierLabel(tier) {
+      if (tier === 'elite') return 'Elite';
+      if (tier === 'premier') return 'Premier';
+      return 'Authorized';
+    }
+
+    function getTierBenefitLabel(tier) {
+      if (tier === 'elite') return 'Best partner price';
+      if (tier === 'premier') return 'Premier partner price';
+      return 'Authorized partner price';
+    }
+
+    function getSkuPriceBreak(item) {
+      const pallets = getPalletCount(item);
+      if (pallets >= 8) return { key: 'pallet8plus', label: '8+ pallets' };
+      if (pallets >= 2) return { key: 'pallet2to8', label: '2-8 pallets' };
+      return { key: 'pallet1', label: '1 pallet' };
+    }
+
+    function getKitPriceBreak(item) {
+      if (item.quantity >= 8) return { key: 'kit8plus', label: '8+ kits' };
+      if (item.quantity >= 2) return { key: 'kit2to8', label: '2-8 kits' };
+      return { key: 'kit1', label: '1 kit' };
+    }
+
+    function getPriceBreak(item) {
+      return item.displayMode === 'kit' ? getKitPriceBreak(item) : getSkuPriceBreak(item);
+    }
+
+    function getUnitPrice(item) {
+      const tier = getSelectedTier();
+      const breakInfo = getPriceBreak(item);
+      const tierPrices = item.priceMatrix?.[tier] || {};
+      return Number(tierPrices[breakInfo.key]) || 0;
+    }
+
+    function getLineCapacityKw(item) {
+      if (item.displayMode !== 'kw') return 0;
+      return (item.quantity / getMoq(item)) * item.capacity;
+    }
+
+    function getLineSubtotal(item) {
+      const unitPrice = getUnitPrice(item);
+      if (item.priceMode === 'watt') return unitPrice * getLineCapacityKw(item) * 1000;
+      return unitPrice * item.quantity;
+    }
+
+    function formatMoney(value, options = {}) {
+      const currency = getSelectedCurrency();
+      const digits = options.digits ?? (Math.abs(value) >= 100 ? 0 : 2);
+      return currency.symbol + Number(value || 0).toLocaleString('en-US', {
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits
+      });
+    }
+
+    function formatUnitPrice(item) {
+      const unitPrice = getUnitPrice(item);
+      if (item.priceMode === 'watt') return formatMoney(unitPrice, { digits: 3 }) + '/W';
+      if (item.priceMode === 'kit') return formatMoney(unitPrice, { digits: 0 }) + '/kit';
+      return formatMoney(unitPrice, { digits: 2 }) + '/' + formatCardUnit(item.unit);
+    }
+
     function formatStepperQty(item) {
       const cardUnit = formatCardUnit(item.unit);
       if (item.displayMode !== 'kw') return item.quantity + ' ' + cardUnit;
@@ -2154,6 +2420,17 @@
       item.card.querySelector('.qty-step-value').textContent = formatStepperQty(item);
       item.card.querySelector('.qty-total-value').textContent = formatTotalCapacity(item);
       item.card.querySelector('.qty-minus').disabled = item.quantity <= getMoq(item);
+      const priceValue = item.card.querySelector('.price-value');
+      const priceTier = item.card.querySelector('.price-tier');
+      const priceBreak = item.card.querySelector('.price-break');
+      const priceCurrency = item.card.querySelector('.price-currency');
+      if (priceValue && priceTier && priceBreak && priceCurrency) {
+        const breakInfo = getPriceBreak(item);
+        priceValue.textContent = formatUnitPrice(item);
+        priceTier.textContent = getTierLabel(getSelectedTier()) + ' price';
+        priceBreak.textContent = breakInfo.label;
+        priceCurrency.textContent = getSelectedCurrency().code;
+      }
       const button = item.card.querySelector('.request-btn');
       const feedback = item.card.querySelector('.request-feedback');
 
@@ -2177,19 +2454,30 @@
     function renderSummaryList(requestedItems) {
       if (!requestedItems.length) {
         summaryList.innerHTML = '<div class="summary-empty">No product has been added to the inquiry list.</div>';
+        summaryBenefit.classList.add('is-hidden');
         return;
       }
 
+      summaryBenefit.classList.remove('is-hidden');
       summaryList.innerHTML = requestedItems.map((item) => `
         <div class="summary-item">
           <div class="summary-thumb" aria-hidden="true"></div>
-          <div>
-            <div class="summary-item-title">${item.sku}</div>
-            <div class="summary-item-meta">${formatTotalCapacity(item).replace('total: ', 'Total: ')}</div>
+          <div class="summary-item-main">
+            <div class="summary-item-top">
+              <div>
+                <div class="summary-item-title">${item.sku}</div>
+                <div class="summary-item-meta">${formatTotalCapacity(item).replace('total: ', 'Total: ')}</div>
+              </div>
+              <div class="summary-line-price">${formatUnitPrice(item)}</div>
+            </div>
             <div class="summary-mini-stepper">
               <span>-</span>
               <strong>${formatStepperQty(item)}</strong>
               <span>+</span>
+            </div>
+            <div class="summary-line-subtotal">
+              <span>${getTierLabel(getSelectedTier())} · ${getPriceBreak(item).label}</span>
+              <strong>${formatMoney(getLineSubtotal(item), { digits: 0 })}</strong>
             </div>
           </div>
           <button type="button" class="summary-remove" data-remove-sku="${item.sku}" aria-label="Remove request">×</button>
@@ -2239,7 +2527,7 @@
           || item.card.querySelector('.sub').textContent.toLowerCase().includes(keyword)
           || item.category.toLowerCase().includes(keyword)
           || item.subcategory.toLowerCase().includes(keyword);
-        const matchesCountry = item.country === countryValue;
+        const matchesCountry = countryValue === 'United Kingdom' || item.country === countryValue;
         const matchesBrand = brandValue === 'all' || item.brand === brandValue;
         const matchesCategory = categoryValue === 'all' || item.category === categoryValue;
         const matchesSubcategory = subcategoryValue === 'all' || item.subcategory === subcategoryValue;
@@ -2270,7 +2558,7 @@
     function updateSummary() {
       const requestedItems = cartTouched ? productState.filter((item) => item.requestType) : figmaDefaultCartItems;
       const totalSelected = requestedItems.reduce((sum, item) => {
-        return sum + getPalletCount(item);
+        return item.displayMode === 'kit' ? sum : sum + getPalletCount(item);
       }, 0);
       const totalCapacity = requestedItems
         .filter((item) => item.displayMode === 'kw')
@@ -2278,10 +2566,17 @@
       const totalKit = requestedItems
         .filter((item) => item.displayMode === 'kit')
         .reduce((sum, item) => sum + item.quantity, 0);
+      const estimatedTotal = requestedItems.reduce((sum, item) => sum + getLineSubtotal(item), 0);
 
       summarySelected.textContent = totalSelected + ' pallet' + (totalSelected === 1 ? '' : 's');
       summaryCapacity.textContent = totalCapacity.toFixed(2).replace(/\.00$/, '') + ' kW';
       summaryKit.textContent = totalKit + ' kit';
+      summaryPrice.textContent = formatMoney(estimatedTotal, { digits: 0 });
+      summaryBenefit.innerHTML = `<span>${getTierLabel(getSelectedTier())} partner</span><strong>${getTierBenefitLabel(getSelectedTier())}</strong>`;
+      summaryPalletRow.classList.toggle('is-hidden', totalSelected <= 0);
+      summaryCapacityRow.classList.toggle('is-hidden', totalCapacity <= 0);
+      summaryKitRow.classList.toggle('is-hidden', totalKit <= 0);
+      summaryPriceRow.classList.toggle('is-hidden', estimatedTotal <= 0);
       renderSummaryList(requestedItems);
 
       if (!requestedItems.length) {
@@ -2346,9 +2641,13 @@
       });
     });
 
-    [searchFilter, countryFilter, brandFilter, categoryFilter, subcategoryFilter, typeFilter, backsheetFilter, cellColorFilter, cellTechFilter, moduleTechFilter, displayFilter].forEach((control) => {
+    [searchFilter, countryFilter, tierFilter, brandFilter, categoryFilter, subcategoryFilter, typeFilter, backsheetFilter, cellColorFilter, cellTechFilter, moduleTechFilter, displayFilter].forEach((control) => {
       control.addEventListener('input', applyFilters);
-      control.addEventListener('change', applyFilters);
+      control.addEventListener('change', () => {
+        productState.forEach(updateCard);
+        applyFilters();
+        updateSummary();
+      });
     });
 
     filterSearchBtn.addEventListener('click', applyFilters);
