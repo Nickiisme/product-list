@@ -642,7 +642,7 @@ Order Progress 与 Delivery Progress 均以新方舟返回的数据为唯一来�
 - GitHub Pages：https://nickiisme.github.io/product-list/sunpower-my-orders.html
 - 运营后台源码：`/Users/nicki/Documents/Codex/sunpower/admin-order-management-prototype/`
 - 运营后台线上原型：https://nickiisme.github.io/product-list/admin-order-management/
-- 后台发布资源：仓库 `site/admin-order-management/`；源码：`prototypes/admin-order-management/`。
+- 后台发布资源：仓库 `admin-order-management/` 与 `site/admin-order-management/` 同步保留，以兼容当前根目录 Pages 发布与已有 site 工作流；源码：`prototypes/admin-order-management/`。
 - GitHub 完整 PRD：https://github.com/Nickiisme/product-list/blob/main/docs/SunPower_My_Orders_PRD.md
 
 ### 13.2 验收检查清单
