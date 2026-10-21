@@ -3,9 +3,9 @@
 ## 1. 文档头（元信息）
 
 - 文档标题：SunPower Partner Portal - My Orders 与运营后台订单、交付及信用可视化
-- 版本：v1.2
+- 版本：v1.3
 - 作者 / 日期：待填写 · 2026-10-21
-- 关联系统 / 模块：SunPower Partner Portal、新方舟（Ark）、订单、交付、信用、文件服务
+- 关联系统 / 模块：SunPower Partner Portal、Partner / Customer 编码映射、新方舟（NEW ARK）订单 / 客户中心、SAP、Invoice 接口、SN & FTD 接口
 - 页面路径关联：
   - 本地原型：`/partner-portal/sunpower-my-orders.html`
   - Products 原型：`/partner-portal/sunpower-products-list.html`
@@ -14,7 +14,7 @@
   - 运营后台线上原型：https://nickiisme.github.io/product-list/admin-order-management/
   - GitHub 需求文档：https://github.com/Nickiisme/product-list/blob/main/docs/SunPower_My_Orders_PRD.md
 
-本文沿用《产品需求文档（PRD）模板 v2.0》。第 7.1.1–7.1.8 节描述客户前台，第 7.1.9–7.1.15 节描述业务运营后台。除特别说明外，两端数据均来源于新方舟，前台的字段精简规则不直接套用于后台。
+本文沿用《产品需求文档（PRD）模板 v2.0》。第 7.1.1–7.1.8 节描述客户前台，第 7.1.9–7.1.15 节描述业务运营后台。订单、订单明细和 DN 来源于新方舟订单模块，客户剩余信用额度查询 SAP，账期查询新方舟客户中心，Invoice 与 SN & FTD 通过额外文件接口请求。前台的字段精简规则不直接套用于后台。
 
 变更记录：
 
@@ -23,6 +23,7 @@
 | v1.0 | 2026-10-19 | 首版需求文档 | 根据已确认的 My Orders 原型、页面字段及新方舟对接要求整理 |
 | v1.1 | 2026-10-20 | 修订业务口径 | DN 统一为 Delivery Number；增加 Credit overview 权限控制；明确 Order Progress 与 Delivery Progress 的新方舟数据来源及节点映射规则 |
 | v1.2 | 2026-10-21 | 新增运营后台与最新交互规范 | 增加 Order / Delivery / Credit Overview 的菜单、字段、权限、查询与导出规则；明确关联 DN、五节点订单进度、右侧固定操作区、边界阴影，以及蓝色 / 置灰 Download；同步发布后台原型 |
+| v1.3 | 2026-10-21 | 修订查询流程与系统分工 | Partner Code 先换取 Customer Code；首屏查询全部授权历史订单、SAP 剩余信用额度和客户中心账期；详情查询订单明细与关联 DN；Invoice、SN & FTD 改为独立接口按需下载 |
 
 ## 2. 需求概述
 
@@ -30,14 +31,14 @@
 
 SunPower 欧洲区域合作伙伴下单后，需要在 Partner Portal 中查询订单、产品、商业条款、交付批次和可下载报告。目前订单及交付数据主要存在于新方舟，客户缺少统一、直观且可自助查询的入口。
 
-本需求将新方舟中的客户、订单、信用、交付和文件数据同步到 Partner Portal，为客户提供历史订单查询、订单进度识别、预计到货时间查询、DN 物流信息及报告下载能力。
+本需求按登录用户的 Partner Code 换取授权 Customer Code，再分别查询新方舟订单、SAP 剩余信用额度和新方舟客户中心账期，为客户提供历史订单查询、订单进度识别、预计到货时间查询、DN 物流信息及报告下载能力。订单明细及关联 DN 在用户点击详情时查询，Invoice 与 SN & FTD 文件通过独立接口按需请求。
 
-业务运营还需要跨客户主体检索订单、关联 Delivery Number、核对 CRD 等业务日期、查看物流与信用信息。因此在 Partner Portal 后台增加运营查询入口，展示其权限范围内的完整业务数据；业务主数据继续在新方舟维护。
+业务运营还需要跨客户主体检索订单、关联 Delivery Number、核对 CRD 等业务日期、查看物流与信用信息。因此在 Partner Portal 后台增加运营查询入口，展示其权限范围内的完整业务数据；业务主数据继续在各自源系统维护。
 
 ### 2.2 目标
 
 - 订单自助查询覆盖率：已授权客户的有效历史订单可查询率达到 100%。
-- 数据一致性：Portal 展示字段与新方舟源数据一致率不低于 99.9%。
+- 数据一致性：Portal 展示字段与各自对应源系统数据一致率不低于 99.9%。
 - 查询效率：用户可在 3 次操作内完成“找到订单并查看订单详情”。
 - 信息完整性：一个订单下的多个产品和多个 DN 均可完整展示。
 - 文件可用性：已生成的 SN & FTD Report、Invoice 可直接从订单详情访问。
@@ -74,7 +75,7 @@ SunPower 欧洲区域合作伙伴下单后，需要在 Partner Portal 中查询�
 
 运营后台本期不做：
 
-- 在 Portal 修改 SO、DN、业务进度、信用额度或付款条件；仍在新方舟维护。
+- 在 Portal 修改 SO、DN、业务进度、信用额度或付款条件；仍由各自对应业务系统维护。
 - 在 Portal 创建、审批、取消订单或重新生成发票。
 - 从页面日期、数量或文件是否存在反向推算新方舟业务进度。
 - 未确认接口和权限前开放真实客户数据；公开演示页面只使用示例数据。
@@ -83,7 +84,10 @@ SunPower 欧洲区域合作伙伴下单后，需要在 Partner Portal 中查询�
 
 | 术语 | 说明 | 统一用名 |
 | --- | --- | --- |
-| Ark | TCL / SunPower 订单及业务数据来源系统 | 新方舟 |
+| NEW ARK | TCL / SunPower 业务系统；本需求涉及订单模块及客户中心 | 新方舟（NEW ARK） |
+| SAP | 客户剩余信用额度的数据来源 | SAP |
+| Available Amount | 客户当前剩余 / 可用信用额度，按 Customer Code 查询 SAP | Available Amount |
+| Payment Terms | 客户账期，按 Customer Code 查询新方舟客户中心 | Payment Terms |
 | SO | Sales Order，销售订单 | Sales Order / SO |
 | DN | Delivery Number，一个订单可包含多个交付批次 | DN |
 | CRD | Customer Requested Date，本页面不作为主要到货日期展示 | CRD |
@@ -128,7 +132,7 @@ SunPower 欧洲区域合作伙伴下单后，需要在 Partner Portal 中查询�
 | 9 | Partner Portal / Documents | 下载 SN & FTD Report、Invoice | P0 | 二期 | 待填写 |
 | 10 | Partner Portal / Contact sales | 唤起邮件客户端联系销售代表 | P1 | 二期 | 待填写 |
 | 11 | Partner Portal / Export | 导出当前筛选结果及全部产品 | P1 | 二期 | 待填写 |
-| 12 | 新方舟 / 接口 | 提供客户、订单、DN、信用、文件等数据接口 | P0 | 二期 | 待填写 |
+| 12 | 跨系统 / 接口 | 编码映射后分别查询新方舟订单 / DN、SAP 剩余信用额度、客户中心账期及独立文件接口 | P0 | 二期 | 待填写 |
 | 13 | 后台 / Order Management | 新增 Order Overview、Delivery Overview 两个页面入口 | P0 | 二期 | 待填写 |
 | 14 | 后台 / Order Overview | 分列展示客户名称和编码，查询完整 SO、CRD、关联全部 DN、订单详情和订单五节点进度 | P0 | 二期 | 待填写 |
 | 15 | 后台 / Delivery Overview | 按 DN 展示客户、SO、交付进度、物流信息、CRD / SSD / SAD 与三个文件入口 | P0 | 二期 | 待填写 |
@@ -139,40 +143,72 @@ SunPower 欧洲区域合作伙伴下单后，需要在 Partner Portal 中查询�
 
 ## 6. 整体流程图
 
-```mermaid
-flowchart LR
-    A[客户登录 Partner Portal] --> B[点击顶部 My Orders]
-    B --> C[按客户权限加载信用与订单]
-    C --> D{查询方式}
-    D -->|搜索 / 筛选| E[刷新订单列表]
-    D -->|直接浏览| E
-    E --> F[点击 Sales Order No. 或 View details]
-    F --> G[打开 Order details 抽屉]
-    G --> H[查看 Order Progress 与 Items]
-    G --> I[查看多个 DN]
-    G --> J{文件是否可用}
-    J -->|是| K[下载 SN & FTD Report / Invoice]
-    J -->|否| L[按钮禁用或不展示]
-    G --> M[联系销售代表]
-    E --> N[导出当前筛选结果 CSV]
-```
+### 6.1 进入 My Orders：编码转换与首屏查询
 
 ```mermaid
-sequenceDiagram
-    participant U as 客户
-    participant P as Partner Portal
-    participant A as 新方舟 API
-    participant F as 文件服务
-    U->>P: 打开 My Orders
-    P->>A: 按登录客户查询信用与订单
-    A-->>P: 返回授权订单及信用数据
-    U->>P: 查看某个 SO
-    P->>A: 查询 SO、Items、DN、状态
-    A-->>P: 返回订单详情和多个 DN
-    U->>P: 下载报告
-    P->>F: 校验客户权限并请求文件
-    F-->>U: 返回受控下载文件
+flowchart TD
+    myOrders["用户进入 My Orders"] --> partnerCode["获取登录用户的 Partner Code"]
+    partnerCode --> mapping["编码映射接口换取 Customer Code"]
+    mapping --> mappingOk{"取得授权 Customer Code？"}
+    mappingOk -->|"否"| mappingError["显示编码关联异常与重试入口"]
+    mappingOk -->|"是"| customerCode["确定 Customer Code 查询范围"]
+    customerCode --> orderQuery["NEW ARK 订单：查询全部授权历史订单"]
+    orderQuery --> orderList["展示历史订单列表，支持分页与筛选"]
+    customerCode --> creditPermission{"有信用数据权限？"}
+    creditPermission -->|"是"| sapQuery["SAP：查询客户剩余信用额度"]
+    sapQuery --> creditView["展示 Available Amount"]
+    creditPermission -->|"否"| creditHidden["隐藏信用信息，不发起 SAP 查询"]
+    customerCode --> termsQuery["NEW ARK 客户中心：查询客户账期"]
+    termsQuery --> termsView["按展示权限显示 Payment Terms"]
 ```
+
+调用顺序与边界：
+
+1. Partner Portal 主要使用 Partner Code；下游查询前必须先换取 Customer Code。编码映射接口归属、一个 Partner Code 是否对应多个 Customer Code，待对接确认。
+2. Customer Code 解析及权限校验成功后，历史订单、SAP 剩余信用额度和客户中心账期可分别发起请求、独立返回。信用额度查询仍遵守 Admin / 特定 Role 权限；无权限不请求、不返回信用数据。
+3. “所有历史订单”指该用户映射并获授权的 Customer Code 下全部可查询历史订单，支持服务端分页；不擅自限制为最近 24 个月，也不要求一次返回全部记录。
+4. SAP 或客户中心查询失败不阻断已成功取得的订单列表；对应信息展示失败 / 待获取状态并支持单独重试，不将失败值显示为零或空账期。
+5. 首屏不批量拉取全部订单明细、DN 明细或文件内容；用户打开某个 SO 详情后再按需查询。
+
+### 6.2 点击详情：订单明细、关联 DN 与文件下载
+
+```mermaid
+flowchart TD
+    selectOrder["点击 Sales Order No. 或 View details"] --> ownership["校验 Customer Code 与 SO 归属"]
+    ownership --> orderDetail["NEW ARK 订单：查询 SO 明细与产品行"]
+    ownership --> dnQuery["NEW ARK 订单 / 交付：查询 SO 关联 DN"]
+    orderDetail --> detailView["展示订单明细、产品与关联 DN"]
+    dnQuery --> detailView
+    detailView --> downloadClick["点击可用文件的下载入口"]
+    downloadClick --> filePermission["校验客户、SO 与相关 DN 的文件权限"]
+    filePermission --> fileType{"下载哪种文件？"}
+    fileType -->|"Invoice"| invoiceApi["额外 Invoice 接口：请求发票文件"]
+    fileType -->|"SN & FTD"| reportApi["额外 SN & FTD 接口：请求合并报告"]
+    invoiceApi --> fileResult["返回文件或受控下载地址，发起下载"]
+    reportApi --> fileResult
+```
+
+- 详情请求以授权 Customer Code 与当前 SO 为关联条件，取得订单明细及全部关联 DN；一个 SO 的多个产品 / DN 不能遗漏。SO 与 DN 是一次聚合返回还是多个接口查询，由接口契约确定。
+- Payment Terms 复用本次客户中心查询结果；需要刷新时仍查询客户中心，不以订单接口或 SAP 值覆盖其来源。
+- Invoice 与 SN & FTD 各走额外文件接口，点击对应入口时按需请求，不把订单明细接口当作文件下载接口。
+- 文件接口携带授权 Customer Code、SO 及文件标识；文件归属具体 DN 时追加该 DN。两个文件的准确参数、SO / DN 归属与服务归属待接口方确认，不预设 URL。
+- 文件就绪状态与业务进度独立；应通过额外文件接口的可用性元数据或明确约定的状态字段控制入口。未就绪时按既有交互禁用 / 置灰，不能凭 Invoiced 状态自动生成下载地址。
+- 本次流程调整聚焦 My Orders 的 Invoice 与 SN & FTD；后台 POD 文件来源与具体接口仍单独确认，不与这两个接口混用。
+
+### 6.3 数据来源与触发时机
+
+| 数据 / 操作 | 数据来源 | 查询标识 | 触发时机 |
+| --- | --- | --- | --- |
+| Partner Code → Customer Code | 编码映射接口，归属待确认 | 登录用户授权 Partner Code | 进入 My Orders，其他业务查询之前 |
+| 全部授权历史订单 | NEW ARK 订单模块 | Customer Code + 筛选 / 分页条件 | 编码转换完成后；搜索、筛选或翻页时 |
+| 客户剩余信用额度 | SAP | Customer Code；其他必要维度待确认 | 编码转换完成且有信用权限后 |
+| 客户账期 Payment Terms | NEW ARK 客户中心 | Customer Code | 编码转换完成后，按既定展示权限返回 |
+| SO 明细与产品行 | NEW ARK 订单模块 | Customer Code + SO | 点击订单详情 |
+| 关联 DN 数据 | NEW ARK 订单 / 交付接口 | Customer Code + SO；DN 明细按相关 DN 请求 | 点击订单详情；需要时展开 DN |
+| Invoice | 额外 Invoice 文件接口 | Customer Code + SO + 文件标识，按归属追加 DN | 点击发票下载 |
+| SN & FTD | 额外 SN & FTD 文件接口 | Customer Code + SO + 文件标识，按归属追加 DN | 点击报告下载 |
+
+这里只确认 Available Amount 来源为 SAP、Payment Terms 来源为客户中心；Credit Limit、Overdue、Credit Status 的来源尚未单独确认，不自动沿用“全部来自新方舟”或“全部来自 SAP”的假设。
 
 ## 7. 需求详细说明（每个功能一个章节）
 
@@ -192,13 +228,14 @@ sequenceDiagram
 - 数据权限：用户只能查看当前账号及授权客户主体下的订单。
 - 文件权限：下载时服务端重新校验订单归属和用户权限。
 - Credit overview 权限：默认仅 Admin 用户可见；也可授权给特定 Role。具体 Role 名称及权限标识待确认。
-- 无 Credit overview 权限时：前端隐藏整个 Credit overview 模块，后端接口不得返回信用额度、可用额度、逾期金额和付款条件等敏感信用数据。
+- 无 Credit overview 权限时：前端隐藏整个 Credit overview 模块，后端不得返回信用额度、可用额度、逾期金额等信用数据。客户中心账期按其实际展示区域的权限独立控制，不因数据源拆分自动扩大可见范围。
+- 服务端从登录用户上下文取得授权 Partner Code，经编码映射换取 Customer Code 后再请求下游；不得接受用户任意指定 Customer Code 绕过归属校验。
 
 #### 7.1.2 页面功能明细
 
 | 序号 | 功能模块 | 原型交互 | 需求说明 |
 | --- | --- | --- | --- |
-| 1 | Credit overview | 有权限时展示页面顶部卡片；无权限时整个模块隐藏 | 仅 Admin 或配置的特定角色可见；展示 Credit limit、Available amount、Overdue、Payment terms；Overdue 大于 0 时视觉强调；金额包含货币符号 |
+| 1 | Credit overview | 有权限时展示页面顶部卡片；无权限时整个模块隐藏 | 仅 Admin 或配置的特定角色可见；Available amount 查询 SAP，Payment terms 查询 NEW ARK 客户中心；Credit limit / Overdue 来源待确认；Overdue 大于 0 时视觉强调；金额包含货币符号 |
 | 2 | 搜索 | 输入后即时刷新 | 支持 Sales Order No.、SKU、Product model 模糊搜索 |
 | 3 | Order Progress 筛选 | 单选下拉框 | All order progress、Processing、Shipped、Invoiced；新方舟 Completed 映射为 Invoiced |
 | 4 | Order date range | 单击紧凑按钮展开 | 显示英文 From、To、Clear、Apply；输入格式 DD/MM/YYYY；Apply 后筛选并收起 |
@@ -262,7 +299,7 @@ Order overview 仅展示：
 | 字段 | 说明 |
 | --- | --- |
 | Total amount | 订单总金额，包含货币符号 |
-| Payment terms | 付款条件 |
+| Payment terms | 客户账期，按 Customer Code 查询 NEW ARK 客户中心；复用首屏结果或按需刷新 |
 | Prepayment / Credit status | 预付款或信用审批状态 |
 
 不单独展示 Currency。
@@ -319,7 +356,7 @@ Partner Portal
 - 订单列表中的 Credit 字段、详情中的信用数据同样校验信用权限；无权限时隐藏相应字段，服务端不得返回相关数据。
 - 每次订单查询、DN 查询、导出和下载均在服务端重新校验范围。前台客户权限与后台运营权限分别配置。
 
-后台流程：运营登录并校验权限 → 选择 Order / Delivery / Credit Overview → 查询新方舟授权数据 → 查看 SO 与关联 DN、核对日期或信用 → 下载已有文件或导出结果。新增、修改和审批继续在新方舟处理。
+后台流程：运营登录并校验权限 → 选择 Order / Delivery / Credit Overview → 按授权客户范围和对应来源查询数据 → 查看 SO 与关联 DN、核对日期或信用 → 经额外文件接口下载或导出结果。订单与 DN 查询新方舟订单模块，剩余信用额度查询 SAP，账期查询新方舟客户中心；主数据维护在对应业务系统处理。
 
 #### 7.1.10 后台 Order Overview
 
@@ -407,11 +444,11 @@ Partner Portal
 | Customer Code | 新方舟客户主体编码 |
 | Company Name | 客户公司名称，独立于编码 |
 | Partner Code | 合作伙伴编码 |
-| Credit Limit | 信用总额度，包含币种 |
-| Available Amount | 当前可用额度，保持新方舟源值，不由前端用额度减订单金额推算 |
-| Overdue | 逾期金额，按实际金额是否大于零作提示，不能按字符串包含某个字符判断 |
-| Payment Terms | 付款条件，保持新方舟业务含义 |
-| Credit Status | 新方舟信用状态；原型示例为 Normal、On hold、Review、Blocked，最终枚举与映射待确认 |
+| Credit Limit | 信用总额度，包含币种；数据来源尚待单独确认 |
+| Available Amount | 当前剩余 / 可用额度，按 Customer Code 查询 SAP，保持 SAP 源值，不由前端用额度减订单金额推算 |
+| Overdue | 逾期金额，数据来源待确认；按实际金额是否大于零作提示，不能按字符串包含某个字符判断 |
+| Payment Terms | 客户账期，按 Customer Code 查询 NEW ARK 客户中心 |
+| Credit Status | 客户信用状态；原型示例为 Normal、On hold、Review、Blocked，来源、最终枚举与映射待确认 |
 | Operation | 当前原型保留 View history 文字入口；信用历史接口、范围和可用性另行确认，本期不得把未接通入口视为已具备真实历史查询能力 |
 
 - 支持 Customer Code、Company Name、Partner Code 搜索，支持 Credit Status、Sales Organisation 筛选和当前结果导出。
@@ -495,7 +532,7 @@ Order Progress 与 Delivery Progress 均以新方舟返回的数据为唯一来�
 | Carrier 未分配 | 展示 Pending assignment |
 | SN 或 FTD 未就绪 | 报告按钮禁用 |
 | Invoice 未生成 | 不展示 Invoice |
-| 接口失败 | 展示失败提示和 Retry，不将旧缓存冒充最新数据 |
+| 接口失败 | 展示失败提示和 Retry，不将旧缓存冒充最新数据；SAP / 客户中心失败不阻断已成功返回的订单列表 |
 | 权限不足 | 不返回数据，不泄露订单是否存在 |
 | 重复点击下载 | 请求幂等，不产生重复业务记录 |
 | 一个 SO 多个 DN | 全部返回并逐条展示 |
@@ -506,6 +543,12 @@ Order Progress 与 Delivery Progress 均以新方舟返回的数据为唯一来�
 | 后台暂无信用权限 | 隐藏 Credit Overview 及其他页面的信用字段；直接请求或导出同样拒绝 |
 | 后台 SSD / SAD 字段缺失 | 显示“—”或明确待确认，不以 CRD 或提货日期静默替代 |
 | 后台不同币种 / 销售组织 | 分开展示，不跨币种汇总可用额度或逾期金额 |
+| Partner Code 无 Customer Code 映射 | 提示客户关联异常；阻止依赖 Customer Code 的查询，不把 Partner Code 当 Customer Code 使用 |
+| 一个 Partner Code 对应多个 Customer Code | 按已授权映射范围和明确规则查询；规则确认前不得静默只取第一条或扩大到未授权客户 |
+| SAP 剩余信用额度查询失败 | 对应信息提示失败并单独重试，不显示为 0，不影响订单列表 |
+| 客户中心账期查询失败 | 对应区域提示失败并单独重试，不使用其他系统值替代 |
+| 详情或 DN 查询失败 | 标明失败区域，支持重试；不能把查询失败显示成“该订单没有 DN” |
+| Invoice / SN & FTD 额外接口失败 | 提示对应文件请求失败并允许重试，不修改订单进度或其他文件状态 |
 
 ## 8. 非功能需求
 
@@ -518,7 +561,7 @@ Order Progress 与 Delivery Progress 均以新方舟返回的数据为唯一来�
 
 ### 8.2 安全
 
-- 订单和文件接口按登录用户、客户主体、Partner Code 校验权限。
+- 编码映射、订单、SAP、客户中心和文件接口均按登录用户、授权 Partner Code / Customer Code 及订单归属校验权限。
 - 下载地址使用短时有效或一次性签名。
 - 联系人信息按最小必要原则展示。
 - 导出数据不得超出当前账号权限。
@@ -554,7 +597,7 @@ Order Progress 与 Delivery Progress 均以新方舟返回的数据为唯一来�
 
 ## 10. 历史数据处理
 
-- 首次上线同步当前客户授权范围内的历史有效订单，建议至少覆盖最近 24 个月，最终范围由业务确认。
+- 用户进入 My Orders 后查询当前用户映射且获授权 Customer Code 下的全部可查询历史订单，采用服务端分页；不默认截断为最近 24 个月。NEW ARK 若有归档、迁移或历史查询限制，需明确返回边界，不能将受限结果标为完整历史。
 - 历史 Completed 状态统一映射为 Invoiced。
 - 历史 Scheduled Arrival Time 缺失时展示 To be confirmed，不使用 CRD 或 Pickup date 静默替代。
 - 历史 DN 缺少 Carrier、POD 或文件关系时按空值规则处理，并纳入数据质量检查。
@@ -562,43 +605,48 @@ Order Progress 与 Delivery Progress 均以新方舟返回的数据为唯一来�
 
 ## 11. 跨系统对接说明
 
-- 对接系统：新方舟、Partner Portal 身份权限服务、文件服务、邮件客户端。
-- 对接内容：
-  - 登录账号对应的客户主体、Partner Code、Admin / Role 权限及 Credit overview 可见权限。
-  - Credit limit、Available amount、Overdue、Payment terms。
-  - SO、订单日期、金额、Order Progress 源状态、Scheduled Arrival Time。
-  - Items 的 SKU、型号、描述、数量、单位、价格。
-  - Incoterm、联系人、收货地址。
-  - 一个 SO 下全部 DN 及每个 DN 下产品关系。
-  - DN 编号、仓库、Delivery Progress 源状态、Carrier、Pickup date。
-  - SN & FTD Report、Invoice 的状态、文件名及受控下载地址。
-  - 后台完整 Customer Code、Company Name、Partner Code、Market、Sales Organisation、销售代表、业务更新时间及 SO 下所有关联 DN。
-  - 后台 DN 的 Warehouse、Carrier、Pickup Date、CRD、SSD、SAD、Delivery Progress 及 POD / SN & FTD / Invoice 独立文件状态。
-  - 后台 Credit Status、信用数据币种与销售组织维度；后端负责按权限过滤客户及敏感字段。
+### 11.1 系统分工
 
-接口原则：
+数据来源和触发时机以第 6.3 节为准，具体接口路径、归属系统及请求字段命名由各接口方确认。
 
-1. 列表接口支持搜索、状态、From、To、分页和排序。
-2. 详情接口返回 SO、Items、Commercial、Delivery、DN 的完整关联结构。
-3. 时间字段返回时区；前端按目的地本地时间展示。
-4. 文件接口返回业务状态，不能只用 URL 是否为空判断。
-5. 接口提供稳定的 SO、DN、Product、Document 唯一标识。
-6. Order Progress 与 Delivery Progress 分字段返回，不允许前端用其中一个推算另一个。
-7. Order Progress 接口需支持映射到五个指定节点：SO created、Allocated、Outbound、Received (POD)、Invoiced。
-8. Credit overview 接口必须在服务端校验 Admin 或特定 Role 权限；无权限时不得返回信用数据。
-9. 后台 Order、Delivery、Credit 查询分别定义粒度、唯一键和分页参数；Credit 不按登录用户重复聚合。
-10. 新方舟输出 CRD、SSD、SAD 和 Pickup Date 的独立源字段与业务定义，明确 SO / DN 多批次时的时间归属，保留变更时间。
-11. 后台 Order Progress 仅消费指定五节点映射；Delivery Progress 返回其完整交付枚举，不套用订单映射。
-12. 后台文件接口返回每种文档的就绪状态、权限、文件集合和受控下载方式；展示置灰 Download 与后端拒绝非法下载同时生效。
+- Partner Portal 身份权限服务：提供当前登录用户的 Partner Code、授权客户范围、Admin / Role 与信用可见权限。
+- 编码映射接口：根据 Partner Code 返回 Customer Code；接口归属、有效性及一对多映射规则待确认。该步骤是下游客户维度查询的前置依赖。
+- NEW ARK 订单模块：提供全部授权历史 SO、订单日期、金额、原始状态、业务日期、订单产品行及关联 DN；详情需包含完整 SO → 产品、SO → DN、DN → 产品关系。
+- SAP：按 Customer Code 返回客户剩余信用额度 Available Amount，并明确币种、必要业务维度及数据时间；不由 Portal 自行计算。
+- NEW ARK 客户中心：按 Customer Code 返回客户账期 Payment Terms。
+- 额外 Invoice 接口：按文件归属及权限提供发票文件 / 文件集合或受控下载地址。
+- 额外 SN & FTD 接口：提供序列号与测试报告的统一文件 / 文件集合或受控下载地址。
+- 邮件客户端：承接“联系销售代表”的邮件入口。
+
+Credit Limit、Overdue、Credit Status 与后台 POD 文件来源仍待分别确认，不能因为 Available Amount 已确定查询 SAP，就推定这些字段也来自 SAP。
+
+### 11.2 请求顺序与接口契约
+
+1. 从登录上下文取得授权 Partner Code，先调用编码映射；映射成功后才使用 Customer Code 查询订单、SAP 和客户中心。
+2. 首屏的历史订单、剩余信用额度、账期分别请求、独立处理成功 / 失败；其中信用请求必须先通过 Admin / 特定 Role 校验。不得将 SAP 或客户中心的成功作为展示订单列表的硬性前提。
+3. 历史订单查询覆盖全部授权可查询历史数据，支持搜索、状态、日期区间、分页和排序；翻页或筛选继续沿用同一授权客户范围。
+4. 点击 SO 详情时，使用 Customer Code + SO 查询订单明细与关联 DN。一个 SO 的多条产品行、多个 DN 及每个 DN 下产品关系均需完整返回；不将导出明细行直接当作独立订单。
+5. SO / DN 查询只提供业务数据。Invoice、SN & FTD 通过各自额外接口按需请求，不能假设订单明细响应内已经包含文件本体或永久下载地址。
+6. 文件请求重新校验 Customer Code、SO 与文件归属 DN；准确参数、是否需文件 ID、文件列表 / 压缩包及签名有效期由文件接口契约确认。
+7. 文件接口需明确可用性状态、权限和失败原因。文件业务状态与 Order Progress / Delivery Progress 分开，不能只凭订单已开票或 URL 非空判断可下载。
+8. Payment Terms 的来源始终是 NEW ARK 客户中心；订单详情复用该结果或单独刷新。SAP 剩余信用额度同样不得被订单接口的同名字段覆盖。
+9. 时间字段返回明确时区；各系统返回各自数据时间，失败时不得更新为成功时间。CRD、SSD、SAD 与 Pickup Date 保持独立含义，不静默替代。
+10. SO、DN、Product、Document 使用稳定唯一标识；客户查询同时保留 Customer Code、Partner Code 和必要组织维度，金额保留币种。
+11. Order Progress 与 Delivery Progress 分字段返回。Order Progress 支持五个指定节点的业务映射，Delivery Progress 保留其交付源状态；五节点详细映射仍待业务评审，不由本次流程调整直接确定。
+12. 后台 Order / Delivery / Credit 仍按各自粒度定义唯一键和分页；信用不按登录用户重复聚合，多币种 / 多组织不得直接相加。
+13. 所有客户、文件、导出接口都在服务端校验权限。前端未展示入口不等于已完成安全控制；映射失败时不得使用 Partner Code 代替 Customer Code 继续请求。
 
 ## 12. 依赖与风险
 
 ### 12.1 依赖
 
-- 新方舟提供稳定且有权限隔离的查询接口。
-- 新方舟提供 Scheduled Arrival Time、POD、Invoice 明确字段。
+- 编码映射接口提供稳定、有效且有授权范围的 Partner Code → Customer Code 关系。
+- NEW ARK 订单模块提供全部授权历史订单、SO 明细、产品与关联 DN 查询接口。
+- NEW ARK 订单模块提供 Scheduled Arrival Time 及订单 / 交付源字段。
 - 新方舟分别提供 Order Progress 与 Delivery Progress 源状态。
-- 文件服务支持 SN & FTD Report、Invoice 受控下载。
+- SAP 提供按 Customer Code 查询剩余信用额度的接口，明确币种及必要维度。
+- NEW ARK 客户中心提供按 Customer Code 查询账期的接口。
+- 额外 Invoice、SN & FTD 接口支持可用性判断和受控下载；后台 POD 接口另行确认。
 - Portal 登录账号与新方舟客户主体、Admin / 特定 Role 权限映射准确。
 
 ### 12.2 风险与兜底
@@ -613,6 +661,10 @@ Order Progress 与 Delivery Progress 均以新方舟返回的数据为唯一来�
 | 历史 Invoice 不完整 | 已完成订单无文件 | 不展示按钮并提示联系销售 |
 | 大批量导出 | 浏览器卡顿 | 超阈值改为后端异步导出 |
 | 权限映射错误 | 数据越权 | 服务端强制校验并进行权限隔离测试 |
+| Partner / Customer 编码映射缺失或一对多规则不明 | 客户查询失败或范围错误 | 展示关联异常；由授权映射规则确定 Customer Code 范围，不静默选择首条 |
+| SAP 暂时不可用 | 剩余信用额度无法显示 | 对应模块提示并单独重试，订单列表正常展示，不把失败显示成零额度 |
+| 客户中心暂时不可用 | 客户账期无法显示 | 对应区域提示并单独重试，不使用 SAP 或订单字段替代 |
+| 额外文件接口未接通 | 无法实际下载 Invoice / SN & FTD | 按接口可用状态禁用或提示失败，不能仅展示“下载成功”消息 |
 
 ### 12.3 遗留问题
 
@@ -622,9 +674,9 @@ Order Progress 与 Delivery Progress 均以新方舟返回的数据为唯一来�
 4. Invoice 下载触发条件及文件接口。
 5. SN 与 FTD 是否已有合并报告；若没有，由哪个系统生成。
 6. 一个 DN 下多产品关系的接口结构。
-7. Credit overview 字段口径、币种和刷新频率。
+7. SAP 剩余信用额度接口的币种、销售组织等必要维度与刷新频率；Credit Limit / Overdue / Credit Status 的来源和口径。
 8. CSV 切换后端异步生成的数据量阈值。
-9. 历史订单同步范围。
+9. NEW ARK 全部授权历史订单的归档 / 迁移边界与服务端分页能力。
 10. 可查看 Credit overview 的特定 Role 名称、权限编码和授权流程。
 11. 新方舟 Delivery Progress 字段定义、状态枚举及与 DN Status 的关系。
 12. 后台跨客户数据权限的销售组织 / 市场 / 客户范围规则与最终权限编码。
@@ -632,6 +684,9 @@ Order Progress 与 Delivery Progress 均以新方舟返回的数据为唯一来�
 14. 多币种、多销售组织客户信用记录的唯一键与展示方式。
 15. POD、SN & FTD、Invoice 的一对多文件关系和下载失败处理。
 16. Credit View history 是否纳入本期、源接口与历史范围；确认前仅为原型占位入口。
+17. Partner Code → Customer Code 映射接口归属、有效期、一对多关系及授权范围。
+18. NEW ARK 客户中心账期字段及必要查询维度，是否需要客户主体以外的组织条件。
+19. Invoice 与 SN & FTD 额外接口的服务归属、SO / DN 文件归属、准确参数和可用性查询方式。
 
 ## 13. 附录
 
@@ -666,6 +721,9 @@ Order Progress 与 Delivery Progress 均以新方舟返回的数据为唯一来�
 15. SN & FTD Report 和 Invoice 使用下载图标；未就绪报告不可点击。
 16. Completed / Invoiced 订单显示 Invoice，其他状态不显示。
 17. 联系销售代表可唤起邮件客户端并带入订单号。
+18. 进入 My Orders 时先将授权 Partner Code 换取 Customer Code，再按该范围分别查询 NEW ARK 历史订单、SAP 剩余信用额度、NEW ARK 客户中心账期。
+19. 历史订单支持全部授权可查询数据和服务端分页，不默认限制为最近 24 个月；SAP / 客户中心失败不阻断已成功返回的订单列表。
+20. 点击详情后再查询 SO 明细及关联 DN；Invoice、SN & FTD 分别调用额外文件接口按需下载，并重新校验客户和文件归属。
 
 后台：
 
@@ -698,11 +756,12 @@ Order Progress 与 Delivery Progress 均以新方舟返回的数据为唯一来�
 | Export | 可导出当前本地筛选结果 CSV | 补充全部页、完整字段 / 单位、币种与权限校验及 CSV 安全处理 |
 | 蓝色 / 灰色 Download、右侧固定与阴影 | 已实现，灰色原生禁用 | 按接口状态启用 |
 | 下载真实文件 | 可用入口目前仅展示下载开始提示，没有真实文件 | 接入文件服务和失败重试；提示不能作为真实下载完成的证据 |
-| Credit 权限 | 页面展示权限说明，尚无认证或权限拦截 | 服务端和菜单权限共同校验 |
+| 信用 / 账期及权限 | 页面仅展示示例额度、账期和权限说明，尚未接入 SAP、客户中心、认证或权限拦截 | 编码转换后按来源查询，服务端和菜单权限共同校验 |
 | 更新时间 / Live 提示 | 固定样例文案 | 改为真实查询 / 同步成功时间 |
 
 ### 13.4 本次更新说明
 
+- v1.3 将入口编码转换、首屏三个独立查询、详情按需查询及两个额外文件接口同步到第 6 节流程图、第 11 节接口说明和验收清单。
 - 客户前台原有字段删减要求继续适用；后台按业务运营需要保留更完整字段。
 - 后台三个文件入口统一为文字操作，未就绪时统一置灰 Download。
 - PRD 截图用于辅助说明；字段、交互、权限和状态规则已同步写入正文，不以截图替代需求。
