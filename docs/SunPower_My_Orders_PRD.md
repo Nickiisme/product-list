@@ -3,7 +3,7 @@
 ## 1. 文档头（元信息）
 
 - 文档标题：SunPower Partner Portal - My Orders 与运营后台订单、交付及信用可视化
-- 版本：v1.3
+- 版本：v1.4
 - 作者 / 日期：待填写 · 2026-10-21
 - 关联系统 / 模块：SunPower Partner Portal、Partner / Customer 编码映射、新方舟（NEW ARK）订单 / 客户中心、SAP、Invoice 接口、SN & FTD 接口
 - 页面路径关联：
@@ -24,6 +24,7 @@
 | v1.1 | 2026-10-20 | 修订业务口径 | DN 统一为 Delivery Number；增加 Credit overview 权限控制；明确 Order Progress 与 Delivery Progress 的新方舟数据来源及节点映射规则 |
 | v1.2 | 2026-10-21 | 新增运营后台与最新交互规范 | 增加 Order / Delivery / Credit Overview 的菜单、字段、权限、查询与导出规则；明确关联 DN、五节点订单进度、右侧固定操作区、边界阴影，以及蓝色 / 置灰 Download；同步发布后台原型 |
 | v1.3 | 2026-10-21 | 修订查询流程与系统分工 | Partner Code 先换取 Customer Code；首屏查询全部授权历史订单、SAP 剩余信用额度和客户中心账期；详情查询订单明细与关联 DN；Invoice、SN & FTD 改为独立接口按需下载 |
+| v1.4 | 2026-10-21 | 补充页面功能截图 | 在第 7.1.2 节增加客户侧 My Orders 列表、英文日期区间、订单详情及 DN 展开态四张截图，并关联对应功能说明 |
 
 ## 2. 需求概述
 
@@ -235,16 +236,42 @@ flowchart TD
 
 | 序号 | 功能模块 | 原型交互 | 需求说明 |
 | --- | --- | --- | --- |
-| 1 | Credit overview | 有权限时展示页面顶部卡片；无权限时整个模块隐藏 | 仅 Admin 或配置的特定角色可见；Available amount 查询 SAP，Payment terms 查询 NEW ARK 客户中心；Credit limit / Overdue 来源待确认；Overdue 大于 0 时视觉强调；金额包含货币符号 |
-| 2 | 搜索 | 输入后即时刷新 | 支持 Sales Order No.、SKU、Product model 模糊搜索 |
-| 3 | Order Progress 筛选 | 单选下拉框 | All order progress、Processing、Shipped、Invoiced；新方舟 Completed 映射为 Invoiced |
-| 4 | Order date range | 单击紧凑按钮展开 | 显示英文 From、To、Clear、Apply；输入格式 DD/MM/YYYY；Apply 后筛选并收起 |
-| 5 | Export | 点击下载 CSV | 导出当前搜索和筛选条件下全部订单及每个订单的全部产品；UTF-8；文件名 sunpower-my-orders.csv |
-| 6 | Order list | 点击 SO 或 View details | 展示 SO、日期、产品、金额、Scheduled Arrival Time、Order Progress |
-| 7 | Order details | 右侧抽屉 | 展示概览、进度、Items、Commercial、Delivery、Deliveries |
-| 8 | Contact sales | 唤起默认邮件客户端 | 前置邮件图标；主题及正文自动带入 SO 编号 |
-| 9 | SN & FTD Report | 点击下载 | 顶部及 DN 产品行统一使用该名称和下载图标；未就绪时禁用 |
-| 10 | Invoice | 点击下载 | 使用下载图标；仅 Completed / Invoiced 订单展示 |
+| 1 | Credit overview | 有权限时展示顶部卡片，无权限时隐藏；见图 1 | 仅 Admin 或配置的特定角色可见；Available amount 查询 SAP，Payment terms 查询 NEW ARK 客户中心；Credit limit / Overdue 来源待确认；Overdue 大于 0 时视觉强调；金额包含货币符号 |
+| 2 | 搜索 | 输入后即时刷新；见图 1 | 支持 Sales Order No.、SKU、Product model 模糊搜索 |
+| 3 | Order Progress 筛选 | 单选下拉框；见图 1 | All order progress、Processing、Shipped、Invoiced；新方舟 Completed 映射为 Invoiced |
+| 4 | Order date range | 单击紧凑按钮展开；见图 2 | 显示英文 From、To、Clear、Apply；输入格式 DD/MM/YYYY；Apply 后筛选并收起 |
+| 5 | Export | 点击下载 CSV；见图 1 | 导出当前搜索和筛选条件下全部订单及每个订单的全部产品；UTF-8；文件名 sunpower-my-orders.csv |
+| 6 | Order list | 点击 SO 或 View details；见图 1 | 展示 SO、日期、产品、金额、Scheduled Arrival Time、Order Progress |
+| 7 | Order details | 右侧抽屉；见图 3、图 4 | 展示概览、进度、Items、Commercial、Delivery、Deliveries |
+| 8 | Contact sales | 唤起默认邮件客户端；见图 3 | 前置邮件图标；主题及正文自动带入 SO 编号 |
+| 9 | SN & FTD Report | 点击下载；见图 3、图 4 | 顶部及 DN 产品行统一使用该名称和下载图标；未就绪时禁用 |
+| 10 | Invoice | 点击下载；见图 3 | 使用下载图标；仅 Completed / Invoiced 订单展示 |
+
+以下截图取自已发布的客户侧 My Orders 演示原型（2026-10-21），用于对应页面布局与交互。额度、账期、订单及文件均为示例；正式数据来源、调用顺序与额外文件接口以第 6、11 节为准，Order Progress 最终状态映射以业务确认规则为准。
+
+**图 1：My Orders 列表与信用概览（功能 1、2、3、5、6）**
+
+展示顶部菜单、信用信息、搜索、Order Progress 筛选、紧凑日期入口、Export 和多产品订单列表。
+
+![图 1：My Orders 列表与信用概览](./prd-assets/my-orders-overview.jpg)
+
+**图 2：英文日期区间展开态（功能 4）**
+
+单击 Order date range 后展开 From / To 输入区，保留 DD/MM/YYYY 英文占位，以及 Clear / Apply 操作。
+
+![图 2：英文日期区间展开态](./prd-assets/my-orders-date-range.jpg)
+
+**图 3：订单详情上半区与文件入口（功能 7、8、9、10）**
+
+以已开票示例订单展示联系销售、SN & FTD Report、Invoice、Order overview、五节点 Order progress、Items 和 Commercial details。
+
+![图 3：订单详情与联系销售、报告及发票入口](./prd-assets/my-orders-detail.jpg)
+
+**图 4：Delivery details 与 DN 展开态（功能 7、9）**
+
+展示收货信息、同一订单的多个 DN、Carrier / Pickup date 摘要，以及展开后的发货仓、收货地址、产品行和 SN & FTD Report 入口。
+
+![图 4：多个 DN 与展开后的产品和报告入口](./prd-assets/my-orders-delivery-expanded.jpg)
 
 #### 7.1.3 Order list 字段说明
 
