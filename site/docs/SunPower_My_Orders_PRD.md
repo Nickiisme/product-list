@@ -1,0 +1,708 @@
+# 产品需求文档（PRD）
+
+## 1. 文档头（元信息）
+
+- 文档标题：SunPower Partner Portal - My Orders 与运营后台订单、交付及信用可视化
+- 版本：v1.2
+- 作者 / 日期：待填写 · 2026-10-21
+- 关联系统 / 模块：SunPower Partner Portal、新方舟（Ark）、订单、交付、信用、文件服务
+- 页面路径关联：
+  - 本地原型：`/partner-portal/sunpower-my-orders.html`
+  - Products 原型：`/partner-portal/sunpower-products-list.html`
+  - 线上原型：https://nickiisme.github.io/product-list/sunpower-my-orders.html
+  - 运营后台本地源码：`/admin-order-management-prototype/`
+  - 运营后台线上原型：https://nickiisme.github.io/product-list/admin-order-management/
+  - GitHub 需求文档：https://github.com/Nickiisme/product-list/blob/main/docs/SunPower_My_Orders_PRD.md
+
+本文沿用《产品需求文档（PRD）模板 v2.0》。第 7.1.1–7.1.8 节描述客户前台，第 7.1.9–7.1.15 节描述业务运营后台。除特别说明外，两端数据均来源于新方舟，前台的字段精简规则不直接套用于后台。
+
+变更记录：
+
+| 版本 | 日期 | 改动点 | 改动说明 |
+| --- | --- | --- | --- |
+| v1.0 | 2026-10-19 | 首版需求文档 | 根据已确认的 My Orders 原型、页面字段及新方舟对接要求整理 |
+| v1.1 | 2026-10-20 | 修订业务口径 | DN 统一为 Delivery Number；增加 Credit overview 权限控制；明确 Order Progress 与 Delivery Progress 的新方舟数据来源及节点映射规则 |
+| v1.2 | 2026-10-21 | 新增运营后台与最新交互规范 | 增加 Order / Delivery / Credit Overview 的菜单、字段、权限、查询与导出规则；明确关联 DN、五节点订单进度、右侧固定操作区、边界阴影，以及蓝色 / 置灰 Download；同步发布后台原型 |
+
+## 2. 需求概述
+
+### 2.1 背景
+
+SunPower 欧洲区域合作伙伴下单后，需要在 Partner Portal 中查询订单、产品、商业条款、交付批次和可下载报告。目前订单及交付数据主要存在于新方舟，客户缺少统一、直观且可自助查询的入口。
+
+本需求将新方舟中的客户、订单、信用、交付和文件数据同步到 Partner Portal，为客户提供历史订单查询、订单进度识别、预计到货时间查询、DN 物流信息及报告下载能力。
+
+业务运营还需要跨客户主体检索订单、关联 Delivery Number、核对 CRD 等业务日期、查看物流与信用信息。因此在 Partner Portal 后台增加运营查询入口，展示其权限范围内的完整业务数据；业务主数据继续在新方舟维护。
+
+### 2.2 目标
+
+- 订单自助查询覆盖率：已授权客户的有效历史订单可查询率达到 100%。
+- 数据一致性：Portal 展示字段与新方舟源数据一致率不低于 99.9%。
+- 查询效率：用户可在 3 次操作内完成“找到订单并查看订单详情”。
+- 信息完整性：一个订单下的多个产品和多个 DN 均可完整展示。
+- 文件可用性：已生成的 SN & FTD Report、Invoice 可直接从订单详情访问。
+- 运营查询完整性：授权范围内的 SO、关联 DN、客户身份和关键业务日期可从后台检索，要求每个 SO 的关联 DN 不丢失。
+- 后台下载可用性：POD、SN & FTD、Invoice 三个入口在横向滚动时持续可见；文件未就绪时保持灰色禁用状态。
+
+### 2.3 分期边界
+
+本期做：
+
+- 客户信用概览。
+- 订单搜索、进度筛选、订单日期区间筛选。
+- 订单列表及订单详情。
+- 多产品、多 DN 展示。
+- 订单进度可视化。
+- SN & FTD Report、Invoice 下载入口。
+- 联系销售代表快捷入口。
+- 当前筛选结果 CSV 导出。
+- 运营后台 Order Management：Order Overview、Delivery Overview。
+- 运营后台现有 User Management 下新增 Credit Overview。
+- 后台按客户主体、Customer Code、Partner Code、SO、DN 检索，展示 CRD、SSD、SAD 等完整运营信息。
+- 后台按权限查看信用数据，下载 DN 维度的 POD、SN & FTD、Invoice。
+
+客户前台本期不做（不约束后台字段展示）：
+
+- 在线新增、修改或取消订单。
+- 在线修改 DN 或物流信息。
+- 在线修改信用额度或付款条件。
+- Customer PO No. 展示或维护。
+- 独立 Documents 板块。
+- SOA、CMR 展示或下载。
+- Pallet No.、Container No.、Pallets、Gross weight 展示。
+- Delivery progress 展示。
+
+运营后台本期不做：
+
+- 在 Portal 修改 SO、DN、业务进度、信用额度或付款条件；仍在新方舟维护。
+- 在 Portal 创建、审批、取消订单或重新生成发票。
+- 从页面日期、数量或文件是否存在反向推算新方舟业务进度。
+- 未确认接口和权限前开放真实客户数据；公开演示页面只使用示例数据。
+
+## 3. 名词术语表
+
+| 术语 | 说明 | 统一用名 |
+| --- | --- | --- |
+| Ark | TCL / SunPower 订单及业务数据来源系统 | 新方舟 |
+| SO | Sales Order，销售订单 | Sales Order / SO |
+| DN | Delivery Number，一个订单可包含多个交付批次 | DN |
+| CRD | Customer Requested Date，本页面不作为主要到货日期展示 | CRD |
+| Scheduled Arrival Time | 预计到达客户目的地的日期及时间窗口 | Scheduled Arrival Time |
+| POD | Proof of Delivery，签收或交付证明 | Received (POD) |
+| SN | Serial Number，产品序列号 | SN |
+| FTD | 产品测试报告 | FTD Report |
+| SN & FTD Report | 序列号与 FTD 测试结果的统一下载入口 | SN & FTD Report |
+| Order Progress | 面向客户展示的订单业务进度 | Order Progress |
+| Invoiced | 已完成交付并进入开票完成阶段；前端替代 Completed 文案 | Invoiced |
+| Delivery Progress | 新方舟 DN / 交付维度的业务状态；后台独立展示，不套用订单五节点限制 | Delivery Progress |
+| Customer Code | 新方舟客户主体编码；与 Company Name 分列 | Customer Code |
+| Company Name | 客户公司名称，不与 Customer Code 合并成一列 | Company Name |
+| Partner Code | Portal 合作伙伴与新方舟客户关系的关联编码 | Partner Code |
+| SSD | 新方舟 SSD 日期字段；业务全称、源字段和取值规则待接口对接确认 | SSD |
+| SAD | 本需求中 Scheduled Arrival Time 的字段缩写，来源于新方舟，不由 CRD 或 Pickup date 替代 | Scheduled Arrival Time (SAD) |
+| Credit status | 客户信用状态，与 Order Progress、Delivery Progress 分开 | Credit Status |
+
+## 4. 用户 / 角色定义
+
+| 角色 | 权限范围 | 说明 |
+| --- | --- | --- |
+| Partner Portal 客户用户 | 读取当前账号及其授权客户主体下的订单、产品、DN 和文件 | 默认不可查看 Credit overview；只能查看授权范围内的数据，不允许修改新方舟主数据 |
+| Partner Portal Admin | 读取所属公司授权范围内全部订单、信用信息并导出 | 可查看 Credit overview；数据范围由客户主体、Partner Code 或账号关系决定 |
+| Credit overview 特定角色 | 读取授权客户主体的信用信息 | 角色名称与权限标识待业务和权限团队确认；仅获得该角色后展示 Credit overview |
+| SunPower 销售代表 | 通过邮件接收客户针对订单的咨询 | 本期不在 Portal 内处理消息，仅提供邮件入口 |
+| SunPower 业务运营 / 客服 | 在后台读取、查询、导出其授权客户范围内的订单、DN 和文件 | 可覆盖多个客户；具体销售组织、市场或客户范围由权限服务决定。业务主数据在新方舟维护 |
+| 后台信用授权角色 | 读取并导出授权客户主体的信用数据 | Admin 或业务确认的特定 Role 才可见 Credit Overview；订单菜单权限不自动授予信用权限 |
+
+## 5. 需求范围（功能清单 + 优先级 + 分期）
+
+| 序号 | 系统模块 | 功能描述 | 优先级 | 期数 | 主责人 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Partner Portal / 顶部导航 | Products 与 My Orders 作为同级一级菜单，当前标签页切换 | P0 | 二期 | 待填写 |
+| 2 | Partner Portal / Credit overview | 根据用户权限展示信用额度、可用额度、逾期金额、付款条件 | P0 | 二期 | 待填写 |
+| 3 | Partner Portal / My Orders | 支持 SO、SKU、产品型号搜索 | P0 | 二期 | 待填写 |
+| 4 | Partner Portal / My Orders | 支持 Order Progress 筛选 | P0 | 二期 | 待填写 |
+| 5 | Partner Portal / My Orders | 支持英文日期区间筛选 | P0 | 二期 | 待填写 |
+| 6 | Partner Portal / My Orders | 展示订单列表、多产品摘要和 Order Progress | P0 | 二期 | 待填写 |
+| 7 | Partner Portal / Order details | 展示订单概览、状态流、产品、商业及交付信息 | P0 | 二期 | 待填写 |
+| 8 | Partner Portal / Deliveries | 一个 SO 支持多个 DN，每个 DN 可展开查看 | P0 | 二期 | 待填写 |
+| 9 | Partner Portal / Documents | 下载 SN & FTD Report、Invoice | P0 | 二期 | 待填写 |
+| 10 | Partner Portal / Contact sales | 唤起邮件客户端联系销售代表 | P1 | 二期 | 待填写 |
+| 11 | Partner Portal / Export | 导出当前筛选结果及全部产品 | P1 | 二期 | 待填写 |
+| 12 | 新方舟 / 接口 | 提供客户、订单、DN、信用、文件等数据接口 | P0 | 二期 | 待填写 |
+| 13 | 后台 / Order Management | 新增 Order Overview、Delivery Overview 两个页面入口 | P0 | 二期 | 待填写 |
+| 14 | 后台 / Order Overview | 分列展示客户名称和编码，查询完整 SO、CRD、关联全部 DN、订单详情和订单五节点进度 | P0 | 二期 | 待填写 |
+| 15 | 后台 / Delivery Overview | 按 DN 展示客户、SO、交付进度、物流信息、CRD / SSD / SAD 与三个文件入口 | P0 | 二期 | 待填写 |
+| 16 | 后台 / User Management | 在现有 User Management 下增加 Credit Overview，按角色和客户范围控制可见性 | P0 | 二期 | 待填写 |
+| 17 | 后台 / 操作区 | Operation 固定在右侧；Delivery 的 POD、SN & FTD、Invoice 整组固定并在外侧显示阴影 | P0 | 二期 | 待填写 |
+| 18 | 后台 / 文件状态 | Download 为蓝色文字操作；未就绪时显示灰色不可点击 Download | P0 | 二期 | 待填写 |
+| 19 | 后台 / 查询工具 | 组合筛选、刷新、重置与当前授权查询结果 CSV 导出 | P1 | 二期 | 待填写 |
+
+## 6. 整体流程图
+
+```mermaid
+flowchart LR
+    A[客户登录 Partner Portal] --> B[点击顶部 My Orders]
+    B --> C[按客户权限加载信用与订单]
+    C --> D{查询方式}
+    D -->|搜索 / 筛选| E[刷新订单列表]
+    D -->|直接浏览| E
+    E --> F[点击 Sales Order No. 或 View details]
+    F --> G[打开 Order details 抽屉]
+    G --> H[查看 Order Progress 与 Items]
+    G --> I[查看多个 DN]
+    G --> J{文件是否可用}
+    J -->|是| K[下载 SN & FTD Report / Invoice]
+    J -->|否| L[按钮禁用或不展示]
+    G --> M[联系销售代表]
+    E --> N[导出当前筛选结果 CSV]
+```
+
+```mermaid
+sequenceDiagram
+    participant U as 客户
+    participant P as Partner Portal
+    participant A as 新方舟 API
+    participant F as 文件服务
+    U->>P: 打开 My Orders
+    P->>A: 按登录客户查询信用与订单
+    A-->>P: 返回授权订单及信用数据
+    U->>P: 查看某个 SO
+    P->>A: 查询 SO、Items、DN、状态
+    A-->>P: 返回订单详情和多个 DN
+    U->>P: 下载报告
+    P->>F: 校验客户权限并请求文件
+    F-->>U: 返回受控下载文件
+```
+
+## 7. 需求详细说明（每个功能一个章节）
+
+### 7.1 功能说明
+
+#### 7.1.1 菜单与页面入口
+
+- 菜单路径：Partner Portal → My Orders。
+- My Orders 与 Products 为顶部同级一级菜单。
+- 从 Products 点击 My Orders 时在当前标签页打开，不新建标签。
+- My Orders 页面中 My Orders 高亮，Products 不高亮。
+- 页面提供 Back to products。
+
+权限说明：
+
+- 菜单权限：仅已开通 Partner Portal 订单查询权限的客户账号可见。
+- 数据权限：用户只能查看当前账号及授权客户主体下的订单。
+- 文件权限：下载时服务端重新校验订单归属和用户权限。
+- Credit overview 权限：默认仅 Admin 用户可见；也可授权给特定 Role。具体 Role 名称及权限标识待确认。
+- 无 Credit overview 权限时：前端隐藏整个 Credit overview 模块，后端接口不得返回信用额度、可用额度、逾期金额和付款条件等敏感信用数据。
+
+#### 7.1.2 页面功能明细
+
+| 序号 | 功能模块 | 原型交互 | 需求说明 |
+| --- | --- | --- | --- |
+| 1 | Credit overview | 有权限时展示页面顶部卡片；无权限时整个模块隐藏 | 仅 Admin 或配置的特定角色可见；展示 Credit limit、Available amount、Overdue、Payment terms；Overdue 大于 0 时视觉强调；金额包含货币符号 |
+| 2 | 搜索 | 输入后即时刷新 | 支持 Sales Order No.、SKU、Product model 模糊搜索 |
+| 3 | Order Progress 筛选 | 单选下拉框 | All order progress、Processing、Shipped、Invoiced；新方舟 Completed 映射为 Invoiced |
+| 4 | Order date range | 单击紧凑按钮展开 | 显示英文 From、To、Clear、Apply；输入格式 DD/MM/YYYY；Apply 后筛选并收起 |
+| 5 | Export | 点击下载 CSV | 导出当前搜索和筛选条件下全部订单及每个订单的全部产品；UTF-8；文件名 sunpower-my-orders.csv |
+| 6 | Order list | 点击 SO 或 View details | 展示 SO、日期、产品、金额、Scheduled Arrival Time、Order Progress |
+| 7 | Order details | 右侧抽屉 | 展示概览、进度、Items、Commercial、Delivery、Deliveries |
+| 8 | Contact sales | 唤起默认邮件客户端 | 前置邮件图标；主题及正文自动带入 SO 编号 |
+| 9 | SN & FTD Report | 点击下载 | 顶部及 DN 产品行统一使用该名称和下载图标；未就绪时禁用 |
+| 10 | Invoice | 点击下载 | 使用下载图标；仅 Completed / Invoiced 订单展示 |
+
+#### 7.1.3 Order list 字段说明
+
+| 字段 | 数据类型 / 格式 | 查询 / 展示规则 | 空值处理 |
+| --- | --- | --- | --- |
+| Sales Order No. | String | 可点击打开 Order details | 不允许为空 |
+| Order date | D MMM, YYYY | 例如 17 Oct, 2026 | - |
+| Products | Array | 展示前两个；超过两个显示 +N more product | - |
+| Total amount | Currency | 包含货币符号 | - |
+| Scheduled Arrival Time | D MMM, YYYY · HH:mm–HH:mm | 例如 17 Oct, 2026 · 10:00–14:00 | To be confirmed |
+| Order Progress | Enum | Processing、Shipped、Invoiced | - |
+| Action | Button | View details | - |
+
+无数据时展示 No orders found。
+
+#### 7.1.4 Order details 顶部与 Order overview
+
+顶部：
+
+- 标题仅展示 Sales Order No.，下方不重复展示订单状态。
+- 展示 Contact your sales representative、SN & FTD Report。
+- Completed / Invoiced 订单额外展示 Invoice。
+- 不展示 SOA。
+
+Order overview 仅展示：
+
+| 字段 | 展示规则 |
+| --- | --- |
+| Order date | D MMM, YYYY |
+| Scheduled Arrival Time | D MMM, YYYY · HH:mm–HH:mm |
+
+不展示 Product 汇总项和 Customer PO No.。
+
+#### 7.1.5 Items
+
+| 字段 | 说明 |
+| --- | --- |
+| SKU | 产品 SKU |
+| Product | 产品型号 |
+| Description | 产品描述 |
+| Quantity | 数量及单位 |
+| Unit price | 单价或计价方式 |
+| Total | 产品行总金额 |
+
+- 一个订单可包含多个产品。
+- 默认最多展示 5 条。
+- 超过 5 条时展示 Show N more items。
+- 展开后按钮变为 Show fewer items。
+
+#### 7.1.6 Commercial details
+
+| 字段 | 说明 |
+| --- | --- |
+| Total amount | 订单总金额，包含货币符号 |
+| Payment terms | 付款条件 |
+| Prepayment / Credit status | 预付款或信用审批状态 |
+
+不单独展示 Currency。
+
+#### 7.1.7 Delivery details
+
+| 字段 | 说明 |
+| --- | --- |
+| Scheduled Arrival Time | 预计到达客户目的地的日期及时间窗口 |
+| Incoterm | 贸易条款 |
+| Receiving contact | 收货联系人及联系方式 |
+| Ship-to address | 收货地址 |
+
+#### 7.1.8 Deliveries / DN
+
+一个订单可包含一条或多条 DN，每条 DN 使用可展开卡片展示。
+
+DN 卡片摘要：
+
+| 字段 | 说明 |
+| --- | --- |
+| DN No. | Delivery Number 编号 |
+| Warehouse | 发货仓 |
+| Status | DN 当前状态 |
+| Carrier | 承运商；未分配时显示 Pending assignment |
+| Pickup date | 提货日期 |
+
+DN 展开后展示 Ship from、Ship-to address、DN 下 Product、SN & FTD Report。
+
+SN & FTD Report 可用规则：
+
+- SN 已分配且 FTD 报告可用：按钮可点击。
+- SN 未分配或 FTD 报告未生成：按钮禁用。
+
+DN 展开内容不展示：DN quantity、Delivery progress、Pallet No.、Container No.、Pallets、Gross weight、CMR、独立 Serial numbers、独立 FTD test。
+
+#### 7.1.9 后台菜单与权限
+
+菜单层级：
+
+```text
+Partner Portal
+├── Order Management（新增）
+│   ├── Order Overview
+│   └── Delivery Overview
+└── User Management（已有）
+    └── Credit Overview（新增）
+```
+
+- 后台面向 SunPower 内部业务运营，不面向安装商；不放在客户 Products / My Orders 菜单下。
+- Order Management 和 User Management 均属于现有 Partner Portal 顶部菜单；Credit Overview 不放在 Order Management 下。
+- “所有客户数据”指当前运营账号获授权的全部客户主体；普通运营账号不得因拥有菜单权限而自动获得全组织数据。
+- Credit Overview 独立校验菜单、角色及客户范围。默认仅 Admin 或授权特定 Role 可见，Role 名称与权限标识待确认。
+- 订单列表中的 Credit 字段、详情中的信用数据同样校验信用权限；无权限时隐藏相应字段，服务端不得返回相关数据。
+- 每次订单查询、DN 查询、导出和下载均在服务端重新校验范围。前台客户权限与后台运营权限分别配置。
+
+后台流程：运营登录并校验权限 → 选择 Order / Delivery / Credit Overview → 查询新方舟授权数据 → 查看 SO 与关联 DN、核对日期或信用 → 下载已有文件或导出结果。新增、修改和审批继续在新方舟处理。
+
+#### 7.1.10 后台 Order Overview
+
+**列表字段**
+
+| 字段 | 需求说明 |
+| --- | --- |
+| Sales Order | SO 编号，点击查看订单详情 |
+| Company Name | 客户公司名称，独立列 |
+| Customer Code | 新方舟客户编码，独立列 |
+| Partner Code | 合作伙伴编码 |
+| Market | 所属国家 / 市场 |
+| Order Date | 订单日期，示例 17 Oct, 2026 |
+| CRD | 客户期望日期；后台保留，不能被 SAD 替代 |
+| Scheduled Arrival | 计划到达日期，对应新方舟 SAD |
+| Order Progress | 仅展示 SO created、Allocated、Outbound、Received (POD)、Invoiced 五个指定节点 |
+| Product | 展示产品型号与规格，多产品可使用摘要，详情必须保留全部产品关系 |
+| Ordered / Allocated / Shipped | 分别展示订购、分配和已发货数量及单位；缺值显示“—”，不得将缺值视为零 |
+| Delivery Number | 展示关联 DN；超过一条可使用首条 +N，点击查看全部 DN |
+| Total Amount | 订单总金额，保留币种符号 |
+| Credit | 订单相关信用状态；受信用权限控制，与订单进度区分 |
+| Sales Rep. | 负责的销售代表 |
+| Updated | 新方舟业务数据最后更新时间，不等同于 Portal 同步时间 |
+| Operation | View 蓝色文字操作，打开订单详情；整列固定在表格右侧 |
+
+**筛选与交互**
+
+| 功能模块 | 原型交互 | 需求说明 |
+| --- | --- | --- |
+| Search | 输入关键字 | 支持 SO、Company Name、Customer Code、Partner Code、SKU / 产品型号、关联 DN；原型使用模糊匹配，正式接口按约定规则查询 |
+| Order Progress | 单选下拉 | All + 五个指定订单节点；不得使用 Delivery Progress 替代 |
+| Country | 单选下拉 | 按国家 / 市场筛选 |
+| CRD | 日期区间 | From / To，英文 DD/MM/YYYY；包含起止日 |
+| Scheduled Arrival | 日期区间 | 按 SAD 筛选，与 CRD 独立 |
+| Sales Organisation | 下拉筛选 | 只列出账号有权限的销售组织 |
+| Search / Reset | 应用 / 清空条件 | Search 应用组合条件；Reset 清空后台所有筛选，包括日期区间 |
+| Export | 导出 CSV | 导出当前条件下全部授权结果；见第 7.1.15 节 |
+| Refresh | 保留条件刷新 | 重新请求当前筛选结果，同步时间以成功响应更新 |
+
+- 一个 SO 可对应多个 DN。点击首条 DN 或 +N 时，完整显示关联 Delivery Number 列表，不能只返回第一条。
+- 从关联 DN 查看详情时，带入当前 SO 与 DN 上下文，并定位 / 高亮目标 DN。
+- SO / View 打开只读详情，保留原列表筛选与滚动位置；关闭后回到原列表。
+- 当前详情原型展示订单进度、客户、总金额、Order Date / CRD / Scheduled Arrival / 更新时间及全部 DN 摘要；正式业务明细以新方舟接口及最终字段映射为准。
+- “完整运营信息”不等同于无限制披露信用或个人信息；所有字段仍遵守对应权限。
+
+![后台 Order Overview](./prd-assets/admin-order-overview.png)
+
+#### 7.1.11 后台 Delivery Overview
+
+数据粒度：每条 DN 一行。同一 SO 的多个 DN 应分行展示，不能按 SO 合并丢失交付信息。
+
+| 顺序 | 字段 | 需求说明 |
+| --- | --- | --- |
+| 1 | Customer Code | 所属客户编码，与名称分列 |
+| 2 | Company Name | 客户公司名称 |
+| 3 | Partner Code | 合作伙伴编码 |
+| 4 | SO | 关联 Sales Order |
+| 5 | DN | Delivery Number，作为交付关联标识 |
+| 6 | Delivery Progress | 新方舟交付源状态；独立于订单五节点 |
+| 7 | Warehouse | 发货仓库 |
+| 8 | Carrier | 承运商，未分配时展示 Pending assignment |
+| 9 | Pickup Date | 提货日期 |
+| 10 | CRD | 客户期望日期；明确来自 SO 还是 DN 维度，以新方舟映射为准 |
+| 11 | SSD | 新方舟 SSD 日期字段；业务全称及取值口径待确认 |
+| 12 | Scheduled Arrival Time (SAD) | 计划到达日期；不得从 CRD / Pickup Date 推算 |
+| 13 | POD | 签收凭证 Download，固定在右侧操作区 |
+| 14 | SN & FTD | 合并报告 Download，固定在右侧操作区 |
+| 15 | Invoice | 发票 Download，固定在右侧操作区；使用 Invoice 文案 |
+
+- Search 支持 Customer Code、Company Name、Partner Code、SO、DN、Warehouse、Carrier；可与 Delivery Progress、Warehouse、Pickup date 区间组合筛选。
+- SO 用于查看关联订单，DN 用于定位对应交付；不得丢失当前查询上下文。
+- Pickup Date、CRD、SSD、SAD 均使用英文欧洲日期格式 `D MMM, YYYY`，示例 `17 Oct, 2026`；没有时间字段时不补造时间。
+- Order Overview 的 DN 关联与本列表必须使用同一稳定 DN 标识，避免同号跨组织关联错误。
+- 后台展示独立 Delivery Progress 列；客户前台不展示 Delivery Progress 模块的约束不适用于此页。
+
+![后台 Delivery Overview](./prd-assets/admin-delivery-overview.png)
+
+#### 7.1.12 后台 Credit Overview
+
+- 菜单路径：Partner Portal → User Management → Credit Overview。
+- 数据按客户主体展示，而非按 Portal 登录用户重复展示；同一客户有多个币种 / 销售组织时必须明确区分，不得直接相加。
+
+| 字段 | 需求说明 |
+| --- | --- |
+| Customer Code | 新方舟客户主体编码 |
+| Company Name | 客户公司名称，独立于编码 |
+| Partner Code | 合作伙伴编码 |
+| Credit Limit | 信用总额度，包含币种 |
+| Available Amount | 当前可用额度，保持新方舟源值，不由前端用额度减订单金额推算 |
+| Overdue | 逾期金额，按实际金额是否大于零作提示，不能按字符串包含某个字符判断 |
+| Payment Terms | 付款条件，保持新方舟业务含义 |
+| Credit Status | 新方舟信用状态；原型示例为 Normal、On hold、Review、Blocked，最终枚举与映射待确认 |
+| Operation | 当前原型保留 View history 文字入口；信用历史接口、范围和可用性另行确认，本期不得把未接通入口视为已具备真实历史查询能力 |
+
+- 支持 Customer Code、Company Name、Partner Code 搜索，支持 Credit Status、Sales Organisation 筛选和当前结果导出。
+- Credit Status 不与订单信用状态、订单进度或交付进度共用枚举。
+- 无信用权限：隐藏菜单和入口，接口拒绝请求，导出不含信用字段。
+- 缺失金额显示“—”而非零；不同币种分开展示和导出。
+
+![后台 Credit Overview](./prd-assets/admin-credit-overview.png)
+
+#### 7.1.13 后台固定操作区与样式
+
+- Company Name 与 Customer Code 在三个列表中始终分列。
+- 宽表格允许横向滚动，以保留完整运营字段。
+- Order Overview 的 Operation 列始终固定在右侧；Credit Overview 保留操作列时同样固定。
+- Delivery Overview 的 POD、SN & FTD、Invoice 三列共同固定在右侧，按上述顺序排列；表头与数据行对齐，横向滚动时互不遮挡。
+- 固定操作区左边缘显示连续、柔和的阴影；Delivery 的阴影放在 POD 左侧，三列内部不重复显示阴影。
+- Download 与 View 采用一致的蓝色文字操作，无按钮边框、填充背景或新增下载图标。
+- 筛选框边框为浅灰色，聚焦时使用蓝色提示；固定列阴影不得改变筛选框样式。
+- 后台沿用已提供的 Admin UI 规范：Lexend Deca 字体、主色 `#3562ff`、32 px 筛选及工具栏控件、24 px 行内及分页控件、4 px 控件圆角、8 px 面板圆角。
+
+#### 7.1.14 后台文件可用性
+
+| 文件状态 | 展示 | 点击行为 |
+| --- | --- | --- |
+| 已生成且当前用户有下载权限 | 蓝色 Download 文字 | 校验 SO / DN 归属和文件权限后下载 |
+| 未生成、未就绪或缺失 | 灰色 Download 文字 | 禁用，不发送下载请求；不再展示 Not ready |
+| 无相应文件权限 | 按权限隐藏入口或拒绝访问 | 服务端不得返回文件地址 |
+| 已就绪但下载失败 / 地址过期 | 保留可重试提示 | 重新获取受控地址或提示失败，不以成功提示代替真实下载 |
+
+- 三种文件分别判断可用状态，不能只根据订单为 Invoiced 就认定所有文件可下载。
+- SN 与 FTD 使用同一 SN & FTD 入口，不拆成两个下载操作。
+- 一个 DN 存在多个文件时，通过文件清单或压缩包返回完整文件集合；接口方式待新方舟和文件团队确认。
+- CMR 不在当前后台原型文件区展示；不新增独立 Documents 板块。
+
+#### 7.1.15 后台导出、同步与数据关系
+
+- Export 导出当前搜索和筛选条件匹配的全部授权结果，不仅限当前分页；仅表格实际显示一个分页时也不得漏掉剩余数据。
+- CSV 使用 UTF-8，保留完整 Customer Code / Partner Code / SO / DN，避免编码截断或前导零丢失；字符串按 CSV 规则转义。
+- Order 导出需保留全部产品与关联 DN，字段可采用明细行或明确分隔的数组；正式方案在接口对接中确认。
+- Delivery 导出以 DN 为粒度，包含三个文件的可用状态，不导出永久文件地址或签名凭证。
+- Credit 导出只允许授权角色，保留币种和销售组织维度；导出权限不能由前端菜单是否显示决定。
+- CSV 中可能被表格软件识别为公式的文本需要按导出安全策略处理；业务数字仍按数值输出。
+- 页面展示同步成功时间；查询失败不得更新为成功时间，保留重试入口。
+- SO → 产品为一对多，SO → DN 为一对多，DN → 产品为一对多。客户通过稳定 Customer ID / Customer Code 与 Partner Code 映射；同一登录用户可能关联多个客户主体，不能直接把“用户”当作“客户”。
+
+### 7.2 状态流转
+
+Order Progress 与 Delivery Progress 均以新方舟返回的数据为唯一来源，前端不得根据日期、DN 数量或其他页面字段自行推算状态。
+
+- Order Progress：客户前台及后台 Order Overview 均只提取并映射下述五个指定节点。新方舟中的其他中间状态不增加新的订单进度节点。
+- Delivery Progress：保留新方舟交付维度的源状态，用于 DN / 交付数据判断；客户前台不单独展示进度条或模块，后台 Delivery Overview 独立展示该列，不限制为订单五节点。
+
+`SO created --(订单创建)--> Allocated --(库存分配)--> Outbound --(完成出库)--> Received (POD) --(确认签收)--> Invoiced`
+
+| 状态节点 | 进入条件 | 页面展示 | 离开动作 / 目标状态 |
+| --- | --- | --- | --- |
+| SO created | 新方舟生成有效 SO | SO created 高亮 | 完成库存分配 → Allocated |
+| Allocated | 产品完成库存分配 | 前两个节点高亮 | 完成出库 → Outbound |
+| Outbound | 已出库并形成有效 DN | 前三个节点高亮；列表显示 Shipped | 客户签收并产生 POD → Received (POD) |
+| Received (POD) | 新方舟确认签收或收到 POD | 前四个节点高亮 | 完成开票 → Invoiced |
+| Invoiced | Invoice 已生成或订单完成 | 全部节点高亮；列表显示 Invoiced；展示 Invoice | 终态 |
+
+状态映射：
+
+- 新方舟 Processing：前端显示 Processing，至少高亮 SO created、Allocated。
+- 新方舟 Shipped：前端显示 Shipped，高亮至 Outbound。
+- 新方舟 Completed：前端显示 Invoiced，全部节点高亮。
+- Received (POD) 必须由新方舟字段判断，不得由前端时间推断。
+- 新方舟未映射到五个指定节点的 Order Progress 状态，只影响当前节点判断，不在进度条上新增节点。
+- Delivery Progress 使用新方舟原始交付状态，不与 Order Progress 混用，也不由前端根据 Order Progress 反向生成。
+- 后台没有手动推进状态的按钮；各节点进入 / 离开条件由新方舟事件驱动。上表中的“列表显示 Shipped”等简化说明仅适用于客户前台；后台 Order Overview 保留五节点名称，例如 Outbound。
+
+### 7.3 异常 / 边界场景
+
+| 场景 | 处理规则 |
+| --- | --- |
+| 无订单 / 无筛选结果 | 展示 No orders found，并保留筛选条件 |
+| From 晚于 To | 阻止 Apply，提示 From date must be earlier than To date. |
+| 日期格式错误 | 阻止 Apply，提示 Use DD/MM/YYYY. |
+| Scheduled Arrival Time 为空 | 展示 To be confirmed |
+| Carrier 未分配 | 展示 Pending assignment |
+| SN 或 FTD 未就绪 | 报告按钮禁用 |
+| Invoice 未生成 | 不展示 Invoice |
+| 接口失败 | 展示失败提示和 Retry，不将旧缓存冒充最新数据 |
+| 权限不足 | 不返回数据，不泄露订单是否存在 |
+| 重复点击下载 | 请求幂等，不产生重复业务记录 |
+| 一个 SO 多个 DN | 全部返回并逐条展示 |
+| 一个 DN 多个产品 | 返回完整产品关系，报告状态按 DN / 产品维度判断 |
+| 后台一个 SO 多个 DN | 列表可收起摘要，但点击后必须可查看全部关联 DN |
+| 后台文件未就绪 | 对应列显示置灰、不可点击的 Download，不展示 Not ready |
+| 后台表格横向滚动 | 固定右侧 Operation；Delivery 的三个下载列作为整体固定，只有左边界有阴影 |
+| 后台暂无信用权限 | 隐藏 Credit Overview 及其他页面的信用字段；直接请求或导出同样拒绝 |
+| 后台 SSD / SAD 字段缺失 | 显示“—”或明确待确认，不以 CRD 或提货日期静默替代 |
+| 后台不同币种 / 销售组织 | 分开展示，不跨币种汇总可用额度或逾期金额 |
+
+## 8. 非功能需求
+
+### 8.1 性能
+
+- 首屏列表和订单详情接口 P95 响应时间不超过 2 秒。
+- 默认支持至少 1,000 条订单的服务端分页或游标加载。
+- CSV 数据量超过约定阈值时切换为后端异步生成。
+- 后台跨客户列表使用服务端分页、筛选与排序；不能先把全部客户数据下载到浏览器再依赖前端过滤实现权限。
+
+### 8.2 安全
+
+- 订单和文件接口按登录用户、客户主体、Partner Code 校验权限。
+- 下载地址使用短时有效或一次性签名。
+- 联系人信息按最小必要原则展示。
+- 导出数据不得超出当前账号权限。
+- 后台查询、导出和文件下载保留操作者、客户范围、SO / DN、操作时间及结果的审计记录；不记录签名地址或完整个人信息。
+
+### 8.3 兼容性与扩展性
+
+- 支持 Chrome、Edge、Safari 最近两个主版本。
+- 桌面端优先，窄屏下工具栏、表格和抽屉仍可操作。
+- 页面语言统一为英文，日期输入不得出现中文“年/月/日”。
+- 状态映射配置化，避免前端硬编码新方舟状态。
+- SO、DN、Product 使用稳定唯一 ID 关联。
+
+## 9. 埋点 / 数据需求
+
+| 事件名 | 触发时机 | 建议属性 | 统计目的 |
+| --- | --- | --- | --- |
+| my_orders_view | 页面成功打开 | customer_id、order_count | 订单页使用量 |
+| my_orders_search | 用户搜索 | keyword_type、result_count | 常用查询方式 |
+| my_orders_filter | 应用进度或日期筛选 | progress、from_date、to_date、result_count | 筛选使用情况 |
+| my_orders_export | 点击 Export | result_count、filter_applied | 导出需求 |
+| order_detail_view | 打开详情 | so_id、order_progress、dn_count、item_count | 详情访问 |
+| dn_expand | 展开 DN | so_id、dn_id、dn_status | 交付信息关注度 |
+| document_download | 点击文件 | so_id、dn_id、document_type、available | 文件使用和失败情况 |
+| contact_sales_click | 点击联系销售 | so_id | 人工协助需求 |
+| admin_overview_view | 进入后台 Order / Delivery / Credit 页 | module、role_scope | 运营模块使用量 |
+| admin_overview_search | 应用后台筛选 | module、filter_type、result_count | 检索效率 |
+| admin_related_dn_view | 查看 SO 关联 DN | so_id、dn_count | 订单交付追踪 |
+| admin_export | 发起后台导出 | module、result_count、result | 导出使用和失败监控 |
+| admin_document_download | 后台点击可用文件 | so_id、dn_id、document_type、result | 文档使用及失败率；置灰项不触发下载事件 |
+
+埋点使用内部 ID 或脱敏值，不采集联系人电话、地址等敏感信息。
+
+## 10. 历史数据处理
+
+- 首次上线同步当前客户授权范围内的历史有效订单，建议至少覆盖最近 24 个月，最终范围由业务确认。
+- 历史 Completed 状态统一映射为 Invoiced。
+- 历史 Scheduled Arrival Time 缺失时展示 To be confirmed，不使用 CRD 或 Pickup date 静默替代。
+- 历史 DN 缺少 Carrier、POD 或文件关系时按空值规则处理，并纳入数据质量检查。
+- 后台历史客户、SO 与 DN 的关联应按稳定标识回填；缺失的 SSD、SAD、信用状态和文档按空值 / 灰色 Download 规则处理，不人为补造。
+
+## 11. 跨系统对接说明
+
+- 对接系统：新方舟、Partner Portal 身份权限服务、文件服务、邮件客户端。
+- 对接内容：
+  - 登录账号对应的客户主体、Partner Code、Admin / Role 权限及 Credit overview 可见权限。
+  - Credit limit、Available amount、Overdue、Payment terms。
+  - SO、订单日期、金额、Order Progress 源状态、Scheduled Arrival Time。
+  - Items 的 SKU、型号、描述、数量、单位、价格。
+  - Incoterm、联系人、收货地址。
+  - 一个 SO 下全部 DN 及每个 DN 下产品关系。
+  - DN 编号、仓库、Delivery Progress 源状态、Carrier、Pickup date。
+  - SN & FTD Report、Invoice 的状态、文件名及受控下载地址。
+  - 后台完整 Customer Code、Company Name、Partner Code、Market、Sales Organisation、销售代表、业务更新时间及 SO 下所有关联 DN。
+  - 后台 DN 的 Warehouse、Carrier、Pickup Date、CRD、SSD、SAD、Delivery Progress 及 POD / SN & FTD / Invoice 独立文件状态。
+  - 后台 Credit Status、信用数据币种与销售组织维度；后端负责按权限过滤客户及敏感字段。
+
+接口原则：
+
+1. 列表接口支持搜索、状态、From、To、分页和排序。
+2. 详情接口返回 SO、Items、Commercial、Delivery、DN 的完整关联结构。
+3. 时间字段返回时区；前端按目的地本地时间展示。
+4. 文件接口返回业务状态，不能只用 URL 是否为空判断。
+5. 接口提供稳定的 SO、DN、Product、Document 唯一标识。
+6. Order Progress 与 Delivery Progress 分字段返回，不允许前端用其中一个推算另一个。
+7. Order Progress 接口需支持映射到五个指定节点：SO created、Allocated、Outbound、Received (POD)、Invoiced。
+8. Credit overview 接口必须在服务端校验 Admin 或特定 Role 权限；无权限时不得返回信用数据。
+9. 后台 Order、Delivery、Credit 查询分别定义粒度、唯一键和分页参数；Credit 不按登录用户重复聚合。
+10. 新方舟输出 CRD、SSD、SAD 和 Pickup Date 的独立源字段与业务定义，明确 SO / DN 多批次时的时间归属，保留变更时间。
+11. 后台 Order Progress 仅消费指定五节点映射；Delivery Progress 返回其完整交付枚举，不套用订单映射。
+12. 后台文件接口返回每种文档的就绪状态、权限、文件集合和受控下载方式；展示置灰 Download 与后端拒绝非法下载同时生效。
+
+## 12. 依赖与风险
+
+### 12.1 依赖
+
+- 新方舟提供稳定且有权限隔离的查询接口。
+- 新方舟提供 Scheduled Arrival Time、POD、Invoice 明确字段。
+- 新方舟分别提供 Order Progress 与 Delivery Progress 源状态。
+- 文件服务支持 SN & FTD Report、Invoice 受控下载。
+- Portal 登录账号与新方舟客户主体、Admin / 特定 Role 权限映射准确。
+
+### 12.2 风险与兜底
+
+| 风险 | 影响 | 兜底方案 |
+| --- | --- | --- |
+| 状态无法映射五节点 | 进度不准确 | 业务输出映射表；无法映射时展示源状态并记录异常 |
+| Order Progress 与 Delivery Progress 混用 | 订单或交付状态展示错误 | 接口分字段返回；前端按不同业务对象独立消费 |
+| Credit overview 权限角色未确定 | 信用数据可能误展示或功能无法开放 | 默认仅 Admin 可见；特定 Role 确认前不开放额外权限 |
+| 到货时间缺失或时区不明 | 客户误判 | 展示 To be confirmed；接口强制返回时区 |
+| SN 与 FTD 无合并报告 | 统一按钮不可用 | 中间服务生成合并包，或进入统一文件清单 |
+| 历史 Invoice 不完整 | 已完成订单无文件 | 不展示按钮并提示联系销售 |
+| 大批量导出 | 浏览器卡顿 | 超阈值改为后端异步导出 |
+| 权限映射错误 | 数据越权 | 服务端强制校验并进行权限隔离测试 |
+
+### 12.3 遗留问题
+
+1. Scheduled Arrival Time 的源字段、更新频率和目标时区。
+2. 新方舟状态到五个进度节点的完整映射。
+3. Received (POD) 的判定字段和更新时间。
+4. Invoice 下载触发条件及文件接口。
+5. SN 与 FTD 是否已有合并报告；若没有，由哪个系统生成。
+6. 一个 DN 下多产品关系的接口结构。
+7. Credit overview 字段口径、币种和刷新频率。
+8. CSV 切换后端异步生成的数据量阈值。
+9. 历史订单同步范围。
+10. 可查看 Credit overview 的特定 Role 名称、权限编码和授权流程。
+11. 新方舟 Delivery Progress 字段定义、状态枚举及与 DN Status 的关系。
+12. 后台跨客户数据权限的销售组织 / 市场 / 客户范围规则与最终权限编码。
+13. SSD 的业务全称、字段来源、与 Pickup Date / SAD 的关系，以及 CRD 的 SO / DN 取值优先级。
+14. 多币种、多销售组织客户信用记录的唯一键与展示方式。
+15. POD、SN & FTD、Invoice 的一对多文件关系和下载失败处理。
+16. Credit View history 是否纳入本期、源接口与历史范围；确认前仅为原型占位入口。
+
+## 13. 附录
+
+### 13.1 原型与参考
+
+- My Orders：`/Users/nicki/Documents/Codex/sunpower/partner-portal/sunpower-my-orders.html`
+- Products：`/Users/nicki/Documents/Codex/sunpower/partner-portal/sunpower-products-list.html`
+- GitHub Pages：https://nickiisme.github.io/product-list/sunpower-my-orders.html
+- 运营后台源码：`/Users/nicki/Documents/Codex/sunpower/admin-order-management-prototype/`
+- 运营后台线上原型：https://nickiisme.github.io/product-list/admin-order-management/
+- 后台发布资源：仓库 `site/admin-order-management/`；源码：`prototypes/admin-order-management/`。
+- GitHub 完整 PRD：https://github.com/Nickiisme/product-list/blob/main/docs/SunPower_My_Orders_PRD.md
+
+### 13.2 验收检查清单
+
+客户前台：
+
+1. Products 与 My Orders 是顶部同级菜单，切换不打开新标签。
+2. 用户只能看到账号权限内订单。
+3. Credit overview 仅对 Admin 或授权的特定 Role 展示；无权限用户既看不到模块，也无法从接口获得信用数据。
+4. 搜索可匹配 SO、SKU、产品型号。
+5. Order Progress 与日期区间可组合筛选。
+6. 日期区间单击一次展开；输入显示 DD/MM/YYYY，不出现中文占位符。
+7. Order date 和 Scheduled Arrival Time 使用英文欧洲日期格式。
+8. Export 结果与筛选结果一致，并包含订单下全部产品。
+9. 一个订单可展示多个产品和多个 DN。
+10. Order Progress 取自新方舟，前端只展示 SO created、Allocated、Outbound、Received (POD)、Invoiced 五个节点。
+11. Delivery Progress 取自新方舟，不由前端推算，且当前页面不单独展示 Delivery Progress 模块。
+12. Items 超过 5 条时默认折叠并可展开、收起。
+13. DN 卡片展示 Carrier 和 Pickup date，展开后不重复。
+14. 页面不展示 Customer PO No.、Currency、SOA、CMR、托盘/集装箱/重量、Delivery Progress。
+15. SN & FTD Report 和 Invoice 使用下载图标；未就绪报告不可点击。
+16. Completed / Invoiced 订单显示 Invoice，其他状态不显示。
+17. 联系销售代表可唤起邮件客户端并带入订单号。
+
+后台：
+
+1. Partner Portal 下新增 Order Management，包含 Order Overview 和 Delivery Overview；Credit Overview 放在现有 User Management 下。
+2. 三个列表均将 Company Name 和 Customer Code 分为独立列。
+3. Order Overview 可搜索 SO 及关联 DN，查看一个 SO 的全部 DN，并保留 CRD 与 SAD 两类日期。
+4. Order Progress 只显示指定五节点；Delivery Progress 使用新方舟交付源状态，二者不能相互推算。
+5. Delivery Overview 完整展示第 7.1.11 节的 15 列，按 DN 分行。
+6. Credit Overview 完整展示客户身份、额度、可用额度、逾期、付款条件与信用状态，按角色与客户范围授权。
+7. 横向滚动时 Order / Credit 的 Operation 始终在右侧；Delivery 的 POD、SN & FTD、Invoice 三列整体固定且互不重叠。
+8. 固定区域左边界有连续柔和阴影；Delivery 只有 POD 左边缘有阴影，固定区域内部没有分隔阴影。
+9. 可用文件显示蓝色文字 Download，样式与 View 一致；不可用文件显示灰色禁用 Download，不再显示 Not ready。
+10. 灰色 Download 不触发点击处理或文件请求；文件权限仍由服务端校验。
+11. 日期、文案为英文；筛选框保持浅灰色边框，聚焦时蓝色提示。
+12. 正式接口的组合查询、重置、刷新、分页及导出应与条件和权限一致，导出覆盖全部匹配页。
+
+### 13.3 当前后台原型实现边界
+
+线上后台用于需求评审，使用本地示例数据，不连接真实客户、财务、订单或新方舟接口。上文描述的是正式功能目标，下表说明本次发布的实际演示能力。
+
+| 能力 | 本次原型状态 | 正式上线要求 |
+| --- | --- | --- |
+| 菜单切换与三个 Overview | 已实现 | 接入真实菜单权限 |
+| 分列字段、CRD / SSD / SAD、订单与 DN 示例 | 已展示 | 完成新方舟源字段映射 |
+| 搜索、进度 / 信用状态筛选；Order 的国家筛选 | 已实现本地样例过滤 | 接入服务端查询和数据范围 |
+| 日期区间、Sales Organisation、Warehouse 条件 | UI 演示，尚未接通完整查询逻辑 | 校验日期、组合筛选及 Reset 清空范围 |
+| Search / Refresh / Columns / 分页控件 | 部分为展示占位，尚未接通服务端 | 实现完整查询、刷新、列设置和分页；列设置产品规则待确认 |
+| Order View 与关联 DN | 已实现只读抽屉、DN 列表与定位 | 完整订单 / 产品 / DN 详情接口 |
+| Delivery 的 SO / DN、Credit 的 View history | 当前为入口样式演示，未接通完整跳转 / 历史查询 | 接入详情和历史接口，或按最终范围调整入口 |
+| Export | 可导出当前本地筛选结果 CSV | 补充全部页、完整字段 / 单位、币种与权限校验及 CSV 安全处理 |
+| 蓝色 / 灰色 Download、右侧固定与阴影 | 已实现，灰色原生禁用 | 按接口状态启用 |
+| 下载真实文件 | 可用入口目前仅展示下载开始提示，没有真实文件 | 接入文件服务和失败重试；提示不能作为真实下载完成的证据 |
+| Credit 权限 | 页面展示权限说明，尚无认证或权限拦截 | 服务端和菜单权限共同校验 |
+| 更新时间 / Live 提示 | 固定样例文案 | 改为真实查询 / 同步成功时间 |
+
+### 13.4 本次更新说明
+
+- 客户前台原有字段删减要求继续适用；后台按业务运营需要保留更完整字段。
+- 后台三个文件入口统一为文字操作，未就绪时统一置灰 Download。
+- PRD 截图用于辅助说明；字段、交互、权限和状态规则已同步写入正文，不以截图替代需求。
