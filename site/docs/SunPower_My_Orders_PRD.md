@@ -241,13 +241,13 @@ Portal 前台权限说明：
 | 9 | SN & FTD Report | 点击对应 Delivery 卡片外层入口；位置以第 7.1.8 节为准 | 每个 DN 一个入口，使用下载图标；当前 DN 达到 Shipped 后且文件就绪、有权限时可下载；未到节点时置灰禁用，hover / 键盘聚焦展示英文提示 |
 | 10 | Invoice | 点击对应 Delivery 卡片外层入口；位置以第 7.1.8 节为准 | 每个 DN 一个入口，使用下载图标；当前 DN 达到 Received 后且文件就绪、有权限时可下载，不必等整单 Invoiced；未到节点时置灰禁用，hover / 键盘聚焦展示英文提示 |
 
-以下截图取自客户侧 My Orders 演示原型（2026-10-21），用于辅助说明页面布局与交互，额度、账期、订单及文件均为示例。截图不替代需求正文；数据来源与调用顺序以第 6、11 节为准，五节点及 Partial 规则以第 7.2 节为准，文件入口与 DN 产品字段以第 7.1.4、7.1.8 节为准。原型实现范围与正式需求分开说明，不以截图或演示行为作为接口能力已实现的依据。
+以下截图取自客户侧 My Orders 演示原型，用于辅助说明页面布局与交互，额度、账期、订单及文件均为示例。截图不替代需求正文；数据来源与调用顺序以第 6、11 节为准，五节点及 Partial 规则以第 7.2 节为准，文件入口与 DN 产品字段以第 7.1.4、7.1.8 节为准。原型实现范围与正式需求分开说明，不以截图或演示行为作为接口能力已实现的依据。
 
 **图 1：My Orders 列表与信用概览（功能 1、2、3、5、6）**
 
-展示顶部菜单、信用信息、搜索、Order Progress 筛选、紧凑日期入口、Export 和多产品订单列表。
+展示页面主体中的信用信息、搜索、Order Progress 筛选、紧凑日期入口、Export 和多产品订单列表；标题上方不展示 Products / My Orders 面包屑。
 
-![图 1：My Orders 列表与信用概览](./prd-assets/my-orders-overview.jpg)
+![图 1：My Orders 列表与信用概览](./prd-assets/my-orders-overview.png)
 
 **图 2：英文日期区间展开态（功能 4）**
 
@@ -255,17 +255,17 @@ Portal 前台权限说明：
 
 ![图 2：英文日期区间展开态](./prd-assets/my-orders-date-range.jpg)
 
-**图 3：订单详情上半区与文件入口（功能 7、8、9、10）**
+**图 3：订单详情上半区（功能 7、8）**
 
 以已开票示例订单展示联系销售、Order overview、五节点 Order progress、Items 和 Commercial details。文件入口应位于每个 Delivery 卡片外层，不放在订单顶部。
 
-![图 3：订单详情与联系销售、报告及发票入口](./prd-assets/my-orders-detail.jpg)
+![图 3：订单详情上半区与联系销售入口](./prd-assets/my-orders-detail.png)
 
-**图 4：Delivery details 与 DN 展开态（功能 7、9）**
+**图 4：Delivery details、DN 展开态与禁用下载提示（功能 7、9、10）**
 
-展示收货信息、同一订单的多个 DN 和展开结构。DN 内不重复展示收货地址或 Ship from；产品表依次展示 SKU、Product、Description、Quantity；SN & FTD Report、Invoice 各在对应 Delivery 卡片外层展示，不随产品行重复。截图用于辅助说明，字段和可见性以第 7.1.7、7.1.8 节为准。
+展示已发货订单的收货信息、多个 DN 和展开结构。DN 内不重复展示收货地址或 Ship from；产品表依次展示 SKU、Product、Description、Quantity；SN & FTD Report、Invoice 各在对应 Delivery 卡片外层展示，不随产品行重复。图中当前 DN 已发货、尚未签收，报告可用，Invoice 禁用并展示英文节点提示。字段和可见性以第 7.1.7、7.1.8 节为准。
 
-![图 4：多个 DN 与展开后的产品和报告入口](./prd-assets/my-orders-delivery-expanded.jpg)
+![图 4：四列交付产品与禁用 Invoice 节点提示](./prd-assets/my-orders-delivery-expanded.png)
 
 #### 7.1.3 Order list 字段说明
 
