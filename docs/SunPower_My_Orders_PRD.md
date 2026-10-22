@@ -236,7 +236,7 @@ Portal 前台权限说明：
 | 4 | Order date range | 单击紧凑按钮展开；见图 2 | 显示英文 From、To、Clear、Apply；输入格式 DD/MM/YYYY；Apply 后筛选并收起 |
 | 5 | Export | 点击下载 CSV；见图 1 | 导出当前条件下全部订单及每个订单的全部产品；列顺序与列表一致但排除 Action，日期仅日月年，不新增 Currency 列；UTF-8；文件名 sunpower-my-orders.csv |
 | 6 | Order list | 点击 Order No. 或 View details；见图 1 | 字段依次为 Order No.、Products、Total amount、Order date、Scheduled arrival time、Order Progress、Action |
-| 7 | Order details | 右侧抽屉；见图 3、图 4 | 展示概览、进度、Items、Commercial；仅存在已发货 DN 时展示 Delivery details 和 Deliveries |
+| 7 | Order details | 右侧抽屉；见图 3，DN 规则见第 7.1.8 节 | 展示概览、进度、Items、Commercial；仅存在已发货 DN 时展示 Delivery details 和 Deliveries |
 | 8 | Contact sales | 唤起默认邮件客户端；见图 3 | 前置邮件图标；主题及正文自动带入 SO 编号 |
 | 9 | SN & FTD Report | 点击对应 Delivery 卡片外层入口；位置以第 7.1.8 节为准 | 每个 DN 一个入口，使用下载图标；当前 DN 达到 Shipped 后且文件就绪、有权限时可下载；未到节点时置灰禁用，hover / 键盘聚焦展示英文提示 |
 | 10 | Invoice | 点击对应 Delivery 卡片外层入口；位置以第 7.1.8 节为准 | 每个 DN 一个入口，使用下载图标；当前 DN 达到 Received 后且文件就绪、有权限时可下载，不必等整单 Invoiced；未到节点时置灰禁用，hover / 键盘聚焦展示英文提示 |
@@ -245,9 +245,15 @@ Portal 前台权限说明：
 
 **图 1：My Orders 列表与信用概览（功能 1、2、3、5、6）**
 
-展示页面主体中的信用信息、搜索、Order Progress 筛选、紧凑日期入口、Export 和多产品订单列表；标题上方不展示 Products / My Orders 面包屑。
+展示页面主体中的信用信息、搜索、Order Progress 筛选、紧凑日期入口、Export 和 8 条示例订单；标题上方不展示 Products / My Orders 面包屑。以下为窄屏示例，宽表通过横向滚动分别查看左右字段，不改变第 7.1.3 节定义的列顺序。
 
 ![图 1：My Orders 列表与信用概览](./prd-assets/my-orders-overview.png)
+
+**图 1 补充：列表右侧字段与八种完整 / 部分进度**
+
+金额不重复显示币种编码；Scheduled arrival time 仅显示日月年；8 条示例覆盖五个阶段及三种 Partial 状态。
+
+![列表右侧的纯日期及八种进度](./prd-assets/my-orders-overview-progress.png)
 
 **图 2：英文日期区间展开态（功能 4）**
 
@@ -261,11 +267,11 @@ Portal 前台权限说明：
 
 ![图 3：订单详情上半区与联系销售入口](./prd-assets/my-orders-detail.png)
 
-**图 4：Delivery details、DN 展开态与禁用下载提示（功能 7、9、10）**
+**图 4：Shipped 筛选包含部分发货（功能 3）**
 
-展示已发货订单的收货信息、多个 DN 和展开结构。DN 内不重复展示收货地址或 Ship from；产品表依次展示 SKU、Product、Description、Quantity；SN & FTD Report、Invoice 各在对应 Delivery 卡片外层展示，不随产品行重复。图中当前 DN 已发货、尚未签收，报告可用，Invoice 禁用并展示英文节点提示。字段和可见性以第 7.1.7、7.1.8 节为准。
+选项 Shipped (incl. Partially Shipped) 同时返回 Shipped · Partial 和 Shipped，不会遗漏部分发货订单。图中为窄屏表格横向滚动后的右侧视图；金额、日期和进度与未筛选列表使用相同展示规则。
 
-![图 4：四列交付产品与禁用 Invoice 节点提示](./prd-assets/my-orders-delivery-expanded.png)
+![图 4：Shipped 同时匹配完整发货和部分发货](./prd-assets/my-orders-shipped-filter.png)
 
 #### 7.1.3 Order list 字段说明
 
