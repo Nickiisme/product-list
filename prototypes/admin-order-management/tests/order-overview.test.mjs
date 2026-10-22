@@ -12,6 +12,18 @@ after(async()=>{await server?.close()});
 const render=(Component,props)=>renderToStaticMarkup(React.createElement(Component,props));
 const viewProps={rows:orders,query:"",progress:"All",country:"All",dnOpen:null,setQuery(){},setProgress(){},setCountry(){},setSelected(){},setDnOpen(){},notify(){}};
 
+test("all overview toolbars retain Export without Refresh or a fabricated sync time",()=>{
+  for(const [Component,rows] of [[components.OrderView,orders],[components.DeliveryView,deliveries],[components.CreditView,credits]]){
+    const html=render(Component,{...viewProps,rows});
+    assert.ok(html.includes(">Export</button>"));
+    assert.ok(html.includes(">Demo data</span>"));
+    assert.ok(html.includes("Source: NEW ARK"));
+    assert.ok(!html.includes(">Refresh</button>"));
+    assert.ok(!html.includes("Last sync"));
+    assert.ok(!html.includes("Available amount: SAP"));
+  }
+});
+
 test("eight distinct admin statuses, no partial aggregation",()=>{
   assert.equal(new Set(orderProgressOptions).size,8);
   assert.deepEqual(new Set(orders.map(o=>o.progress)),new Set(orderProgressOptions));
@@ -50,7 +62,7 @@ test("admin details retain business fields without customer-only or source-state
   assert.equal((html.match(/<th>Unit price<\/th>/g)||[]).length,1);
   assert.equal((html.match(/Download DN-\d+ SN &amp; FTD Report/g)||[]).length,3);
 });
-test("only Approved orders enter the sync result; approval does not imply allocation",()=>{
+test("only Approved orders enter the query result; approval does not imply allocation",()=>{
   const records=[{approve:"Approved",so:"yes"},{approve:"Approving"},{approve:"Rejected"},{approve:"Cancelled"},{approve:""},{approve:null},{},{approve:"Unknown"},{approve:"approved"}];
   assert.deepEqual(selectApprovedOrders(records),[records[0]]);
   assert.ok(orders.every(o=>o.approve==="Approved"));

@@ -1,4 +1,4 @@
-// Financial demo values, not connected SAP/NEW ARK balances. Preserve signed source amounts.
+// Financial demo values, not connected NEW ARK balances. Preserve signed source amounts.
 export const credits=[
   {code:"TPVNL00310",company:"GreenTech Installations B.V.",partner:"MPVNL000685",organisation:"Benelux",currency:"EUR",limit:500000,available:321640,overdue:0,days0to7:0,days8to15:0,days16to30:0,days31plus:0,terms:"30 days net",salesRepresentative:"Eva de Vries"},
   {code:"TPVIT00307",company:"Solar Beam SRL",partner:"MPVIT000608",organisation:"Italy",currency:"EUR",limit:180000,available:18820,overdue:24630,days0to7:18000,days8to15:-1500,days16to30:4000,days31plus:4130,terms:"60 days net",salesRepresentative:"Luca Moretti"},
