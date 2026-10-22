@@ -19,13 +19,13 @@
 <body>
   <header class="topbar"><a class="brand" href="sunpower-products-list.html"><span class="tcl">TCL</span><span class="divider"></span><span class="sunpower">SUNPOWER</span></a><nav class="nav" aria-label="Primary navigation"><a href="#">Home</a><a href="#">Lead</a><a href="#">Warranty</a><a href="#">Marketing</a><a href="#">Academy</a><a href="#">Live training</a><a href="#">Monitoring</a><a href="sunpower-products-list.html">Products</a><a class="active" href="sunpower-my-orders.html">My Orders</a></nav><div class="actions"><span class="icon">⌕</span><span class="icon">◉</span><span class="avatar"></span><span class="email">sunpowerdemotest2@2925.com</span></div></header>
   <main class="page"><div class="title-row"><div><h1>My Orders</h1><p class="intro">Track your order status, product details, serial numbers, FTD test results and credit information.</p></div><a class="back-products" href="sunpower-products-list.html" target="_self">← Back to products</a></div>
-    <section class="card credit-card" aria-labelledby="credit-title"><div class="credit-head"><h2 id="credit-title">Credit overview</h2><span>Company account · EUR</span></div><div class="credit-grid"><div class="credit-metric"><span>Credit limit</span><strong>€250,000.00</strong><small>Approved account limit</small></div><div class="credit-metric"><span>Available amount</span><strong>€103,908.93</strong><small>Available for new orders</small></div><div class="credit-metric warning"><span>Overdue</span><strong>€9,352.71</strong><small>Payment action required</small></div><div class="credit-metric"><span>Payment terms</span><strong>Net 60 days</strong><small>From invoice date</small></div></div></section>
-    <section class="card toolbar"><label class="search">⌕<input id="search" placeholder="Search SO, SKU or product model"></label><label class="select"><select id="status"><option value="all">All order progress</option><option value="order-created">Order created</option><option value="allocated">Allocated</option><option value="shipped">Shipped</option><option value="received">Received</option><option value="invoiced">Invoiced</option></select></label><div class="range-picker" id="range-picker"><button class="range-trigger" id="range-trigger" type="button" aria-expanded="false"><span id="range-label">Order date range</span><span class="caret">▼</span></button><div class="range-popover" role="dialog" aria-label="Select order date range"><div class="range-fields"><label>From<input id="date-from" type="text" lang="en" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" aria-label="From date, DD/MM/YYYY"></label><label>To<input id="date-to" type="text" lang="en" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" aria-label="To date, DD/MM/YYYY"></label></div><div class="range-actions"><button class="range-clear" id="range-clear" type="button">Clear</button><button class="range-apply" id="range-apply" type="button">Apply</button></div></div></div><button class="export" id="export">Export</button></section>
-    <section class="card table-wrap"><table class="table"><thead><tr><th>Sales Order No.</th><th>Order date</th><th>Products</th><th>Total amount</th><th>Scheduled arrival time</th><th>Order Progress</th><th>Action</th></tr></thead><tbody id="orders"></tbody></table><div class="empty" id="empty">No orders found.</div></section>
+    <section class="card credit-card" aria-labelledby="credit-title"><div class="credit-head"><h2 id="credit-title">Credit overview</h2><span>Company account</span></div><div class="credit-grid"><div class="credit-metric"><span>Credit limit</span><strong>€250,000.00</strong><small>Approved account limit</small></div><div class="credit-metric"><span>Available amount</span><strong>€103,908.93</strong><small>Available for new orders</small></div><div class="credit-metric warning"><span>Overdue</span><strong>€9,352.71</strong><small>Payment action required</small></div><div class="credit-metric"><span>Payment terms</span><strong>Net 60 days</strong><small>From invoice date</small></div></div></section>
+    <section class="card toolbar"><label class="search">⌕<input id="search" placeholder="Search order no., SKU or product model"></label><label class="select"><select id="status" aria-label="Order Progress, includes partial statuses"><option value="all">All order progress (incl. partial)</option><option value="order-created">Order created</option><option value="allocated">Allocated (incl. Partially Allocated)</option><option value="shipped">Shipped (incl. Partially Shipped)</option><option value="received">Received</option><option value="invoiced">Invoiced (incl. Partially Invoiced)</option></select></label><div class="range-picker" id="range-picker"><button class="range-trigger" id="range-trigger" type="button" aria-expanded="false"><span id="range-label">Order date range</span><span class="caret">▼</span></button><div class="range-popover" role="dialog" aria-label="Select order date range"><div class="range-fields"><label>From<input id="date-from" type="text" lang="en" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" aria-label="From date, DD/MM/YYYY"></label><label>To<input id="date-to" type="text" lang="en" inputmode="numeric" maxlength="10" placeholder="DD/MM/YYYY" aria-label="To date, DD/MM/YYYY"></label></div><div class="range-actions"><button class="range-clear" id="range-clear" type="button">Clear</button><button class="range-apply" id="range-apply" type="button">Apply</button></div></div></div><button class="export" id="export">Export</button></section>
+    <section class="card table-wrap"><table class="table"><thead><tr><th>Order No.</th><th>Products</th><th>Total amount</th><th>Order date</th><th>Scheduled arrival time</th><th>Order Progress</th><th>Action</th></tr></thead><tbody id="orders"></tbody></table><div class="empty" id="empty">No orders found.</div></section>
   </main>
   <div class="backdrop" id="backdrop"><aside class="drawer"><div class="drawer-head"><div><h2 id="detail-title">Order details</h2><div class="drawer-meta" id="detail-meta"></div></div><button class="close" id="close">×</button></div><div id="detail-content"></div></aside></div>
   <script>
-    const orders=[
+    const baseOrders=[
       {no:'SO-20260918-0012',date:'2026-09-18',amount:'€8,000.00',credit:'Approved',status:'Created',allocationStatus:'To Be Allocated',milestones:['done','pending','pending','pending','pending'],tone:'blue',crd:'2026-10-02',scheduledArrival:'2026-10-02 · 10:00–14:00',address:'Calle de Alcalá 120, 28009 Madrid, Spain',incoterm:'DAP',contact:'Lucía García · +34 612 345 678',products:[
         {sku:'GF0700000085',model:'SP-ARSH-5kW-G1',description:'Hybrid inverter, 5 kW',qty:'1 pc',unit:'€3,400.00',total:'€3,400.00'},
         {sku:'GF0700000940',model:'SP-RH-B5K-G1',description:'Residential energy storage battery',qty:'4 pcs',unit:'€900.00',total:'€3,600.00'},
@@ -40,10 +40,21 @@
         {sku:'GF0700000085',model:'SP-ARSH-5kW-G1',description:'Hybrid inverter, 5 kW',qty:'1 pc',unit:'€3,400.00',total:'€3,400.00'}
       ]}
     ];
+    // Eight demo records cover every agreed full/partial progress label.
+    const orders=[
+      baseOrders[0],
+      {...baseOrders[0],no:'SO-20260917-0011',date:'2026-09-17',status:'Partially Allocated',allocationStatus:'Partially Allocated',milestones:['done','partial','pending','pending','pending'],crd:'2026-10-05',scheduledArrival:'2026-10-05',tone:'amber'},
+      {...baseOrders[1],no:'SO-20260916-0010',date:'2026-09-16',status:'Prepare Truck',allocationStatus:'Allocated',milestones:['done','done','pending','pending','pending'],crd:'2026-10-06',scheduledArrival:'2026-10-06',tone:'blue'},
+      {...baseOrders[1],no:'SO-20260915-0009',date:'2026-09-15',status:'Partially Shipped',milestones:['done','done','partial','pending','pending'],crd:'2026-10-07',scheduledArrival:'2026-10-07',tone:'amber'},
+      baseOrders[1],
+      {...baseOrders[2],no:'SO-20260825-0007',date:'2026-08-25',status:'Customer Signed',customerSignedIsPOD:true,milestones:['done','done','done','done','pending'],crd:'2026-09-08',scheduledArrival:'2026-09-08',credit:'Approved'},
+      {...baseOrders[2],no:'SO-20260820-0006',date:'2026-08-20',status:'Partially Invoiced',milestones:['done','done','done','done','partial'],crd:'2026-09-04',scheduledArrival:'2026-09-04',credit:'Approved',tone:'amber'},
+      baseOrders[2]
+    ];
     const $=id=>document.getElementById(id); const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
     const dateParts=value=>{const [year,month,day]=value.split('-');return {year,month,day}};
     const formatOrderDate=value=>{const {year,month,day}=dateParts(value);const monthName=new Intl.DateTimeFormat('en-GB',{month:'short'}).format(new Date(Number(year),Number(month)-1,1));return `${Number(day)} ${monthName}, ${year}`};
-    const formatArrival=value=>{const [date,time]=value.split(' · ');return `${formatOrderDate(date)}${time?` · ${time}`:''}`};
+    const formatArrival=value=>value?formatOrderDate(value.split(' · ')[0]):'To be confirmed';
     const parseRangeDate=value=>{const match=value.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);return match?`${match[3]}-${match[2].padStart(2,'0')}-${match[1].padStart(2,'0')}`:''};
     const orderProgressStages=[{key:'order-created',label:'Order created'},{key:'allocated',label:'Allocated'},{key:'shipped',label:'Shipped'},{key:'received',label:'Received'},{key:'invoiced',label:'Invoiced'}];
     // Demo mapping only. Production must use the agreed server-side mapping and milestone data.
@@ -78,6 +89,17 @@
     }
     function getDeliveries(o){
       // Explicit DN fixtures, independent of the SO progress. The created-order fixture has no deliveries.
+      if(o.no==='SO-20260915-0009') return [
+        {dn:'DN-6041700480',status:'Shipped',tone:'green',warehouse:'Moka Genuine Sales WH',pickup:'2026-10-02',carrier:'DHL Freight',milestones:{shipped:true,received:false},documents:{reportReady:true,invoiceReady:false,downloadAllowed:true},products:o.products.map(p=>({...p,qty:p.sku==='PF07392093'?'2 pallets / 74 pcs':'8 pairs'}))},
+        {dn:'DN-6041700481',status:'Planned',tone:'',warehouse:'Moka Genuine Sales WH',pickup:'2026-10-05',carrier:'Pending assignment',milestones:{shipped:false,received:false},documents:{reportReady:false,invoiceReady:false,downloadAllowed:true},products:o.products.map(p=>({...p,qty:p.sku==='PF07392093'?'1 pallet / 37 pcs':'4 pairs'}))}
+      ];
+      if(o.no==='SO-20260825-0007'||o.no==='SO-20260820-0006'){
+        const partiallyInvoiced=o.no==='SO-20260820-0006';
+        return [
+          {dn:partiallyInvoiced?'DN-6041600938':'DN-6041600935',status:'Received',tone:'green',warehouse:'EU Central Warehouse',pickup:partiallyInvoiced?'2026-09-01':'2026-09-05',carrier:'DHL Freight',milestones:{shipped:true,received:true},documents:{reportReady:true,invoiceReady:true,downloadAllowed:true},products:o.products.slice(0,1)},
+          {dn:partiallyInvoiced?'DN-6041600939':'DN-6041600936',status:'Received',tone:'green',warehouse:'EU Central Warehouse',pickup:partiallyInvoiced?'2026-09-02':'2026-09-06',carrier:'DB Schenker',milestones:{shipped:true,received:true},documents:{reportReady:true,invoiceReady:!partiallyInvoiced,downloadAllowed:true},products:o.products.slice(1)}
+        ];
+      }
       if(o.no==='SO-20260830-0008') return [
         {dn:'DN-6041700412',status:'Shipped',tone:'green',warehouse:'Moka Genuine Sales WH',pickup:'2026-09-03',carrier:'DHL Freight',milestones:{shipped:true,received:false},documents:{reportReady:true,invoiceReady:false,downloadAllowed:true},products:o.products.map(p=>p.sku==='PF07392093'?{...p,qty:'2 pallets / 74 pcs'}:p)},
         {dn:'DN-6041700467',status:'Shipped',tone:'green',warehouse:'Moka Genuine Sales WH',pickup:'2026-09-08',carrier:'DB Schenker',milestones:{shipped:true,received:false},documents:{reportReady:true,invoiceReady:false,downloadAllowed:true},products:o.products.slice(0,1).map(p=>({...p,qty:'1 pallet / 37 pcs'}))}
@@ -109,7 +131,7 @@
         const productLines=o.products.slice(0,2).map(p=>`<strong>${esc(p.model)}</strong>`).join('');
         const more=o.products.length>2?`<span class="product-count">+${o.products.length-2} more product</span>`:'';
         const progress=getOrderProgress(o);
-        return `<tr><td><button class="action order-no" data-id="${o.no}">${o.no}</button></td><td>${formatOrderDate(o.date)}</td><td><div class="product-lines">${productLines}${more}</div></td><td><strong>${o.amount}</strong><div class="date-text">EUR</div></td><td><strong>${formatArrival(o.scheduledArrival)}</strong></td><td><span class="status ${progress.partial?'amber':o.tone}">${progress.label}</span></td><td><button class="action" data-id="${o.no}">View details</button></td></tr>`;
+        return `<tr><td><button class="action order-no" data-id="${o.no}">${o.no}</button></td><td><div class="product-lines">${productLines}${more}</div></td><td><strong>${o.amount}</strong></td><td>${formatOrderDate(o.date)}</td><td><strong>${formatArrival(o.scheduledArrival)}</strong></td><td><span class="status ${progress.partial?'amber':o.tone}">${progress.label}</span></td><td><button class="action" data-id="${o.no}">View details</button></td></tr>`;
       }).join('');
       $('empty').style.display=rows.length?'none':'block';
       document.querySelectorAll('[data-id]').forEach(b=>b.onclick=()=>openDetail(b.dataset.id));
@@ -149,8 +171,8 @@
       if(itemsToggle) itemsToggle.onclick=()=>{const expanded=itemsToggle.getAttribute('aria-expanded')==='true';document.querySelectorAll('.extra-item').forEach(row=>row.hidden=expanded);itemsToggle.setAttribute('aria-expanded',String(!expanded));itemsToggle.textContent=expanded?`Show ${o.products.length-5} more items`:'Show fewer items'};
     }
     function exportOrders(){
-      const header=['Sales Order No.','Order date','Products','Total amount','Scheduled Arrival Time','Order Progress'];
-      const rows=getFilteredOrders().map(o=>[o.no,formatOrderDate(o.date),o.products.map(p=>`${p.model} (${p.sku})`).join('; '),o.amount,formatArrival(o.scheduledArrival),getOrderProgress(o).label]);
+      const header=['Order No.','Products','Total amount','Order date','Scheduled arrival time','Order Progress'];
+      const rows=getFilteredOrders().map(o=>[o.no,o.products.map(p=>`${p.model} (${p.sku})`).join('; '),o.amount,formatOrderDate(o.date),formatArrival(o.scheduledArrival),getOrderProgress(o).label]);
       const csv=[header,...rows].map(row=>row.map(value=>`"${String(value).replace(/"/g,'""')}"`).join(',')).join('\n');
       const url=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));
       const link=document.createElement('a');link.href=url;link.download='sunpower-my-orders.csv';document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);

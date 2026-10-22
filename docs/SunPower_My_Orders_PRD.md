@@ -83,7 +83,7 @@ SunPower 欧洲区域合作伙伴下单后，需要在 Partner Portal 中查询�
 | SO | Sales Order，销售订单 | Sales Order / SO |
 | DN | Delivery Number，一个订单可包含多个交付批次 | DN |
 | CRD | Customer Requested Date，本页面不作为主要到货日期展示 | CRD |
-| Scheduled Arrival Time | 预计到达客户目的地的日期及时间窗口 | Scheduled Arrival Time |
+| Scheduled Arrival Time | 预计到达客户目的地的日期；客户前台仅显示日月年，不显示具体时间或时间窗口 | Scheduled Arrival Time |
 | POD | Proof of Delivery，签收或交付证明；订单签收节点的展示名称为 Received | POD |
 | SN | Serial Number，产品序列号 | SN |
 | FTD | 产品测试报告 | FTD Report |
@@ -167,7 +167,7 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    selectOrder["点击 Sales Order No. 或 View details"] --> ownership["校验 Customer Code 与 SO 归属"]
+    selectOrder["点击 Order No. 或 View details"] --> ownership["校验 Customer Code 与 SO 归属"]
     ownership --> orderDetail["NEW ARK 订单：查询 SO 明细与产品行"]
     ownership --> dnQuery["NEW ARK 订单 / 交付：查询 SO 关联 DN"]
     orderDetail --> detailView["展示订单明细、产品与关联 DN"]
@@ -230,12 +230,12 @@ Portal 前台权限说明：
 
 | 序号 | 功能模块 | 原型交互 | 需求说明 |
 | --- | --- | --- | --- |
-| 1 | Credit overview | 有权限时展示顶部卡片，无权限时隐藏；见图 1 | 仅 Admin 或配置的特定角色可见；Available amount 查询 SAP，Payment terms 查询 NEW ARK 客户中心；Credit limit / Overdue 来源待确认；Overdue 大于 0 时视觉强调；金额包含货币符号 |
-| 2 | 搜索 | 输入后即时刷新；见图 1 | 支持 Sales Order No.、SKU、Product model 模糊搜索 |
-| 3 | Order Progress 筛选 | 单选下拉框；布局见图 1 | All order progress、Order created、Allocated、Shipped、Received、Invoiced；对应阶段同时匹配该阶段的 Partial 记录，映射详见第 7.2 节 |
+| 1 | Credit overview | 有权限时展示顶部卡片，无权限时隐藏；见图 1 | 仅 Admin 或配置的特定角色可见；Available amount 查询 SAP，Payment terms 查询 NEW ARK 客户中心；Credit limit / Overdue 来源待确认；Overdue 大于 0 时视觉强调；金额保留货币符号，不额外展示 EUR 等币种编码 |
+| 2 | 搜索 | 输入后即时刷新；见图 1 | 支持 Order No.（SO 编号）、SKU、Product model 模糊搜索 |
+| 3 | Order Progress 筛选 | 单选下拉框；布局见图 1 | All order progress 包含完整及部分状态；Allocated、Shipped、Invoiced 分别包含对应的 Partially 状态，并在选项文案中注明；仍为五个阶段，映射详见第 7.2 节 |
 | 4 | Order date range | 单击紧凑按钮展开；见图 2 | 显示英文 From、To、Clear、Apply；输入格式 DD/MM/YYYY；Apply 后筛选并收起 |
-| 5 | Export | 点击下载 CSV；见图 1 | 导出当前搜索和筛选条件下全部订单及每个订单的全部产品；UTF-8；文件名 sunpower-my-orders.csv |
-| 6 | Order list | 点击 SO 或 View details；见图 1 | 展示 SO、日期、产品、金额、Scheduled Arrival Time、Order Progress |
+| 5 | Export | 点击下载 CSV；见图 1 | 导出当前条件下全部订单及每个订单的全部产品；列顺序与列表一致但排除 Action，日期仅日月年，不新增 Currency 列；UTF-8；文件名 sunpower-my-orders.csv |
+| 6 | Order list | 点击 Order No. 或 View details；见图 1 | 字段依次为 Order No.、Products、Total amount、Order date、Scheduled arrival time、Order Progress、Action |
 | 7 | Order details | 右侧抽屉；见图 3、图 4 | 展示概览、进度、Items、Commercial；仅存在已发货 DN 时展示 Delivery details 和 Deliveries |
 | 8 | Contact sales | 唤起默认邮件客户端；见图 3 | 前置邮件图标；主题及正文自动带入 SO 编号 |
 | 9 | SN & FTD Report | 点击对应 Delivery 卡片外层入口；位置以第 7.1.8 节为准 | 每个 DN 一个入口，使用下载图标；当前 DN 达到 Shipped 后且文件就绪、有权限时可下载；未到节点时置灰禁用，hover / 键盘聚焦展示英文提示 |
@@ -271,13 +271,30 @@ Portal 前台权限说明：
 
 | 字段 | 数据类型 / 格式 | 查询 / 展示规则 | 空值处理 |
 | --- | --- | --- | --- |
-| Sales Order No. | String | 可点击打开 Order details | 不允许为空 |
-| Order date | D MMM, YYYY | 例如 17 Oct, 2026 | - |
+| Order No. | String | SO 编号，可点击打开 Order details | 不允许为空 |
 | Products | Array | 展示前两个；超过两个显示 +N more product | - |
-| Total amount | Currency | 包含货币符号 | - |
-| Scheduled Arrival Time | D MMM, YYYY · HH:mm–HH:mm | 例如 17 Oct, 2026 · 10:00–14:00 | To be confirmed |
+| Total amount | 金额 | 保留金额符号，例如 €8,000.00；不在金额下方或其他位置重复展示 EUR 等币种编码 | - |
+| Order date | D MMM, YYYY | 例如 17 Oct, 2026 | - |
+| Scheduled arrival time | D MMM, YYYY | 例如 17 Oct, 2026；不显示时分、时间窗口或 Local destination time | To be confirmed |
 | Order Progress | 阶段枚举 + 完成度标记 | Order created、Allocated、Shipped、Received、Invoiced；部分完成时增加 · Partial，详见第 7.2 节 | 无法映射时展示 —，不默认归入 Order created |
 | Action | Button | View details | - |
+
+字段及列顺序固定为上表顺序。日期展示规则同时适用于列表、Order overview、Delivery details 与前台导出；源数据如含具体时间，前台不展示该部分。
+
+筛选选项使用以下英文提示，查询时按阶段匹配完整及部分状态，不单独增加 Partial 阶段：
+
+| 选项文案 | 匹配内容 |
+| --- | --- |
+| All order progress (incl. partial) | 全部五阶段及对应的部分状态 |
+| Order created | Order created |
+| Allocated (incl. Partially Allocated) | Allocated、Allocated · Partial，包括已确认映射到部分分配的源中间状态 |
+| Shipped (incl. Partially Shipped) | Shipped、Shipped · Partial |
+| Received | Received |
+| Invoiced (incl. Partially Invoiced) | Invoiced、Invoiced · Partial |
+
+前台 Export 字段顺序：Order No.、Products、Total amount、Order date、Scheduled arrival time、Order Progress。每条订单一行，Products 包含该订单全部产品的型号与 SKU（以分号分隔），不受列表摘要数量限制；不导出 Action 操作或额外币种编码。
+
+演示数据至少提供 8 条订单，覆盖 Order created、Allocated · Partial、Allocated、Shipped · Partial、Shipped、Received、Invoiced · Partial、Invoiced。新增示例仍遵守既定详情、DN 和文件规则：未发货订单无 Delivery 区域，部分发货仅展示已发货 DN，部分开票中未就绪文件保持禁用。
 
 无数据时展示 No orders found。
 
@@ -285,7 +302,7 @@ Portal 前台权限说明：
 
 顶部：
 
-- 标题仅展示 Sales Order No.，下方不重复展示订单状态。
+- 标题仅展示 Order No. 对应的 SO 编号，下方不重复展示订单状态。
 - 展示 Contact your sales representative。
 - 不在订单顶部展示 SN & FTD Report 或 Invoice；二者均归属于具体 Delivery / DN，在对应卡片外层各展示一个入口，详见第 7.1.8 节。
 - 不展示 SOA。
@@ -295,7 +312,7 @@ Order overview 仅展示：
 | 字段 | 展示规则 |
 | --- | --- |
 | Order date | D MMM, YYYY |
-| Scheduled Arrival Time | D MMM, YYYY · HH:mm–HH:mm |
+| Scheduled Arrival Time | D MMM, YYYY，不显示具体时间 |
 
 不展示 Product 汇总项和 Customer PO No.。
 
@@ -323,7 +340,7 @@ Order overview 仅展示：
 | Payment terms | 客户账期，按 Customer Code 查询 NEW ARK 客户中心；复用首屏结果或按需刷新 |
 | Prepayment / Credit status | 预付款或信用审批状态 |
 
-不单独展示 Currency。
+前台不单独展示 Currency 或 EUR 等币种编码；金额保留货币符号，后台币种维度及源接口中的币种数据不因此删除。
 
 #### 7.1.7 Delivery details
 
@@ -331,7 +348,7 @@ Order overview 仅展示：
 
 | 字段 | 说明 |
 | --- | --- |
-| Scheduled Arrival Time | 预计到达客户目的地的日期及时间窗口 |
+| Scheduled Arrival Time | 预计到达客户目的地的日期，D MMM, YYYY；不显示具体时间或时间窗口 |
 | Incoterm | 贸易条款 |
 | Receiving contact | 收货联系人及联系方式 |
 | Ship-to address | 收货地址 |
@@ -788,8 +805,8 @@ Credit Limit、Overdue、Credit Status 与后台 POD 文件来源仍待分别确
 4. 搜索可匹配 SO、SKU、产品型号。
 5. Order Progress 与日期区间可组合筛选。
 6. 日期区间单击一次展开；输入显示 DD/MM/YYYY，不出现中文占位符。
-7. Order date 和 Scheduled Arrival Time 使用英文欧洲日期格式。
-8. Export 结果与筛选结果一致，并包含订单下全部产品。
+7. Order date 和 Scheduled Arrival Time 使用英文欧洲日月年格式；Scheduled Arrival Time 在列表、详情和前台导出中均不显示具体时间或时间窗口。
+8. Export 结果与筛选结果一致，列顺序为 Order No.、Products、Total amount、Order date、Scheduled arrival time、Order Progress，并包含订单下全部产品；不导出 Action 或额外币种编码。
 9. 一个订单可展示多个产品和多个 DN。
 10. Order Progress 取自新方舟，前端只展示 Order created、Allocated、Shipped、Received、Invoiced 五个节点；列表、详情、筛选与导出文案一致。
 11. Delivery Progress 取自新方舟，不由前端推算，且当前页面不单独展示 Delivery Progress 模块。
@@ -809,6 +826,9 @@ Credit Limit、Overdue、Credit Status 与后台 POD 文件来源仍待分别确
 25. 点击文件入口不触发展开 / 收起；请求携带当前 DN 并校验客户及 SO 归属；一个 DN 多个产品也只有两个文件入口。
 26. Order created / Allocated 且无已发货 DN 时，不展示 Delivery details 和 Deliveries；部分发货时仅展示已发货 DN，不生成计划交付数据。
 27. 页面不展示 Products / My Orders 面包屑；保留顶部 Products、My Orders 同级菜单及 Back to products 按钮。
+28. 列表列顺序为 Order No.、Products、Total amount、Order date、Scheduled arrival time、Order Progress、Action；金额下方及 Credit overview 不重复显示 EUR 等币种编码，金额符号保留。
+29. All order progress 明确包含完整及部分状态，选择 Allocated、Shipped、Invoiced 时分别包含相应 Partially 状态；英文选项注明该规则。
+30. 演示列表至少 8 条数据，八种完整 / 部分进度均可见且可打开详情；查询、筛选和导出使用相同匹配规则。
 
 后台：
 
