@@ -1,10 +1,14 @@
 // Demonstration fixtures only. Production progress and node completion come from NEW ARK.
 export const orderStages = ["Order created", "Allocated", "Shipped", "Received", "Invoiced"];
 export const orderProgressOptions = ["Order created", "Partially Allocated", "Allocated", "Partially Shipped", "Shipped", "Received", "Partially Invoiced", "Invoiced"];
+// NEW ARK DN Status display values. API enum codes must be confirmed by NEW ARK.
+export const deliveryStatusOptions = ["Cancelled","Changing","To Be Received","Partially Received","Received","Created","Customer Rejected","SI","Invoiced","Partially Signed","Draft"];
+export const matchesDeliveryStatus = (delivery,value) => value === "All" || delivery.progress === value;
 export const progressLabel = value => value.startsWith("Partially ") ? `${value.slice(10)} · Partial` : value;
 export const matchesProgress = (order, value) => value === "All" || order.progress === value;
 // Only the confirmed NEW ARK approval enum admits an order; missing/other values fail closed.
 export const selectApprovedOrders = records => records.filter(order=>order.approve === "Approved");
+export const selectApprovedDeliveries = (records,parentOrders) => records.filter(d=>d.approve === "Approved" && parentOrders.some(o=>o.so===d.so && o.approve === "Approved"));
 
 const panel = {sku:"GF010100030",product:"SPR-MAX6-450-BLK",description:"Residential photovoltaic module, 450 W",quantity:216,unit:"pcs",unitPrice:134};
 const connector = {sku:"GF0700000880",product:"SunPower MC4 connector pair",description:"PV connector pair",quantity:12,unit:"pairs",unitPrice:9};
@@ -30,18 +34,18 @@ const seeds = [
 export const orders = selectApprovedOrders(seeds.map(o => ({...customers[o.customerIndex],...o,amount:money(o.items.reduce((sum,item)=>sum+item.quantity*item.unitPrice,0)),qty:o.quantities.map(q=>q??"—").join(" / ")+" pcs",credit:o.customerIndex===1?"On hold":"Released",updated:"20 Oct, 2026 · 14:32",approve:"Approved",system:"SAP Sync Success",incoterm:"DAP",remark:"Demo only — confirm delivery arrangements with the receiving team."})));
 
 const deliverySeeds = [
-  {dn:"DN-601842",progress:"Outbound",warehouse:"NL-Rotterdam DC",carrier:"DHL Freight",pickup:"20 Oct, 2026",ssd:"21 Oct, 2026",sad:"30 Oct, 2026",shipped:true,received:false,sn:true,pod:false,invoice:false},
-  {dn:"DN-601857",progress:"DN created",warehouse:"NL-Rotterdam DC",carrier:"Kuehne + Nagel",pickup:"24 Oct, 2026",ssd:"24 Oct, 2026",sad:"1 Nov, 2026",shipped:false,received:false,sn:false,pod:false,invoice:false},
-  {dn:"DN-601866",progress:"DN created",warehouse:"NL-Rotterdam DC",carrier:"Pending assignment",pickup:null,ssd:null,sad:null,shipped:false,received:false,sn:false,pod:false,invoice:false},
-  {dn:"DN-601721",progress:"Truck management",warehouse:"IT-Milano Hub",carrier:"DSV Road",pickup:"23 Oct, 2026",ssd:"24 Oct, 2026",sad:"27 Oct, 2026",shipped:false,received:false,sn:false,pod:false,invoice:false},
-  {dn:"DN-601655",progress:"Received (POD)",warehouse:"FR-Lyon WH",carrier:"GEODIS",pickup:"17 Oct, 2026",ssd:"18 Oct, 2026",sad:"22 Oct, 2026",shipped:true,received:true,sn:true,pod:true,invoice:false},
-  {dn:"DN-601661",progress:"Received (POD)",warehouse:"FR-Lyon WH",carrier:"GEODIS",pickup:"18 Oct, 2026",ssd:"19 Oct, 2026",sad:"23 Oct, 2026",shipped:true,received:true,sn:true,pod:true,invoice:false},
+  {dn:"DN-601842",progress:"To Be Received",warehouse:"NL-Rotterdam DC",carrier:"DHL Freight",pickup:"20 Oct, 2026",ssd:"21 Oct, 2026",sad:"30 Oct, 2026",shipped:true,received:false,sn:true,pod:false,invoice:false},
+  {dn:"DN-601857",progress:"Created",warehouse:"NL-Rotterdam DC",carrier:"Kuehne + Nagel",pickup:"24 Oct, 2026",ssd:"24 Oct, 2026",sad:"1 Nov, 2026",shipped:false,received:false,sn:false,pod:false,invoice:false},
+  {dn:"DN-601866",progress:"Created",warehouse:"NL-Rotterdam DC",carrier:"Pending assignment",pickup:null,ssd:null,sad:null,shipped:false,received:false,sn:false,pod:false,invoice:false},
+  {dn:"DN-601721",progress:"Created",warehouse:"IT-Milano Hub",carrier:"DSV Road",pickup:"23 Oct, 2026",ssd:"24 Oct, 2026",sad:"27 Oct, 2026",shipped:false,received:false,sn:false,pod:false,invoice:false},
+  {dn:"DN-601655",progress:"Received",warehouse:"FR-Lyon WH",carrier:"GEODIS",pickup:"17 Oct, 2026",ssd:"18 Oct, 2026",sad:"22 Oct, 2026",shipped:true,received:true,sn:true,pod:true,invoice:false},
+  {dn:"DN-601661",progress:"Received",warehouse:"FR-Lyon WH",carrier:"GEODIS",pickup:"18 Oct, 2026",ssd:"19 Oct, 2026",sad:"23 Oct, 2026",shipped:true,received:true,sn:true,pod:true,invoice:false},
   ...["DN-601512","DN-601519","DN-601530"].map((dn,i)=>({dn,progress:"Invoiced",warehouse:"ES-Valencia DC",carrier:"XPO Logistics",pickup:"15 Oct, 2026",ssd:"16 Oct, 2026",sad:i?"22 Oct, 2026":"21 Oct, 2026",shipped:true,received:true,sn:true,pod:true,invoice:true})),
-  {dn:"DN-601700",progress:"Truck management",warehouse:"IT-Milano Hub",carrier:"DSV Road",pickup:"24 Oct, 2026",ssd:"25 Oct, 2026",sad:"28 Oct, 2026",shipped:false,received:false,sn:false,pod:false,invoice:false},
-  {dn:"DN-601640",progress:"Outbound",warehouse:"FR-Lyon WH",carrier:"GEODIS",pickup:"18 Oct, 2026",ssd:"19 Oct, 2026",sad:"24 Oct, 2026",shipped:true,received:false,sn:true,pod:false,invoice:false},
-  ...["DN-601500","DN-601501"].map((dn,i)=>({dn,progress:i?"Received (POD)":"Invoiced",warehouse:"ES-Valencia DC",carrier:"XPO Logistics",pickup:"15 Oct, 2026",ssd:"16 Oct, 2026",sad:"21 Oct, 2026",shipped:true,received:true,sn:true,pod:true,invoice:!i}))
+  {dn:"DN-601700",progress:"Created",warehouse:"IT-Milano Hub",carrier:"DSV Road",pickup:"24 Oct, 2026",ssd:"25 Oct, 2026",sad:"28 Oct, 2026",shipped:false,received:false,sn:false,pod:false,invoice:false},
+  {dn:"DN-601640",progress:"To Be Received",warehouse:"FR-Lyon WH",carrier:"GEODIS",pickup:"18 Oct, 2026",ssd:"19 Oct, 2026",sad:"24 Oct, 2026",shipped:true,received:false,sn:true,pod:false,invoice:false},
+  ...["DN-601500","DN-601501"].map((dn,i)=>({dn,progress:i?"Received":"Invoiced",warehouse:"ES-Valencia DC",carrier:"XPO Logistics",pickup:"15 Oct, 2026",ssd:"16 Oct, 2026",sad:"21 Oct, 2026",shipped:true,received:true,sn:true,pod:true,invoice:!i}))
 ];
-export const deliveries = deliverySeeds.filter(d=>orders.some(o=>o.dns.includes(d.dn))).map(d => {
+export const deliveries = selectApprovedDeliveries(deliverySeeds.map(d=>({approve:"Approved",...d,so:orders.find(o=>o.dns.includes(d.dn))?.so})),orders).map(d => {
   const o=orders.find(o=>o.dns.includes(d.dn));
   // Explicit demo batches; products/quantities are DN-level, not copied as SO totals.
   const index=o.dns.indexOf(d.dn), split=o.dns.length;
@@ -61,18 +65,19 @@ export const getOrderDeliveries = order => order.dns.map(dn=>deliveries.find(d=>
 // Preserve each DN, even when dates repeat; never collapse them to the first arrival.
 export const getOrderArrivals = order => getOrderDeliveries(order).map(({dn,sad})=>({dn,sad}));
 export function documentAvailability(delivery,type){
+  if(!selectApprovedDeliveries([delivery],orders).length)return {ready:false,reason:"Only Approved deliveries belonging to an Approved order are available."};
   const reached=type==="sn"?delivery.shipped:delivery.received;
   if(!reached)return {ready:false,reason:"The required milestone has not been reached yet."};
   if(!delivery[type])return {ready:false,reason:"The file is not available yet. Please try again later."};
   return {ready:true,reason:""};
 }
-export const orderExportHeaders=["SO","Company Name","Customer Code","Partner Code","Country","Order Date","CRD","Scheduled Arrival Time (SAD)","Order Progress","Products","Ordered / Allocated / Shipped","Delivery Number","Total Amount","Credit","Sales Rep.","Updated"];
+export const orderExportHeaders=["SO","Company Name","Customer Code","Partner Code","Country","Order Date","CRD","Scheduled Arrival Date (SAD)","Order Progress","Products","Ordered / Allocated / Shipped","Delivery Number","Total Amount","Credit","Sales Rep.","Updated"];
 export const orderExportRow=o=>[o.so,o.customer,o.code,o.partner,o.country,o.orderDate,o.crd,getOrderArrivals(o).map(d=>`${d.dn}: ${d.sad??"To be confirmed"}`).join(" | ")||"To be confirmed",progressLabel(o.progress),o.items.map(i=>`${i.product} (${i.sku})`).join(" | "),o.qty,o.dns.join(" | "),o.amount,o.credit,o.rep,o.updated];
 
 // A DN has one record in the overview; export is DN × product-line to preserve logistics fields.
 export const deliveryHeaderFields=[
   ["code","Customer Code"],["company","Company Name"],["partner","Partner Code"],["so","SO"],["dn","DN"],["progress","Delivery Progress"],
-  ["warehouse","Warehouse"],["carrier","Carrier"],["pickup","Pickup Date"],["crd","CRD"],["ssd","SSD"],["sad","Scheduled Arrival Time (SAD)"],
+  ["warehouse","Warehouse"],["carrier","Carrier"],["pickup","Pickup Date"],["crd","CRD"],["ssd","SSD"],["sad","Scheduled Arrival Date (SAD)"],
   ["creator","Creator"],["createTime","Create Time"],["shippingType","Shipping Type"],["deliveryType","Delivery Type"],["incoterm","Incoterm"],
   ["pickupTime","Pickup Time"],["truckNo","Truck No."],["actualPickupDate","Actual Pickup Date"],["shipmentNo","Shipment No."],["consignorOrderNo","Consignor Order No."],
   ["warehouseContact","Warehouse Contact Person"],["warehouseEmail","Warehouse Contact E-mail"],

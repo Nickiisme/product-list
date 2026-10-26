@@ -13,21 +13,17 @@
 .scroll table th:last-child{z-index:5;background:#e0e4f2}
 .scroll table tbody tr:hover td:last-child{background:#f7f9ff}
 
-/* Delivery document actions form one fixed group; only its outer edge casts a shadow. */
-.scroll .delivery-table{--document-action-width:120px}
-.scroll .delivery-table th:nth-last-child(-n+3),.scroll .delivery-table td:nth-last-child(-n+3){position:sticky;width:var(--document-action-width);min-width:var(--document-action-width);max-width:var(--document-action-width);z-index:3;background:#fff}
-.scroll .delivery-table th:nth-last-child(-n+3){z-index:5;background:#e0e4f2}
-.scroll .delivery-table th:nth-last-child(2),.scroll .delivery-table td:nth-last-child(2){right:var(--document-action-width)}
-.scroll .delivery-table th:nth-last-child(3),.scroll .delivery-table td:nth-last-child(3){right:calc(2 * var(--document-action-width))}
-.scroll .delivery-table th:last-child::before,.scroll .delivery-table td:last-child::before{content:none}
-.scroll .delivery-table th:nth-last-child(3)::before,.scroll .delivery-table td:nth-last-child(3)::before{content:"";position:absolute;top:0;bottom:-1px;left:0;width:18px;transform:translateX(-100%);pointer-events:none;box-shadow:inset -10px 0 10px -8px rgba(48,55,68,.26)}
-.scroll .delivery-table tbody tr:hover td:nth-last-child(-n+3){background:#f7f9ff}
+/* Files scroll with data; only the final Operation column is fixed with the shared edge shadow. */
+.scroll .delivery-table th:last-child,.scroll .delivery-table td:last-child{min-width:120px;width:120px;white-space:nowrap}
+.delivery-files{min-width:260px}
+.delivery-file-links{display:flex;align-items:center;gap:18px;white-space:nowrap}
+.delivery-file-links .link{min-height:24px}
 .delivery-table .link:disabled{color:#a0a6b1;cursor:not-allowed}
 
 /* Order summaries keep products and each DN's arrival readable without losing data. */
 .order-table{min-width:2780px}
 .scroll{scroll-padding-right:130px;scroll-padding-left:12px}
-.scroll:has(.delivery-table){scroll-padding-right:380px}
+.scroll:has(.delivery-table){scroll-padding-right:140px}
 .order-table .show-more{scroll-margin-right:130px}
 .arrival-list,.product-preview{display:flex;flex-direction:column;gap:8px;min-width:175px}
 .arrival-list small{margin-top:3px;font-size:11px;font-weight:400;color:var(--muted)}
@@ -84,6 +80,12 @@
 .delivery-identity>div>span{font-size:12px;color:#596579}
 .document-downloads{display:flex;gap:36px;flex-wrap:wrap}
 .document-downloads>div{display:flex;gap:14px;align-items:center;font-size:12px}
+.delivery-drawer>header{display:grid;grid-template-columns:minmax(0,1fr) auto;height:auto;min-height:112px;align-items:start;padding-top:14px;padding-bottom:14px;gap:12px 20px}
+.delivery-header-main{min-width:0}
+.delivery-drawer .header-documents{grid-column:1/-1;gap:10px 26px}
+.delivery-drawer .header-documents>div{gap:7px}
+.delivery-drawer>header .header-documents button.link{height:auto;padding:0;border:0;background:none;color:#3562ff}
+.delivery-drawer>header .header-documents button.link:disabled{color:#a0a6b1}
 .logistics-table{min-width:2350px}
 .logistics-table td,.logistics-table th{white-space:nowrap}
 .logistics-table td:nth-child(4),.logistics-table td:nth-child(15){white-space:normal;min-width:200px}

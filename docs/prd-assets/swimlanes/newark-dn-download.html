@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>DN 文件实时校验与下载</title><style>
+body{margin:0;background:#f3f4f6;font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",Helvetica,Arial,sans-serif;color:#1f2937}
+main{padding:24px;width:max-content;min-width:calc(100vw - 48px);box-sizing:border-box}
+.diagram{background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);display:inline-block}
+svg text{font-family:inherit;fill:#111827}
+.lane-bg.odd{fill:#fafafa}.lane-bg.even{fill:#ffffff}
+.lane-sep{stroke:#d1d5db;stroke-width:1}
+.lane-header{fill:#eef2f7}
+.lane-label{font-weight:600;fill:#374151}
+.node-action rect{fill:#ffffff;stroke:#374151;stroke-width:1.8}
+.node-decision polygon{fill:#fff7ed;stroke:#c2410c;stroke-width:1.4}
+.node-start circle{fill:#111827;stroke:#111827}
+.node-end .outer{fill:#fff;stroke:#111827;stroke-width:2}.node-end .inner{fill:#111827}
+.node-fork rect,.node-join rect{fill:#111827}
+.caption{fill:#4b5563}
+.edge path{fill:none;stroke:#0284C7;stroke-width:1.5}
+.edge-back path{stroke-dasharray:5 3}
+.edge .edge-hit{stroke:transparent;stroke-width:14;stroke-dasharray:none;pointer-events:stroke}
+.edge-label-bg{fill:#fff;stroke:#e5e7eb;stroke-width:.8}
+.edge-label{fill:#1f2937}
+.title{font-size:20px;font-weight:700}
+.annotation-box{fill:#fffbea;stroke:#b49b50;stroke-width:1}
+.annotation-link{fill:none;stroke:#9a8549;stroke-width:1;stroke-dasharray:3 4}
+.annotation-kind{fill:#806b32;font-weight:600}
+
+button{font:inherit;cursor:pointer;padding:8px 16px;border:1px solid #cbd5e1;border-radius:6px;background:#fff}
+button:disabled{cursor:wait;opacity:.6}
+.toolbar{margin-bottom:16px;position:sticky;left:24px;width:max-content}
+@media print{.toolbar{display:none}}
+/* Revision-prompt picker: page-only styles, never serialized into the PNG. */
+[data-prompt]{cursor:pointer}
+.picked{filter:drop-shadow(0 0 4px #f59e0b) drop-shadow(0 0 1px #f59e0b)}
+.prompt-panel{position:absolute;z-index:10;width:420px;max-width:calc(100vw - 48px);padding:10px 12px;background:#fff;border:1px solid #cbd5e1;border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.14)}
+.prompt-panel[hidden]{display:none}
+.prompt-head{display:flex;justify-content:flex-end;margin-bottom:6px}
+.prompt-copy{padding:4px;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;color:#374151}
+.prompt-copy svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.prompt-copy .icon-done{display:none;color:#15803d}
+.prompt-copy.done .icon-copy{display:none}.prompt-copy.done .icon-done{display:block}
+.prompt-panel textarea{display:block;width:100%;box-sizing:border-box;min-height:132px;resize:vertical;font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;color:#1f2937;border:1px solid #e5e7eb;border-radius:6px;padding:8px;background:#f9fafb}
+
+</style></head><body><main><div class="toolbar"><button id="export-png" type="button" data-filename="newark-dn-download.png">导出 PNG</button></div><div class="diagram"><svg xmlns="http://www.w3.org/2000/svg" width="2690" height="672" viewBox="0 0 2690 672" role="img" aria-label="DN 文件实时校验与下载"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#0284C7"/></marker></defs><style>svg{font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",Helvetica,Arial,sans-serif}svg text{font-family:inherit;fill:#111827}
+.lane-bg.odd{fill:#fafafa}.lane-bg.even{fill:#ffffff}
+.lane-sep{stroke:#d1d5db;stroke-width:1}
+.lane-header{fill:#eef2f7}
+.lane-label{font-weight:600;fill:#374151}
+.node-action rect{fill:#ffffff;stroke:#374151;stroke-width:1.8}
+.node-decision polygon{fill:#fff7ed;stroke:#c2410c;stroke-width:1.4}
+.node-start circle{fill:#111827;stroke:#111827}
+.node-end .outer{fill:#fff;stroke:#111827;stroke-width:2}.node-end .inner{fill:#111827}
+.node-fork rect,.node-join rect{fill:#111827}
+.caption{fill:#4b5563}
+.edge path{fill:none;stroke:#0284C7;stroke-width:1.5}
+.edge-back path{stroke-dasharray:5 3}
+.edge .edge-hit{stroke:transparent;stroke-width:14;stroke-dasharray:none;pointer-events:stroke}
+.edge-label-bg{fill:#fff;stroke:#e5e7eb;stroke-width:.8}
+.edge-label{fill:#1f2937}
+.title{font-size:20px;font-weight:700}
+.annotation-box{fill:#fffbea;stroke:#b49b50;stroke-width:1}
+.annotation-link{fill:none;stroke:#9a8549;stroke-width:1;stroke-dasharray:3 4}
+.annotation-kind{fill:#806b32;font-weight:600}
+
+</style><text class="title" x="24" y="32">DN 文件实时校验与下载</text><rect class="lane-bg even" x="0" y="56" width="2690" height="236"/><g class="lane" data-lane="user" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：泳道 `user`（「用户」）&#10;&#10;我想要："><rect class="lane-header" x="0" y="56" width="150" height="236"/><text class="lane-label" x="75.0" y="174.0" font-size="13" text-anchor="middle" dominant-baseline="middle"><tspan x="75.0" dy="0">用户</tspan></text></g><line class="lane-sep" x1="0" y1="56" x2="2690" y2="56"/><rect class="lane-bg odd" x="0" y="292" width="2690" height="236"/><g class="lane" data-lane="portal" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：泳道 `portal`（「Partner Portal」）&#10;&#10;我想要："><rect class="lane-header" x="0" y="292" width="150" height="236"/><text class="lane-label" x="75.0" y="410.0" font-size="13" text-anchor="middle" dominant-baseline="middle"><tspan x="75.0" dy="0">Partner Portal</tspan></text></g><line class="lane-sep" x1="0" y1="292" x2="2690" y2="292"/><rect class="lane-bg even" x="0" y="528" width="2690" height="128"/><g class="lane" data-lane="ark" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：泳道 `ark`（「新方舟 NEW ARK」）&#10;&#10;我想要："><rect class="lane-header" x="0" y="528" width="150" height="128"/><text class="lane-label" x="75.0" y="592.0" font-size="13" text-anchor="middle" dominant-baseline="middle"><tspan x="75.0" dy="0">新方舟 NEW ARK</tspan></text></g><line class="lane-sep" x1="0" y1="528" x2="2690" y2="528"/><line class="lane-sep" x1="0" y1="656" x2="2690" y2="656"/><line class="lane-sep" x1="150" y1="56" x2="150" y2="656"/><g class="edge" id="edge-f_click" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_click`（「点击可用文件入口」 → 「提交当前DN与文件类型」）&#10;&#10;我想要："><title>f_click</title><path d="M 283.0,120.0 L 299.0,120.0 L 299.0,356.0 L 420.0,356.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 283.0,120.0 L 299.0,120.0 L 299.0,356.0 L 420.0,356.0"/><defs><circle id="origin-f_click" cx="283.0" cy="120.0" r="3" fill="#0284C7" stroke="none"/></defs></g><g class="edge" id="edge-f_request" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_request`（「提交当前DN与文件类型」 → 「校验归属、Approved及权限」）&#10;&#10;我想要："><title>f_request</title><path d="M 570.0,356.0 L 586.0,356.0 L 586.0,592.0 L 650.0,592.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 570.0,356.0 L 586.0,356.0 L 586.0,592.0 L 650.0,592.0"/><defs><circle id="origin-f_request" cx="570.0" cy="356.0" r="3" fill="#0284C7" stroke="none"/></defs></g><g class="edge" id="edge-f_authorized" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_authorized`（「校验归属、Approved及权限」 → 「校验通过？」）&#10;&#10;我想要："><title>f_authorized</title><path d="M 800.0,592.0 L 880.0,592.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 800.0,592.0 L 880.0,592.0"/><defs><circle id="origin-f_authorized" cx="800.0" cy="592.0" r="3" fill="#0284C7" stroke="none"/></defs></g><g class="edge" id="edge-f_permission_yes" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_permission_yes`（「校验通过？」 → 「核验当前DN业务节点」，条件「客户归属、父SO审批及文件权限均通过」）&#10;&#10;我想要："><title>客户归属、父SO审批及文件权限均通过</title><path d="M 1030.0,592.0 L 1110.0,592.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 1030.0,592.0 L 1110.0,592.0"/><defs><circle id="origin-f_permission_yes" cx="1030.0" cy="592.0" r="3" fill="#0284C7" stroke="none"/></defs><rect class="edge-label-bg" x="1052.6" y="582.5" width="34.8" height="19" rx="3"/><text class="edge-label" x="1070.0" y="592.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="1070.0" dy="0">通过</tspan></text></g><g class="edge" id="edge-f_permission_no" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_permission_no`（「校验通过？」 → 「提示文件访问受限」，条件「任一准入或权限校验未通过」）&#10;&#10;我想要："><title>任一准入或权限校验未通过</title><path d="M 1030.0,592.0 L 1058.0,592.0 L 1058.0,356.0 L 1110.0,356.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 1030.0,592.0 L 1058.0,592.0 L 1058.0,356.0 L 1110.0,356.0"/><defs><circle id="origin-f_permission_no" cx="1030.0" cy="592.0" r="3" fill="#0284C7" stroke="none"/></defs><rect class="edge-label-bg" x="1034.4" y="464.5" width="47.2" height="19" rx="3"/><text class="edge-label" x="1058.0" y="474.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="1058.0" dy="0">未通过</tspan></text></g><g class="edge" id="edge-f_denied" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_denied`（「提示文件访问受限」 → 「下载被拒绝」）&#10;&#10;我想要："><title>f_denied</title><path d="M 1260.0,356.0 L 1276.0,356.0 L 1276.0,120.0 L 1395.0,120.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 1260.0,356.0 L 1276.0,356.0 L 1276.0,120.0 L 1395.0,120.0"/><defs><circle id="origin-f_denied" cx="1260.0" cy="356.0" r="3" fill="#0284C7" stroke="none"/></defs></g><g class="edge" id="edge-f_check" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_check`（「核验当前DN业务节点」 → 「达到下载节点？」）&#10;&#10;我想要："><title>f_check</title><path d="M 1260.0,592.0 L 1340.0,592.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 1260.0,592.0 L 1340.0,592.0"/><defs><circle id="origin-f_check" cx="1260.0" cy="592.0" r="3" fill="#0284C7" stroke="none"/></defs></g><g class="edge" id="edge-f_milestone_yes" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_milestone_yes`（「达到下载节点？」 → 「请求对应独立文件接口」，条件「报告已发货；发票已收货；POD符合源签收条件」）&#10;&#10;我想要："><title>报告已发货；发票已收货；POD符合源签收条件</title><path d="M 1490.0,592.0 L 1570.0,592.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 1490.0,592.0 L 1570.0,592.0"/><defs><circle id="origin-f_milestone_yes" cx="1490.0" cy="592.0" r="3" fill="#0284C7" stroke="none"/></defs><rect class="edge-label-bg" x="1506.4" y="582.5" width="47.2" height="19" rx="3"/><text class="edge-label" x="1530.0" y="592.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="1530.0" dy="0">已达到</tspan></text></g><g class="edge" id="edge-f_milestone_no" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_milestone_no`（「达到下载节点？」 → 「置灰并提示未到节点」，条件「当前DN尚未达到对应文件最低业务节点」）&#10;&#10;我想要："><title>当前DN尚未达到对应文件最低业务节点</title><path d="M 1490.0,592.0 L 1518.0,592.0 L 1518.0,356.0 L 1570.0,356.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 1490.0,592.0 L 1518.0,592.0 L 1518.0,356.0 L 1570.0,356.0"/><defs><circle id="origin-f_milestone_no" cx="1490.0" cy="592.0" r="3" fill="#0284C7" stroke="none"/></defs><rect class="edge-label-bg" x="1494.4" y="464.5" width="47.2" height="19" rx="3"/><text class="edge-label" x="1518.0" y="474.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="1518.0" dy="0">未达到</tspan></text></g><g class="edge" id="edge-f_wait_node" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_wait_node`（「置灰并提示未到节点」 → 「等待业务节点」）&#10;&#10;我想要："><title>f_wait_node</title><path d="M 1720.0,356.0 L 1736.0,356.0 L 1736.0,120.0 L 1855.0,120.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 1720.0,356.0 L 1736.0,356.0 L 1736.0,120.0 L 1855.0,120.0"/><defs><circle id="origin-f_wait_node" cx="1720.0" cy="356.0" r="3" fill="#0284C7" stroke="none"/></defs></g><g class="edge" id="edge-f_file_result" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_file_result`（「请求对应独立文件接口」 → 「文件请求结果？」）&#10;&#10;我想要："><title>f_file_result</title><path d="M 1720.0,592.0 L 1800.0,592.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 1720.0,592.0 L 1800.0,592.0"/><defs><circle id="origin-f_file_result" cx="1720.0" cy="592.0" r="3" fill="#0284C7" stroke="none"/></defs></g><g class="edge" id="edge-f_ready" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_ready`（「文件请求结果？」 → 「返回文件或受控地址」，条件「请求成功且当前DN文件就绪」）&#10;&#10;我想要："><title>请求成功且当前DN文件就绪</title><path d="M 1950.0,592.0 L 2030.0,592.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 1950.0,592.0 L 2030.0,592.0"/><defs><circle id="origin-f_ready" cx="1950.0" cy="592.0" r="3" fill="#0284C7" stroke="none"/></defs><rect class="edge-label-bg" x="1966.4" y="582.5" width="47.2" height="19" rx="3"/><text class="edge-label" x="1990.0" y="592.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="1990.0" dy="0">已就绪</tspan></text></g><g class="edge" id="edge-f_not_ready" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_not_ready`（「文件请求结果？」 → 「置灰并提示文件未就绪」，条件「请求成功但当前DN文件未就绪」）&#10;&#10;我想要："><title>请求成功但当前DN文件未就绪</title><path d="M 1950.0,592.0 L 1978.0,592.0 L 1978.0,356.0 L 2030.0,356.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 1950.0,592.0 L 1978.0,592.0 L 1978.0,356.0 L 2030.0,356.0"/><defs><circle id="origin-f_not_ready" cx="1950.0" cy="592.0" r="3" fill="#0284C7" stroke="none"/></defs><rect class="edge-label-bg" x="1954.4" y="464.5" width="47.2" height="19" rx="3"/><text class="edge-label" x="1978.0" y="474.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="1978.0" dy="0">未就绪</tspan></text></g><g class="edge" id="edge-f_failed" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_failed`（「文件请求结果？」 → 「提示文件请求失败」，条件「接口请求失败」）&#10;&#10;我想要："><title>接口请求失败</title><path d="M 1950.0,592.0 L 1990.0,592.0 L 1990.0,464.0 L 2030.0,464.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 1950.0,592.0 L 1990.0,592.0 L 1990.0,464.0 L 2030.0,464.0"/><defs><circle id="origin-f_failed" cx="1950.0" cy="592.0" r="3" fill="#0284C7" stroke="none"/></defs><rect class="edge-label-bg" x="1960.2" y="518.5" width="59.6" height="19" rx="3"/><text class="edge-label" x="1990.0" y="528.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="1990.0" dy="0">请求失败</tspan></text></g><g class="edge" id="edge-f_return" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_return`（「返回文件或受控地址」 → 「发起当前文件下载」）&#10;&#10;我想要："><title>f_return</title><path d="M 2180.0,592.0 L 2196.0,592.0 L 2196.0,356.0 L 2260.0,356.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 2180.0,592.0 L 2196.0,592.0 L 2196.0,356.0 L 2260.0,356.0"/><defs><circle id="origin-f_return" cx="2180.0" cy="592.0" r="3" fill="#0284C7" stroke="none"/></defs></g><g class="edge" id="edge-f_download" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_download`（「发起当前文件下载」 → 「文件下载已发起」）&#10;&#10;我想要："><title>f_download</title><path d="M 2410.0,356.0 L 2426.0,356.0 L 2426.0,120.0 L 2545.0,120.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 2410.0,356.0 L 2426.0,356.0 L 2426.0,120.0 L 2545.0,120.0"/><defs><circle id="origin-f_download" cx="2410.0" cy="356.0" r="3" fill="#0284C7" stroke="none"/></defs></g><g class="edge" id="edge-f_wait_file" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_wait_file`（「置灰并提示文件未就绪」 → 「等待文件就绪」）&#10;&#10;我想要："><title>f_wait_file</title><path d="M 2180.0,356.0 L 2208.0,356.0 L 2208.0,120.0 L 2315.0,120.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 2180.0,356.0 L 2208.0,356.0 L 2208.0,120.0 L 2315.0,120.0"/><defs><circle id="origin-f_wait_file" cx="2180.0" cy="356.0" r="3" fill="#0284C7" stroke="none"/></defs></g><g class="edge" id="edge-f_retry_choice" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_retry_choice`（「提示文件请求失败」 → 「重试下载？」）&#10;&#10;我想要："><title>f_retry_choice</title><path d="M 2180.0,464.0 L 2220.0,464.0 L 2220.0,228.0 L 2260.0,228.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 2180.0,464.0 L 2220.0,464.0 L 2220.0,228.0 L 2260.0,228.0"/><defs><circle id="origin-f_retry_choice" cx="2180.0" cy="464.0" r="3" fill="#0284C7" stroke="none"/></defs></g><g class="edge edge-back" id="edge-f_retry_yes" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_retry_yes`（「重试下载？」 → 「提交当前DN与文件类型」，条件「用户选择重试」）&#10;&#10;我想要："><title>用户选择重试</title><path d="M 2335.0,270.0 L 2335.0,282.0 L 467.0,282.0 L 467.0,326.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 2335.0,270.0 L 2335.0,282.0 L 467.0,282.0 L 467.0,326.0"/><defs><circle id="origin-f_retry_yes" cx="2335.0" cy="270.0" r="3" fill="#0284C7" stroke="none"/></defs><rect class="edge-label-bg" x="1389.8" y="272.5" width="22.4" height="19" rx="3"/><text class="edge-label" x="1401.0" y="282.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="1401.0" dy="0">是</tspan></text></g><g class="edge" id="edge-f_retry_no" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：连线 `f_retry_no`（「重试下载？」 → 「结束本次下载」，条件「用户结束本次下载」）&#10;&#10;我想要："><title>用户结束本次下载</title><path d="M 2410.0,228.0 L 2545.0,228.0" marker-end="url(#arrow)"/><path class="edge-hit" d="M 2410.0,228.0 L 2545.0,228.0"/><defs><circle id="origin-f_retry_no" cx="2410.0" cy="228.0" r="3" fill="#0284C7" stroke="none"/></defs><rect class="edge-label-bg" x="2466.3" y="218.5" width="22.4" height="19" rx="3"/><text class="edge-label" x="2477.5" y="228.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="2477.5" dy="0">否</tspan></text></g><g class="node node-start" id="node-click_download" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `click_download`（开始，label「点击可用文件入口」，泳道「用户」）&#10;上游：无；下游：「提交当前DN与文件类型」&#10;&#10;我想要："><title>点击可用文件入口</title><circle cx="265.0" cy="120.0" r="18.0"/><text class="caption" x="265.0" y="150.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="265.0" dy="0">点击可用文件入口</tspan></text></g><g class="node node-action" id="node-request_file" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `request_file`（动作，label「提交当前DN与文件类型」，泳道「Partner Portal」）&#10;上游：「点击可用文件入口」、「重试下载？」（用户选择重试）；下游：「校验归属、Approved及权限」&#10;&#10;我想要："><title>提交当前DN与文件类型</title><rect x="420.0" y="326.0" width="150" height="60" rx="6"/><text class="" x="495.0" y="356.0" font-size="13" text-anchor="middle" dominant-baseline="middle"><tspan x="495.0" dy="0">提交当前DN与文件类型</tspan></text></g><g class="node node-action" id="node-authorize_file" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `authorize_file`（动作，label「校验归属、Approved及权限」，泳道「新方舟 NEW ARK」）&#10;上游：「提交当前DN与文件类型」；下游：「校验通过？」&#10;&#10;我想要："><title>校验归属、Approved及权限</title><rect x="650.0" y="562.0" width="150" height="60" rx="6"/><text class="" x="725.0" y="583.5" font-size="13" text-anchor="middle" dominant-baseline="middle"><tspan x="725.0" dy="0">校验归属、Approved及</tspan><tspan x="725.0" dy="17">权限</tspan></text></g><g class="node node-decision" id="node-permission_ok" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `permission_ok`（决策，label「校验通过？」，泳道「新方舟 NEW ARK」）&#10;上游：「校验归属、Approved及权限」；下游：「核验当前DN业务节点」（客户归属、父SO审批及文件权限均通过）、「提示文件访问受限」（任一准入或权限校验未通过）&#10;&#10;我想要："><title>校验通过？</title><polygon points="955.0,550.0 1030.0,592.0 955.0,634.0 880.0,592.0"/><text class="" x="955.0" y="592.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="955.0" dy="0">校验通过？</tspan></text></g><g class="node node-action" id="node-deny_file" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `deny_file`（动作，label「提示文件访问受限」，泳道「Partner Portal」）&#10;上游：「校验通过？」（任一准入或权限校验未通过）；下游：「下载被拒绝」&#10;&#10;我想要："><title>提示文件访问受限</title><rect x="1110.0" y="326.0" width="150" height="60" rx="6"/><text class="" x="1185.0" y="356.0" font-size="13" text-anchor="middle" dominant-baseline="middle"><tspan x="1185.0" dy="0">提示文件访问受限</tspan></text></g><g class="node node-end" id="node-denied" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `denied`（结束，label「下载被拒绝」，泳道「用户」）&#10;上游：「提示文件访问受限」；下游：无&#10;&#10;我想要："><title>下载被拒绝</title><circle class="outer" cx="1415.0" cy="120.0" r="20.0"/><circle class="inner" cx="1415.0" cy="120.0" r="14.0"/><text class="caption" x="1415.0" y="152.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="1415.0" dy="0">下载被拒绝</tspan></text></g><g class="node node-action" id="node-check_milestone" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `check_milestone`（动作，label「核验当前DN业务节点」，泳道「新方舟 NEW ARK」）&#10;上游：「校验通过？」（客户归属、父SO审批及文件权限均通过）；下游：「达到下载节点？」&#10;&#10;我想要："><title>核验当前DN业务节点</title><rect x="1110.0" y="562.0" width="150" height="60" rx="6"/><text class="" x="1185.0" y="592.0" font-size="13" text-anchor="middle" dominant-baseline="middle"><tspan x="1185.0" dy="0">核验当前DN业务节点</tspan></text></g><g class="node node-decision" id="node-milestone_ok" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `milestone_ok`（决策，label「达到下载节点？」，泳道「新方舟 NEW ARK」）&#10;上游：「核验当前DN业务节点」；下游：「请求对应独立文件接口」（报告已发货；发票已收货；POD符合源签收条件）、「置灰并提示未到节点」（当前DN尚未达到对应文件最低业务节点）&#10;&#10;我想要："><title>达到下载节点？</title><polygon points="1415.0,550.0 1490.0,592.0 1415.0,634.0 1340.0,592.0"/><text class="" x="1415.0" y="592.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="1415.0" dy="0">达到下载节点？</tspan></text></g><g class="node node-action" id="node-milestone_wait" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `milestone_wait`（动作，label「置灰并提示未到节点」，泳道「Partner Portal」）&#10;上游：「达到下载节点？」（当前DN尚未达到对应文件最低业务节点）；下游：「等待业务节点」&#10;&#10;我想要："><title>置灰并提示未到节点</title><rect x="1570.0" y="326.0" width="150" height="60" rx="6"/><text class="" x="1645.0" y="356.0" font-size="13" text-anchor="middle" dominant-baseline="middle"><tspan x="1645.0" dy="0">置灰并提示未到节点</tspan></text></g><g class="node node-end" id="node-milestone_pending" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `milestone_pending`（结束，label「等待业务节点」，泳道「用户」）&#10;上游：「置灰并提示未到节点」；下游：无&#10;&#10;我想要："><title>等待业务节点</title><circle class="outer" cx="1875.0" cy="120.0" r="20.0"/><circle class="inner" cx="1875.0" cy="120.0" r="14.0"/><text class="caption" x="1875.0" y="152.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="1875.0" dy="0">等待业务节点</tspan></text></g><g class="node node-action" id="node-get_file" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `get_file`（动作，label「请求对应独立文件接口」，泳道「新方舟 NEW ARK」）&#10;上游：「达到下载节点？」（报告已发货；发票已收货；POD符合源签收条件）；下游：「文件请求结果？」&#10;&#10;我想要："><title>请求对应独立文件接口</title><rect x="1570.0" y="562.0" width="150" height="60" rx="6"/><text class="" x="1645.0" y="592.0" font-size="13" text-anchor="middle" dominant-baseline="middle"><tspan x="1645.0" dy="0">请求对应独立文件接口</tspan></text></g><g class="node node-decision" id="node-file_result" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `file_result`（决策，label「文件请求结果？」，泳道「新方舟 NEW ARK」）&#10;上游：「请求对应独立文件接口」；下游：「返回文件或受控地址」（请求成功且当前DN文件就绪）、「置灰并提示文件未就绪」（请求成功但当前DN文件未就绪）、「提示文件请求失败」（接口请求失败）&#10;&#10;我想要："><title>文件请求结果？</title><polygon points="1875.0,550.0 1950.0,592.0 1875.0,634.0 1800.0,592.0"/><text class="" x="1875.0" y="592.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="1875.0" dy="0">文件请求结果？</tspan></text></g><g class="node node-action" id="node-return_file" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `return_file`（动作，label「返回文件或受控地址」，泳道「新方舟 NEW ARK」）&#10;上游：「文件请求结果？」（请求成功且当前DN文件就绪）；下游：「发起当前文件下载」&#10;&#10;我想要："><title>返回文件或受控地址</title><rect x="2030.0" y="562.0" width="150" height="60" rx="6"/><text class="" x="2105.0" y="592.0" font-size="13" text-anchor="middle" dominant-baseline="middle"><tspan x="2105.0" dy="0">返回文件或受控地址</tspan></text></g><g class="node node-action" id="node-save_file" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `save_file`（动作，label「发起当前文件下载」，泳道「Partner Portal」）&#10;上游：「返回文件或受控地址」；下游：「文件下载已发起」&#10;&#10;我想要："><title>发起当前文件下载</title><rect x="2260.0" y="326.0" width="150" height="60" rx="6"/><text class="" x="2335.0" y="356.0" font-size="13" text-anchor="middle" dominant-baseline="middle"><tspan x="2335.0" dy="0">发起当前文件下载</tspan></text></g><g class="node node-end" id="node-download_done" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `download_done`（结束，label「文件下载已发起」，泳道「用户」）&#10;上游：「发起当前文件下载」；下游：无&#10;&#10;我想要："><title>文件下载已发起</title><circle class="outer" cx="2565.0" cy="120.0" r="20.0"/><circle class="inner" cx="2565.0" cy="120.0" r="14.0"/><text class="caption" x="2565.0" y="152.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="2565.0" dy="0">文件下载已发起</tspan></text></g><g class="node node-action" id="node-file_wait" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `file_wait`（动作，label「置灰并提示文件未就绪」，泳道「Partner Portal」）&#10;上游：「文件请求结果？」（请求成功但当前DN文件未就绪）；下游：「等待文件就绪」&#10;&#10;我想要："><title>置灰并提示文件未就绪</title><rect x="2030.0" y="326.0" width="150" height="60" rx="6"/><text class="" x="2105.0" y="356.0" font-size="13" text-anchor="middle" dominant-baseline="middle"><tspan x="2105.0" dy="0">置灰并提示文件未就绪</tspan></text></g><g class="node node-end" id="node-file_pending" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `file_pending`（结束，label「等待文件就绪」，泳道「用户」）&#10;上游：「置灰并提示文件未就绪」；下游：无&#10;&#10;我想要："><title>等待文件就绪</title><circle class="outer" cx="2335.0" cy="120.0" r="20.0"/><circle class="inner" cx="2335.0" cy="120.0" r="14.0"/><text class="caption" x="2335.0" y="152.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="2335.0" dy="0">等待文件就绪</tspan></text></g><g class="node node-action" id="node-file_error" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `file_error`（动作，label「提示文件请求失败」，泳道「Partner Portal」）&#10;上游：「文件请求结果？」（接口请求失败）；下游：「重试下载？」&#10;&#10;我想要："><title>提示文件请求失败</title><rect x="2030.0" y="434.0" width="150" height="60" rx="6"/><text class="" x="2105.0" y="464.0" font-size="13" text-anchor="middle" dominant-baseline="middle"><tspan x="2105.0" dy="0">提示文件请求失败</tspan></text></g><g class="node node-decision" id="node-retry_file" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `retry_file`（决策，label「重试下载？」，泳道「用户」）&#10;上游：「提示文件请求失败」；下游：「提交当前DN与文件类型」（用户选择重试）、「结束本次下载」（用户结束本次下载）&#10;&#10;我想要："><title>重试下载？</title><polygon points="2335.0,186.0 2410.0,228.0 2335.0,270.0 2260.0,228.0"/><text class="" x="2335.0" y="228.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="2335.0" dy="0">重试下载？</tspan></text></g><g class="node node-end" id="node-download_cancelled" data-prompt="$swimlane-compiler 修改 newark-dn-download.json（DN 文件实时校验与下载）：&#10;目标：节点 `download_cancelled`（结束，label「结束本次下载」，泳道「用户」）&#10;上游：「重试下载？」（用户结束本次下载）；下游：无&#10;&#10;我想要："><title>结束本次下载</title><circle class="outer" cx="2565.0" cy="228.0" r="20.0"/><circle class="inner" cx="2565.0" cy="228.0" r="14.0"/><text class="caption" x="2565.0" y="260.0" font-size="11" text-anchor="middle" dominant-baseline="middle"><tspan x="2565.0" dy="0">结束本次下载</tspan></text></g><use class="edge-origin" href="#origin-f_click"/><use class="edge-origin" href="#origin-f_request"/><use class="edge-origin" href="#origin-f_authorized"/><use class="edge-origin" href="#origin-f_permission_yes"/><use class="edge-origin" href="#origin-f_permission_no"/><use class="edge-origin" href="#origin-f_denied"/><use class="edge-origin" href="#origin-f_check"/><use class="edge-origin" href="#origin-f_milestone_yes"/><use class="edge-origin" href="#origin-f_milestone_no"/><use class="edge-origin" href="#origin-f_wait_node"/><use class="edge-origin" href="#origin-f_file_result"/><use class="edge-origin" href="#origin-f_ready"/><use class="edge-origin" href="#origin-f_not_ready"/><use class="edge-origin" href="#origin-f_failed"/><use class="edge-origin" href="#origin-f_return"/><use class="edge-origin" href="#origin-f_download"/><use class="edge-origin" href="#origin-f_wait_file"/><use class="edge-origin" href="#origin-f_retry_choice"/><use class="edge-origin" href="#origin-f_retry_yes"/><use class="edge-origin" href="#origin-f_retry_no"/></svg></div><div id="prompt-panel" class="prompt-panel" hidden><div class="prompt-head"><button class="prompt-copy" type="button" aria-label="复制提示词" title="复制提示词"><svg class="icon-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 0 1 1-1h9"/></svg><svg class="icon-done" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 10 17.5 19 7"/></svg></button></div><textarea readonly spellcheck="false" aria-label="修改提示词"></textarea></div><script>
+const button = document.querySelector('#export-png');
+button.addEventListener('click', async () => {
+  button.disabled = true;
+  button.textContent = '正在导出…';
+  let svgUrl;
+  try {
+    await document.fonts.ready;
+    closePrompt();
+    const svg = document.querySelector('.diagram svg');
+    const {width, height} = svg.viewBox.baseVal;
+    const scale = Math.min(2, 16384 / width, 16384 / height,
+                           Math.sqrt(32000000 / (width * height)));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.floor(width * scale));
+    canvas.height = Math.max(1, Math.floor(height * scale));
+    const source = new XMLSerializer().serializeToString(svg);
+    svgUrl = URL.createObjectURL(new Blob([source], {type: 'image/svg+xml;charset=utf-8'}));
+    const img = new Image();
+    await new Promise((resolve, reject) => {
+      img.onload = resolve;
+      img.onerror = () => reject(new Error('无法读取泳道图'));
+      img.src = svgUrl;
+    });
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('浏览器无法创建图片画布');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const png = await new Promise((resolve, reject) =>
+      canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('PNG 编码失败')), 'image/png'));
+    const pngUrl = URL.createObjectURL(png);
+    const link = document.createElement('a');
+    link.href = pngUrl;
+    link.download = button.dataset.filename;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(pngUrl), 10000);
+  } catch (error) {
+    alert('导出失败：' + error.message);
+  } finally {
+    if (svgUrl) URL.revokeObjectURL(svgUrl);
+    button.disabled = false;
+    button.textContent = '导出 PNG';
+  }
+});
+
+// Revision-prompt picker: click a lane, column, node, edge or note to get a
+// paste-ready prompt. The panel lives outside the SVG, so PNG export ignores it.
+const panel = document.querySelector('#prompt-panel');
+const promptText = panel.querySelector('textarea');
+const copyButton = panel.querySelector('.prompt-copy');
+let picked = null;
+function closePrompt() {
+  if (picked) picked.classList.remove('picked');
+  picked = null;
+  panel.hidden = true;
+  copyButton.classList.remove('done');
+}
+function openPrompt(element, event) {
+  if (picked) picked.classList.remove('picked');
+  picked = element;
+  picked.classList.add('picked');
+  const text = element.getAttribute('data-prompt');
+  promptText.value = text;
+  copyButton.classList.remove('done');
+  panel.hidden = false;
+  const gap = 12;
+  const maxLeft = window.scrollX + document.documentElement.clientWidth - panel.offsetWidth - gap;
+  panel.style.left = Math.max(window.scrollX + gap, Math.min(event.pageX + gap, maxLeft)) + 'px';
+  panel.style.top = (event.pageY + gap) + 'px';
+}
+document.querySelector('.diagram svg').addEventListener('click', event => {
+  const element = event.target.closest('[data-prompt]');
+  if (!element) { closePrompt(); return; }
+  event.stopPropagation();
+  openPrompt(element, event);
+});
+document.addEventListener('click', event => {
+  if (!panel.hidden && !panel.contains(event.target)) closePrompt();
+});
+document.addEventListener('keydown', event => { if (event.key === 'Escape') closePrompt(); });
+promptText.addEventListener('focus', () => promptText.select());
+copyButton.addEventListener('click', async () => {
+  const text = promptText.value;
+  let ok = false;
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      ok = true;
+    }
+  } catch (error) { ok = false; }
+  if (!ok) {
+    promptText.focus();
+    promptText.select();
+    try { ok = document.execCommand('copy'); } catch (error) { ok = false; }
+  }
+  if (ok) {
+    copyButton.classList.add('done');
+    setTimeout(() => copyButton.classList.remove('done'), 1500);
+  } else {
+    promptText.focus();
+    promptText.select();
+    alert('无法自动复制，已选中文本，请按 Ctrl/Cmd + C 复制。');
+  }
+});
+</script></main></body></html>

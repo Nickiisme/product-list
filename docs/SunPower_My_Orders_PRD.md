@@ -26,7 +26,7 @@
 | DN | Delivery Number，交付编号；一个 SO 可关联多个 DN |
 | CRD | Customer Requested Date，客户期望日期 |
 | SSD | NEW ARK 日期字段，业务全称及口径待确认 |
-| SAD | Scheduled Arrival Time，预计到货日期 |
+| SAD | Scheduled Arrival Date，预计到货日期 |
 | POD | Proof of Delivery，签收证明 |
 | SN & FTD Report | 当前 DN 的序列号与测试结果统一报告入口 |
 | Customer Code / Partner Code | 下游客户主体编码 / Portal 合作伙伴编码 |
@@ -45,33 +45,27 @@
 
 所有数据和下载接口均由服务端校验客户范围、对象归属和功能权限。
 
-## 5. 需求范围（功能清单 + 优先级 + 分期）
+## 5. 需求范围（功能清单 + 优先级）
 
-| 序号 | 系统模块 | 功能描述 | 优先级 | 期数 | 主责人 |
-| --- | --- | --- | --- | --- | --- |
-| 1 | Portal / My Orders | 信用概览、订单查询与五阶段进度 | P0 | 二期 | 待填写 |
-| 2 | Portal / 详情 | 产品、商业信息、多个 DN 与报告下载 | P0 | 二期 | 待填写 |
-| 3 | Portal / 操作 | 联系销售、当前查询结果导出 | P1 | 二期 | 待填写 |
-| 4 | 后台 / Order Management | Order Overview、Delivery Overview 及独立详情 | P0 | 二期 | 待填写 |
-| 5 | 后台 / User Management | Credit Overview 及信用标签计算 | P0 | 二期 | 待填写 |
-| 6 | 后台 / 查询操作 | 组合筛选、Reset、分页及导出 | P1 | 二期 | 待填写 |
-| 7 | NEW ARK 对接 | 客户编码映射、实时查询及按需文件请求 | P0 | 二期 | 待填写 |
+| 序号 | 系统模块 | 功能描述 | 优先级 |
+| --- | --- | --- | --- |
+| 1 | Portal / My Orders | 信用概览、订单查询与五阶段进度 | P0 |
+| 2 | Portal / 详情 | 产品、商业信息、多个 DN 与报告下载 | P0 |
+| 3 | Portal / 操作 | 联系销售、当前查询结果导出 | P1 |
+| 4 | 后台 / Order Management | Order Overview、Delivery Overview 及独立详情 | P0 |
+| 5 | 后台 / User Management | Credit Overview 及信用标签计算 | P0 |
+| 6 | 后台 / 查询操作 | 组合筛选、Reset、分页及导出 | P1 |
+| 7 | NEW ARK 对接 | 客户编码映射、实时查询及按需文件请求 | P0 |
 
 ## 6. 整体流程图
 
 Portal 所有业务数据统一通过 NEW ARK 实时获取，底层系统整合由 NEW ARK 负责。
 
-~~~mermaid
-flowchart TD
-    A["进入 My Orders"] --> B["以 Partner Code 查询 NEW ARK 客户映射"]
-    B --> C["取得授权 Customer Code 范围"]
-    C --> D["实时查询历史订单"]
-    C --> E["有权限时查询信用及账期"]
-    D --> F["点击 SO：查询订单明细和关联 DN"]
-    F --> G["点击 DN 文件：请求独立文件接口"]
-    C --> H["后台按菜单和客户范围查询 SO / DN / Credit"]
-    H --> I["点击 DN：查询独立交付详情"]
-~~~
+列表查询与筛选：
+
+![列表查询与筛选泳道图](prd-assets/swimlanes/newark-orders-query.png)
+
+[打开交互版泳道图](prd-assets/swimlanes/newark-orders-query.html)
 
 | 触发时机 | 请求内容 |
 | --- | --- |
@@ -101,7 +95,7 @@ Partner Code 先换取 Customer Code，再发起业务查询；一对多映射�
 
 | 页面区域 | 功能 |
 | --- | --- |
-| 前台信用概览 | 按权限展示 Credit limit、Available amount、Overdue、Payment terms |
+| 前台信用概览 | 按权限展示 Credit limit、Available amount、Overdue、Due within 7 days（未来 7 天到期金额）；缺失金额为 —，真实 0 正常展示 |
 | 前台筛选 | 搜索 SO / SKU / 产品型号，Order Progress，Order date range |
 | 日期组件 | 单击展开区间组件；From / To，DD/MM/YYYY，Apply / Cancel |
 | 前台订单详情 | Order overview、Order progress、Items、Commercial details、Delivery details、Deliveries |
@@ -129,11 +123,11 @@ Partner Code 先换取 Customer Code，再发起业务查询；一对多映射�
 | Products | 展示前两项，其余显示 +N more product | — |
 | Total amount | 金额符号及两位小数，例如 €8,000.00 | — |
 | Order date | D MMM, YYYY，例如 17 Oct, 2026 | — |
-| Scheduled arrival time | D MMM, YYYY，例如 17 Oct, 2026 | To be confirmed |
+| Scheduled Arrival Date | 已发货 DN 的 SAD，D MMM, YYYY，例如 17 Oct, 2026；多日期去重后按日期升序展示 | 无已发货 DN 时为空；已发货 DN 缺失日期时为 To be confirmed |
 | Order Progress | 第 7.2 节映射结果 | — |
 | Action | View details | — |
 
-前台日期格式同时适用于详情及导出；金额统一采用上表格式。
+前台日期格式及 SAD 取值规则同时适用于订单概览、列表及导出；金额统一采用上表格式。
 
 Order Progress 筛选为 All order progress (incl. partial)、Order created、Allocated (incl. Partially Allocated)、Shipped (incl. Partially Shipped)、Received、Invoiced (incl. Partially Invoiced)。选择阶段时包含该阶段的完整与部分状态，All 包含全部状态。
 
@@ -141,27 +135,36 @@ Order Progress 筛选为 All order progress (incl. partial)、Order created、Al
 
 | 区域 | 内容 / 交互 |
 | --- | --- |
-| 顶部 | SO 编号、Close、信封图标 + Contact your sales representative |
-| Order overview | Order date、Scheduled Arrival Time |
+| 顶部 | SO 编号、Close、信封图标 + Contact your sales representative、SN & FTD Report / Invoice 快捷下载 |
+| Order overview | Order date、Scheduled Arrival Date |
 | Order progress | 第 7.2 节五节点 |
 | Items | SKU、Product、Description、Quantity、Unit price、Total；默认 5 条，可展开全部并收起 |
 | Commercial details | Total amount、Payment terms、Prepayment / Credit status |
-| Delivery details | Scheduled Arrival Time、Incoterm、Receiving contact、Ship-to address |
+| Delivery details | Incoterm、Receiving contact、Ship-to address |
 
 联系销售使用 mailto 唤起邮件客户端，主题带入订单号。销售邮箱缺失时提示不可用。
+
+快捷下载显示 SN & FTD Report (1/2 files ready)、Invoice (1/2 files ready)；单个文件使用 (1/1 file ready)。分子为可下载数，分母为已发货 DN 数。单个 DN 时直接下载；多个 DN 时展开选择面板，按 DN 展示预计到货日期、下载入口及不可用原因。全部不可用时入口置灰，支持 hover / 聚焦提示；无已发货 DN 时显示 (0/0 files ready)。面板支持 Escape、外部点击关闭，Escape 返回触发按钮。顶部与 DN 卡片共用第 7.1.10 节的可用性和权限规则，下载仍按当前 DN 请求独立文件接口。
+
+订单详情查询流程：
+
+![订单详情查询泳道图](prd-assets/swimlanes/newark-order-detail.png)
+
+[打开交互版泳道图](prd-assets/swimlanes/newark-order-detail.html)
 
 #### 7.1.5 前台 Deliveries
 
 仅展示已发货 DN；没有已发货 DN 时隐藏 Delivery details 和 Deliveries。
 
-- 每个 DN 卡片展示 DN、Warehouse、Status、Carrier、Pickup date，可展开和收起。
+- 每个 DN 卡片展示 DN、Warehouse、Status、Carrier、Pickup date、Scheduled Arrival Date，可展开和收起。
+- Scheduled Arrival Date 位于 Pickup date 旁，收起仍可见；取当前 DN 的 SAD，格式为 D MMM, YYYY。多个 DN 分别展示各自日期，缺失时显示 To be confirmed。
 - 展开区产品列为 SKU、Product、Description、Quantity，数量取当前 DN 实际交付数量。
 - 每个卡片外层各有一个带下载图标的 SN & FTD Report、Invoice 入口，收起仍可见。
 - 文件归属 DN，点击文件与展开卡片是独立操作；可用性见第 7.1.10 节。
 
 #### 7.1.6 后台 Order Overview
 
-筛选：关键词（SO、Company Name、Customer Code、Partner Code、SKU、DN）、Order Progress、Country、CRD 区间、Scheduled Arrival Time (SAD) 区间、Sales Organisation。
+筛选：关键词（SO、Company Name、Customer Code、Partner Code、SKU、DN）、Order Progress、Country、CRD 区间、Scheduled Arrival Date (SAD) 区间、Sales Organisation。
 
 后台进度选项为 All、Order created、Partially Allocated、Allocated、Partially Shipped、Shipped、Received、Partially Invoiced、Invoiced，精确匹配。
 
@@ -170,7 +173,7 @@ Order Progress 筛选为 All order progress (incl. partial)、Order created、Al
 | 分组 | 字段 |
 | --- | --- |
 | 身份 | Sales Order、Company Name、Customer Code、Partner Code、Market |
-| 日期与进度 | Order Date、CRD、Scheduled Arrival Time (SAD)、Order Progress |
+| 日期与进度 | Order Date、CRD、Scheduled Arrival Date (SAD)、Order Progress |
 | 业务 | Products、Ordered / Allocated / Shipped、Delivery Number、Total Amount、Credit、Sales Rep.、Updated |
 | 操作 | Operation：View |
 
@@ -196,18 +199,21 @@ Order Progress 筛选为 All order progress (incl. partial)、Order created、Al
 
 筛选：关键词（Customer Code、Company Name、Partner Code、SO、DN）、Delivery Progress、Warehouse、Pickup date 区间。
 
-列表每个 DN 一行，列顺序：Customer Code、Company Name、Partner Code、SO、DN、Delivery Progress、Warehouse、Carrier、Pickup Date、CRD、SSD、Scheduled Arrival Time (SAD)、POD、SN & FTD、Invoice。
+Delivery Progress 使用 NEW ARK 的 DN Status，完整选项为：Cancelled、Changing、To Be Received、Partially Received、Received、Created、Customer Rejected、SI、Invoiced、Partially Signed、Draft，以及 All。各状态独立精确筛选；列表、DN 详情、订单内 DN 卡片及导出保留源状态文案。实际接口编码及 SI 含义待 NEW ARK 确认。
+
+交付查询固定要求 **DN Approve Status = Approved**，且关联 SO 同样为 Approved；客户授权范围、审批和业务状态条件在服务端组合筛选后再统计、分页及导出。详情与文件请求执行同一准入校验。状态选项不因当前结果为空而隐藏，审批通过不代表 DN 业务流程完成。
+
+列表每个 DN 一行，列顺序：Customer Code、Company Name、Partner Code、SO、DN、Delivery Progress、Warehouse、Carrier、Pickup Date、CRD、SSD、Scheduled Arrival Date (SAD)、Files、Operation。Files 同列展示 POD、SN & FTD、Invoice 文字下载入口，分别判断可用性；Operation 固定于最右侧，View detail 打开当前 DN 的独立详情。
 
 SO 打开订单详情；DN 打开独立交付详情，仅展示当前 DN 及其产品：
 
 | 详情区域 | 字段 |
 | --- | --- |
-| 顶部 | DN、右上角 NEW ARK updated、Close |
+| 顶部 | DN、当前 DN 的 POD / SN & FTD / Invoice 下载、右上角 NEW ARK updated、Close |
 | Delivery overview | SO、Delivery Progress、Creator、Create Time、Customer Code、Company Name、Partner Code、Shipping Type、Delivery Type、Incoterm、Carrier、CRD、SSD、SAD |
 | Ship from | Pickup Date、Pickup Time、Truck No.、Actual Pickup Date、Shipment No.、Consignor Order No.、Warehouse、Contact Person、Contact E-mail |
 | Ship to | Appointment Date、Appointment Hour、Appointment Booking No.、Ship-to Name、Contact Name、Ship-to Contact Mail、Ship-to Country、Area、Ship-to City、Ship-to Address、Ship-to ZIP |
 | 产品物流表 | DN Item No.、SKU、Product、Material Description、Quantity、Unit、Unit Size (cm)、G.W.U. (kg)、N.W.U. (kg)、Total G.W. (kg)、Total N.W. (kg)、Volume、Total Volume、Customs Tariff、Customs Description、Pallets、Full Trucks |
-| 文件 | 当前 DN 的 POD、SN & FTD、Invoice |
 
 Creator / Create Time 取 DN 创建信息。产品行只取该 DN 明细。尺寸、重量及体积按接口单位展示；Pallets、Full Trucks 的单位和业务含义待确认。
 
@@ -234,15 +240,15 @@ Credit Status 为 Portal 计算标签，按下表自上而下判断，筛选、�
 | 上述两项均为有效数值且 ≤ 0 | Normal |
 | 缺少判断所必需的值，或值无效 | — |
 
-“0–7 Days = 未来 7 天到期金额”的语义须经财务确认后启用 Due soon；如源字段实际为已逾期账龄，应改用 NEW ARK 提供的未来到期字段。
+“0–7 Days = 未来 7 天到期金额”的语义须经财务确认后启用 Due soon；如源字段实际为已逾期账龄，应改用 NEW ARK 提供的未来到期字段。前台 Due within 7 days 同样使用已确认的未来到期金额口径，不能直接以未确认的账龄字段代替。
 
 ![后台信用概览](prd-assets/admin-credit-status.png)
 
 #### 7.1.9 后台布局与交互
 
 - 桌面详情信息区每行三列，窄屏自适应两列 / 一列，长文本换行。
-- 表格横向滚动时 Order 的 Operation 固定在右侧；Delivery 的 POD、SN & FTD、Invoice 三列整体固定。固定区域左侧使用柔和阴影。
-- 文件操作采用与 View 一致的蓝色文字 Download；不可用时为灰色禁用 Download。
+- 表格横向滚动时 Order / Delivery 的 Operation 固定在右侧，左侧使用柔和阴影；Delivery 的 Files 随普通数据列滚动。
+- 文件操作采用蓝色文字链接，Files 列以文件类型为链接名称，详情使用 Download；不可用时置灰，hover / 聚焦说明原因。
 - 信用表以 Sales representative 为最后一个普通数据列。
 - 筛选区提供 Reset、Search；结果工具栏提供 Export。
 - 控件采用英文，筛选边框浅灰，聚焦蓝色；后台延续现有 Admin 样式。
@@ -265,13 +271,19 @@ Credit Status 为 Portal 计算标签，按下表自上而下判断，筛选、�
 | 已到节点但文件未就绪 | The file is not available yet. Please try again later. |
 | 无下载权限 | You do not have permission to download this file. |
 
+DN 文件下载流程：
+
+![DN 文件下载泳道图](prd-assets/swimlanes/newark-dn-download.png)
+
+[打开交互版泳道图](prd-assets/swimlanes/newark-dn-download.html)
+
 #### 7.1.11 Export
 
 导出当前条件下的**全部授权匹配数据**，覆盖全部分页，使用 UTF-8 CSV。字段顺序及粒度如下：
 
 | 页面 | 粒度 | 导出字段 |
 | --- | --- | --- |
-| 前台 My Orders | 每 SO 一行 | Order No.、Products、Total amount、Order date、Scheduled arrival time、Order Progress |
+| 前台 My Orders | 每 SO 一行 | Order No.、Products、Total amount、Order date、Scheduled Arrival Date、Order Progress |
 | 后台 Order Overview | 每 SO 一行 | 第 7.1.6 节列表业务字段，Sales Order 导出名为 SO |
 | 后台 Delivery Overview | 每 DN × 产品行一行 | 下列交付字段顺序 |
 | 后台 Credit Overview | 每客户 × 币种 × 销售组织一行 | 第 7.1.8 节全部字段 |
@@ -280,7 +292,7 @@ Products 导出全部产品名称及 SKU；DN 与 SAD 保留一一对应关系�
 
 Delivery 导出字段按以下各组顺序拼接：
 
-1. Customer Code、Company Name、Partner Code、SO、DN、Delivery Progress、Warehouse、Carrier、Pickup Date、CRD、SSD、Scheduled Arrival Time (SAD)。
+1. Customer Code、Company Name、Partner Code、SO、DN、Delivery Progress、Warehouse、Carrier、Pickup Date、CRD、SSD、Scheduled Arrival Date (SAD)。
 2. Creator、Create Time、Shipping Type、Delivery Type、Incoterm、Pickup Time、Truck No.、Actual Pickup Date、Shipment No.、Consignor Order No.、Warehouse Contact Person、Warehouse Contact E-mail。
 3. Appointment Date、Appointment Hour、Appointment Booking No.、Ship-to Name、Receiving Contact Name、Ship-to Contact Mail、Ship-to Country、Ship-to Area、Ship-to City、Ship-to Address、Ship-to ZIP、NEW ARK Updated。
 4. 第 7.1.7 节产品物流表全部字段，保持该表顺序。
@@ -319,49 +331,86 @@ DN 无产品行仍保留一条头记录；头字段在各产品行重复。缺�
 
 以上为本期建议汇总口径，需 NEW ARK 确认订单行范围及枚举；取消 / 退货行范围待确认。若接口直接返回整单分配状态，可经口径核对后使用该值。
 
-#### 7.2.3 整单映射及判定优先级
+#### 7.2.3 NEW ARK 到 Portal 的状态映射
 
-先完成准入校验，再按下表自上而下匹配。晚期整单业务状态直接映射；只有创建 / 运输准备阶段使用分配完成度。
+以下为当前目标映射，准确源字段编码及业务口径由新方舟确认。所有查询先执行第 6 节的客户范围及 Approved 准入条件。
 
-| 优先级 | Order status 的值 | 其他条件 | Portal 列表展示 |
-| --- | --- | --- | --- |
-| 1 | Invoiced | — | Invoiced |
-| 2 | Partially Invoiced | — | Invoiced · Partial |
-| 3 | Customer Signed | NEW ARK 已确认其含义为客户收货 / POD | Received |
-| 4 | Shipped | — | Shipped |
-| 5 | Partially Shipped | — | Shipped · Partial |
-| 6 | Partially Prepare Truck / Partially Truck TBC | — | Allocated · Partial |
-| 7 | Created / Prepare Truck / Truck TBC | 分配完成度 = Complete | Allocated |
-| 8 | Created / Prepare Truck / Truck TBC | 分配完成度 = Partial | Allocated · Partial |
-| 9 | Created | 分配完成度 = Not started | Order created |
-| 10 | 其他值 / 空值 / 无法满足上述条件 | — | — |
+| NEW ARK Order status | 附加条件 | Portal 列表展示 |
+| --- | --- | --- |
+| Created | 分配完成度 = Not started | Order created |
+| Created / Prepare Truck / Truck TBC | 分配完成度 = Complete | Allocated |
+| Created / Prepare Truck / Truck TBC | 分配完成度 = Partial | Allocated · Partial |
+| Partially Prepare Truck / Partially Truck TBC | — | Allocated · Partial |
+| Partially Shipped | — | Shipped · Partial |
+| Shipped | — | Shipped |
+| Customer Signed | 已确认表示实际收货签收 / POD | Received |
+| Partially Invoiced | — | Invoiced · Partial |
+| Invoiced | — | Invoiced |
+| 其他值、空值、冲突或无法满足上述条件 | — | — |
 
-Prepare Truck / Truck TBC 配合 Not started 或 Unknown 属于待核对组合；Customer Signed 的签收语义未确认时返回未知。
+分配完成度按第 7.2.2 节取得。Prepare Truck / Truck TBC 配合 Not started 或 Unknown 属于待核对组合。Customer Signed 的签收语义、部分运输准备映射到部分分配的业务口径须经新方舟确认；未确认的组合显示未知。
 
-计算示例：
+System Status、单个 DN 的最晚状态及文件是否存在不改变整单映射结果。列表、详情和导出共用该映射。
 
-| 输入 | 输出 |
+#### 7.2.4 Portal 筛选到 NEW ARK 查询条件
+
+下表为后台精确筛选条件。AND 表示同时满足，OR 表示任一分支满足；涉及分配完成度时，以完整 SO 的有效订单行为依据。
+
+| 后台筛选值 | NEW ARK 查询条件 |
 | --- | --- |
-| Approved；Order status = Created；全部行 To Be Allocated | Order created |
-| Approved；Order status = Created；行分配状态为 Allocated + To Be Allocated | Allocated · Partial |
-| Approved；Order status = Prepare Truck；全部行 Allocated | Allocated |
-| Approved；Order status = Partially Shipped；部分行仍 Created | Shipped · Partial |
-| Approved；Order status = Partially Invoiced；部分行 Invoiced、部分行 Shipped | Invoiced · Partial |
-| Approved；Order status = Invoiced；System Status = SAP Sync Failed | Invoiced |
-| Approving；Order status = Created | 排除该订单 |
+| All | 不限制业务状态，保留客户范围及 Approved 条件 |
+| Order created | Order status = Created AND 分配完成度 = Not started |
+| Allocated | Order status IN (Created, Prepare Truck, Truck TBC) AND 分配完成度 = Complete |
+| Partially Allocated | (Order status IN (Created, Prepare Truck, Truck TBC) AND 分配完成度 = Partial) OR Order status IN (Partially Prepare Truck, Partially Truck TBC) |
+| Shipped | Order status = Shipped |
+| Partially Shipped | Order status = Partially Shipped |
+| Received | Order status = Customer Signed，签收语义确认后启用 |
+| Invoiced | Order status = Invoiced |
+| Partially Invoiced | Order status = Partially Invoiced |
 
-因此 System Status、单个 DN 状态、文件存在与否均不改变整单映射结果。建议由 Portal 服务端统一输出 stage、completion（完整 / 部分 / 未知）及展示文案，列表、筛选、导出共用。
+客户前台按下列方式组合精确条件：
 
-#### 7.2.4 详情节点与筛选
+| 前台筛选项 | 匹配范围 |
+| --- | --- |
+| All order progress (incl. partial) | 全部符合准入条件的订单，含未知业务进度 |
+| Order created | Order created |
+| Allocated (incl. Partially Allocated) | Allocated OR Partially Allocated |
+| Shipped (incl. Partially Shipped) | Shipped OR Partially Shipped |
+| Received | Received |
+| Invoiced (incl. Partially Invoiced) | Invoiced OR Partially Invoiced |
+
+Portal 显示的“阶段 · Partial”与后台 Partially 阶段筛选值对应同一结果。未知进度仅在 All 中返回，不归入具体阶段。
+
+#### 7.2.5 实时筛选接口要求
+
+以前台选择 Shipped 为例，逻辑请求为：
+
+~~~json
+{
+  "customerCodes": ["<授权 Customer Code>"],
+  "approveStatus": "Approved",
+  "orderStatusList": ["Shipped", "Partially Shipped"],
+  "page": 1,
+  "pageSize": 20
+}
+~~~
+
+以上为逻辑参数示例，实际参数名、枚举编码及组合条件结构由新方舟提供。
+
+- NEW ARK 接口需支持多个 Order status 的 OR 查询，以及 Order status 与整单分配完成度的组合查询。
+- **先在新方舟服务端执行客户范围、审批、状态及其他筛选条件，再计算总数、分页和导出。** 分配汇总需基于完整有效订单行集完成。
+- 现有接口若仅支持单值 status 或无法按整单分配完成度筛选，需扩展接口或提供等价的服务端查询能力；不能只过滤已返回的某一页。
+- Order created、Allocated 等 Portal 展示值按第 7.2.4 节转换为源查询条件，不直接作为 NEW ARK Order status 枚举发送。
+
+#### 7.2.6 详情节点
 
 五节点为 Order created → Allocated → Shipped → Received → Invoiced。业务事件在 NEW ARK 发生，Portal 查询时更新结果。
 
 - Order created：有效 SO 创建完成。
 - Allocated：按第 7.2.2 节展示分配完成度。
-- Shipped、Received、Invoiced：分别使用 NEW ARK 提供的整单对应节点完成度；多行、多 DN 场景下，每个节点独立支持未开始、部分完成、已完成、未知。
-- 列表 stage 不能证明之前所有节点全部完成。开票和收货顺序以实际业务事件为准；节点缺少依据时显示未知。
-- 三个节点的准确源字段、数量范围及部分 / 全部完成口径须由 NEW ARK 提供并确认，不能仅用当前 Order status 反推整条进度条。
-- 前台按阶段包含 Partial，后台按独立状态精确筛选，展示文案均使用第 7.2.3 节结果。
+- Shipped、Received、Invoiced：分别使用 NEW ARK 提供的整单对应节点完成度；多行、多 DN 场景下，各节点独立支持未开始、部分完成、已完成、未知。
+- 当前阶段不能证明之前所有节点全部完成。开票和收货顺序以实际业务事件为准；缺少依据时节点显示未知。
+- 三个后续节点的源字段、数量范围及完成度口径由新方舟确认。
 - Delivery Progress 使用 NEW ARK 的 DN 业务状态，独立于 SO 五节点。
 
 ### 7.3 异常 / 边界场景
@@ -375,7 +424,7 @@ Prepare Truck / Truck TBC 配合 Not started 或 Unknown 属于待核对组合�
 | DN 查询失败 | 展示失败，不作为“无 DN”处理 |
 | Carrier 未分配 | Pending assignment |
 | 文件请求失败 / 重复点击 | 提示失败并可重试；请求期间防重复触发 |
-| 金额、日期、物流字段缺失 | 展示 —，SAD 使用 To be confirmed；真实 0 单独保留 |
+| 金额、日期、物流字段缺失 | 展示 —；前台 SAD 按第 7.1.3 节，后台 SAD 使用 To be confirmed；真实 0 单独保留 |
 | CRD / SSD / SAD / Pickup Date 不同 | 各字段按自身来源展示 |
 | 超长文本 / 多产品、多 DN | 换行或展开查看完整内容 |
 

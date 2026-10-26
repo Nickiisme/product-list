@@ -5,6 +5,8 @@ import React from "react";
 import {renderToStaticMarkup} from "react-dom/server";
 import {orders,deliveries,orderProgressOptions,matchesProgress,getOrderArrivals,getOrderDeliveries,documentAvailability,orderExportHeaders,orderExportRow,selectApprovedOrders,deliveryHeaderFields,deliveryItemFields,deliveryExportHeaders,deliveryExportRows} from "../src/order-model.js";
 import {credits,creditFields,formatCreditAmount,creditExportHeaders,creditExportRow,getCreditStatus,creditStatuses} from "../src/credit-model.js";
+import {deliveryStatusOptions,matchesDeliveryStatus,selectApprovedDeliveries} from "../src/order-model.js";
+import {readFileSync} from "node:fs";
 
 let server,components;
 before(async()=>{server=await createServer({server:{middlewareMode:true,ws:false},appType:"custom"});components=await server.ssrLoadModule("/src/App.jsx")});
@@ -38,7 +40,7 @@ test("all associated DNs retain their own SAD including unknown and repeated dat
 });
 test("order list has renamed SAD and date columns, two products and Show more, no Columns",()=>{
   const html=render(components.OrderView,viewProps);
-  for(const label of ["Order Date","CRD","Scheduled Arrival Time (SAD)","Products","Operation"])assert.ok(html.includes(`<th>${label}</th>`));
+  for(const label of ["Order Date","CRD","Scheduled Arrival Date (SAD)","Products","Operation"])assert.ok(html.includes(`<th>${label}</th>`));
   assert.ok(!html.includes(">Columns<"));assert.ok(!html.includes("<th>SSD</th>"));
   assert.equal((html.match(/class="link show-more"/g)||[]).length,orders.filter(o=>o.items.length>2).length);
   const first=html.split('<div class="product-preview">')[1].split("</div>")[0];
@@ -58,7 +60,7 @@ test("admin details retain business fields without customer-only or source-state
   const header=html.split('<div class="drawer-body">')[0];
   assert.ok(header.includes("NEW ARK updated"));assert.ok(header.includes(orders[0].updated));
   assert.equal((html.match(/NEW ARK updated/g)||[]).length,1);
-  assert.equal((html.match(/Scheduled Arrival Time \(SAD\)/g)||[]).length,orders[0].dns.length);
+  assert.equal((html.match(/Scheduled Arrival Date \(SAD\)/g)||[]).length,orders[0].dns.length);
   assert.equal((html.match(/<th>Unit price<\/th>/g)||[]).length,1);
   assert.equal((html.match(/Download DN-\d+ SN &amp; FTD Report/g)||[]).length,3);
 });
@@ -81,6 +83,41 @@ test("documents are DN scoped and milestones do not infer file readiness",()=>{
   const outbound=deliveries.find(d=>d.shipped&&!d.received);assert.equal(documentAvailability(outbound,"sn").ready,true);assert.equal(documentAvailability({...outbound,invoice:true},"invoice").ready,false);
   const received=deliveries.find(d=>d.received&&!d.invoice);assert.match(documentAvailability(received,"invoice").reason,/file is not available/);
 });
+test("delivery selector includes all eleven NEW ARK statuses and matches partial states exactly",()=>{
+  const expected=["Cancelled","Changing","To Be Received","Partially Received","Received","Created","Customer Rejected","SI","Invoiced","Partially Signed","Draft"];
+  assert.deepEqual(deliveryStatusOptions,expected);
+  const html=render(components.DeliveryView,{...viewProps,rows:deliveries,setSelectedDelivery(){}});
+  for(const status of expected){assert.ok(html.includes(`<option>${status}</option>`));assert.equal(matchesDeliveryStatus({progress:status},status),true)}
+  assert.equal(matchesDeliveryStatus({progress:"Partially Received"},"Received"),false);
+  assert.equal(matchesDeliveryStatus({progress:"SI"},"All"),true);
+  assert.ok(deliveries.every(d=>deliveryStatusOptions.includes(d.progress)));
+  const partial=render(components.DeliveryView,{...viewProps,rows:[{...deliveries[0],progress:"Partially Received"}],setSelectedDelivery(){}});
+  assert.ok(partial.includes('>Partially Received</span>'));assert.ok(!partial.includes('Received · Partial'));
+});
+test("DN and SO approval gates both fail closed before listing or downloading",()=>{
+  const parent={so:"SO-TEST",approve:"Approved"};
+  const records=[{dn:"yes",so:parent.so,approve:"Approved"},...['Approving','Rejected','',null,'approved','Unknown'].map(approve=>({so:parent.so,approve})),{so:parent.so},{so:"missing",approve:"Approved"}];
+  assert.deepEqual(selectApprovedDeliveries(records,[parent]),[records[0]]);
+  assert.equal(selectApprovedDeliveries(records,[{...parent,approve:"Approving"}]).length,0);
+  assert.ok(deliveries.every(d=>d.approve==="Approved"));
+  assert.equal(documentAvailability({...deliveries[0],approve:"Approving",shipped:true,sn:true},"sn").ready,false);
+  assert.equal(documentAvailability({...deliveries[0],so:"UNAUTHORISED",shipped:true,sn:true},"sn").ready,false);
+});
+test("delivery downloads share one Files column and the final Operation opens DN detail",()=>{
+  const html=render(components.DeliveryView,{...viewProps,rows:[deliveries[0]],setSelectedDelivery(){}});
+  const headers=html.split('<thead>')[1].split('</thead>')[0];
+  assert.equal((headers.match(/<th>/g)||[]).length,14);
+  assert.ok(headers.endsWith('<th>Files</th><th>Operation</th></tr>'));
+  for(const label of ['POD','SN &amp; FTD','Invoice'])assert.ok(!headers.includes(`<th>${label}</th>`));
+  const files=html.split('class="delivery-file-links">')[1].split('</div>')[0];
+  for(const label of ['POD','SN &amp; FTD','Invoice'])assert.ok(files.includes(`>${label}</button>`));
+  assert.ok(html.includes('>View detail</button>'));
+  const css=readFileSync(new URL('../src/extra.css',import.meta.url),'utf8');
+  assert.ok(css.includes('position:sticky;right:0'));
+  assert.ok(css.includes('.scroll table td:last-child::before'));
+  assert.ok(!css.includes('nth-last-child(-n+3)'));
+  assert.ok(!css.includes('--document-action-width'));
+});
 test("export preserves all products and DN-date relations, not the two-item summary",()=>{
   for(const order of orders){const row=orderExportRow(order);assert.equal(row.length,orderExportHeaders.length);for(const item of order.items)assert.ok(row[9].includes(item.sku));for(const dn of order.dns)assert.ok(row[7].includes(dn))}
   assert.ok(orderExportRow(orders[0])[7].includes("DN-601866: To be confirmed"));
@@ -89,6 +126,11 @@ test("delivery drawer is DN scoped and distinct from the order drawer",()=>{
   const d=deliveries[0],html=render(components.DeliveryDrawer,{delivery:d,close(){},onOpenOrder(){}});
   assert.ok(html.includes(`id="delivery-title">${d.dn}</h2>`));
   assert.ok(html.includes("Delivery details · Internal operations"));
+  const header=html.split('<div class="drawer-body">')[0];
+  for(const label of ["POD","SN &amp; FTD Report","Invoice"])assert.ok(header.includes(label),label);
+  assert.ok(header.includes('aria-label="Delivery files"'));
+  assert.ok(!html.includes('<h3>Delivery files</h3>'));
+  assert.ok(header.indexOf('aria-label="Delivery files"')>header.indexOf(`id="delivery-title">${d.dn}</h2>`));
   for(const label of ["Creator","Create Time","Shipping Type","Delivery Type","Pickup Date","Pickup Time","Truck No.","Actual Pickup Date","Shipment No.","Consignor Order No.","Warehouse","Contact Person","Contact E-mail","Appointment Date","Appointment Hour","Appointment Booking No.","Ship-to Name","Contact Name","Ship-to Contact Mail","Ship-to Country","Area","Ship-to City","Ship-to Address","Ship-to ZIP"])assert.ok(html.includes(label),label);
   for(const [,label] of deliveryItemFields)assert.ok(html.includes(label),label);
   for(const other of getOrderDeliveries(orders[0]).slice(1))assert.ok(!html.includes(other.dn));
@@ -101,7 +143,7 @@ test("delivery export expands every line with all header/logistics fields and fi
   const headers=deliveryExportHeaders;
   for(const d of deliveries){const rows=result.filter(r=>r[headers.indexOf("DN")]===d.dn);assert.equal(rows.length,d.items.length);rows.forEach((r,index)=>{assert.equal(r.length,headers.length);assert.equal(r[headers.indexOf("SKU")],d.items[index].sku);assert.equal(r[headers.indexOf("Creator")],d.creator);assert.equal(r[headers.indexOf("Full Trucks")],d.items[index].fullTrucks??"")})}
   const empty=deliveryExportRows([{...deliveries[0],items:[]}]);assert.equal(empty.length,1);assert.equal(empty[0][headers.indexOf("SKU")],"");
-  const sample=result[0];assert.equal(sample[headers.indexOf("Appointment Date")],"31 Oct, 2026");assert.equal(sample[headers.indexOf("Scheduled Arrival Time (SAD)")],"30 Oct, 2026");
+  const sample=result[0];assert.equal(sample[headers.indexOf("Appointment Date")],"31 Oct, 2026");assert.equal(sample[headers.indexOf("Scheduled Arrival Date (SAD)")],"30 Oct, 2026");
 });
 test("credit overview exposes all ageing fields with separate currency and organisation",()=>{
   const html=render(components.CreditView,{rows:credits,query:"",progress:"All",setQuery(){},setProgress(){},notify(){}});
